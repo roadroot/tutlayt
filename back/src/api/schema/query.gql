@@ -1,0 +1,4 @@
+type Query {
+	author(name: String): Author
+	book: Book
+}

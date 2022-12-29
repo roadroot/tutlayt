@@ -1,0 +1,13 @@
+{
+	"editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+	"editor.formatOnPaste": false,
+	"editor.formatOnType": false,
+	"editor.formatOnSaveMode": "file",
+	"files.autoSave": "onFocusChange",
+	"typescript.updateImportsOnFileMove.enabled": "always",
+	"[typescript]": {
+		"editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+	},
+	"editor.formatOnSave": true,
+	"files.eol": "\n"
+}
