@@ -1,0 +1,12 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Credential {
+  id: ID!
+  posts: Credential!
+}
+
+type Query {
+  author(id: Int!): Credential!
+}
