@@ -1,3 +1,4 @@
+import { PrismaService } from './prisma/prisma.service';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius';
@@ -9,10 +10,9 @@ import CredentialResolver from './credential/credential.resolver';
     GraphQLModule.forRoot<MercuriusDriverConfig>({
       driver: MercuriusDriver,
       graphiql: true,
-      // autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
   ],
-  providers: [CredentialResolver],
+  providers: [CredentialResolver, PrismaService],
 })
 export class AppModule {}
