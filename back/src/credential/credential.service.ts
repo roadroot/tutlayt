@@ -1,4 +1,4 @@
-import { UsersService } from './../users/users.service';
+import { UserService } from '../user/user.service';
 import { PrismaService } from './../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { Credential } from '@prisma/client';
@@ -6,7 +6,7 @@ import { Credential } from '@prisma/client';
 @Injectable()
 export class CredentialService {
   constructor(
-    private readonly users: UsersService,
+    private readonly users: UserService,
     private readonly prisma: PrismaService,
   ) {}
 

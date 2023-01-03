@@ -16,6 +16,7 @@
       "sourceMaps": true,
       "envFile": "${workspaceFolder}/.env",
       "cwd": "${workspaceRoot}",
+      "preLaunchTask": "pushDatabase",
       "console": "integratedTerminal"
     }
   ]

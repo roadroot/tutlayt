@@ -2,10 +2,10 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "build",
-      "command": "npm",
+      "label": "pushDatabase",
+      "command": "prisma",
       "type": "shell",
-      "args": ["run", "start:debug"],
+      "args": ["db", "push"],
       "problemMatcher": ["$tsc"],
       "presentation": {
         "reveal": "always"

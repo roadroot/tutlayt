@@ -4,9 +4,10 @@ import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
-import { UsersModule } from './users/users.module';
+import { UserModule } from './user/user.module';
 import { CredentialService } from './credential/credential.service';
 import { CredentialModule } from './credential/credential.module';
+import { QuestionModule } from './question/question.module';
 
 @Module({
   imports: [
@@ -17,8 +18,9 @@ import { CredentialModule } from './credential/credential.module';
     }),
     AuthModule,
     PrismaModule,
-    UsersModule,
+    UserModule,
     CredentialModule,
+    QuestionModule,
   ],
   providers: [CredentialService],
 })

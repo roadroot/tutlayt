@@ -2,11 +2,40 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Credential {
-  id: ID!
-  posts: Credential!
+type Question {
+  id: Int!
+  user: User!
+  title: String!
+  body: String!
+}
+
+type User {
+  id: Int!
+  username: String!
+  email: String!
+  phone: String!
+  picture: String!
+  questions: [Question!]!
 }
 
 type Query {
-  author(id: Int!): Credential!
+  user(id: Int!): User!
+  question(id: Int!): Question!
+}
+
+type Mutation {
+  createUser(data: UserData!): User!
+  createQuestion(data: QuestionData!): Question!
+}
+
+input UserData {
+  username: String!
+  email: String!
+  phone: String!
+}
+
+input QuestionData {
+  title: String!
+  body: String!
+  userId: Int!
 }
