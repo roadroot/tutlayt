@@ -2,7 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PageModel {
-  const PageModel(this.route, this.title, this.drawer, this.body);
+  const PageModel(
+      {required this.route,
+      required this.title,
+      required this.drawer,
+      required this.body});
   final String route;
   final Widget title;
   final Widget body;

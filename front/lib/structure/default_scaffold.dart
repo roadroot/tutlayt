@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tutlayt/pages/login.dart';
 import 'package:tutlayt/pagination/page.model.dart';
 
 class DefaultScaffold extends StatelessWidget {
@@ -7,15 +8,10 @@ class DefaultScaffold extends StatelessWidget {
   final String route;
   static const List<PageModel> pages = [
     PageModel(
-        'a',
-        Text('a'),
-        DrawerTile(title: Text('a'), leading: Icon(Icons.access_alarm_rounded)),
-        Text('a')),
-    PageModel('b', Text('b'), DrawerTile(title: Text('b')), Text('b')),
-    PageModel('c', Text('c'), DrawerTile(title: Text('c')), Text('c')),
-    PageModel('d', Text('d'), DrawerTile(title: Text('d')), Text('d')),
-    PageModel('e', Text('e'), DrawerTile(title: Text('e')), Text('e')),
-    PageModel('f', Text('f'), DrawerTile(title: Text('f')), Text('f')),
+        route: 'login',
+        title: Text('Login'),
+        drawer: DrawerTile(title: Text('Login'), leading: Icon(Icons.person)),
+        body: Login()),
   ];
 
   static Map<String, Widget Function(BuildContext)> getRoutes() {
