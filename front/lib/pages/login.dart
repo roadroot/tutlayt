@@ -44,7 +44,8 @@ class Login extends StatelessWidget {
                   children: [
                     const Text("You don't yet have an account?"), // TODO i18n
                     TextButton(
-                        onPressed: () => null,
+                        onPressed: () => Navigator.pushReplacementNamed(
+                            context, 'registration'),
                         child: const Text('Sign Up')) // TODO i18n
                   ],
                 ),

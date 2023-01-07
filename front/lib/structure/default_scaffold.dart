@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tutlayt/pages/login.dart';
+import 'package:tutlayt/pages/question.dart';
 import 'package:tutlayt/pagination/page.model.dart';
+
+import '../pages/registration.dart';
 
 class DefaultScaffold extends StatelessWidget {
   const DefaultScaffold(this.route, {super.key});
@@ -12,6 +15,18 @@ class DefaultScaffold extends StatelessWidget {
         title: Text('Login'),
         drawer: DrawerTile(title: Text('Login'), leading: Icon(Icons.person)),
         body: Login()),
+    PageModel(
+        route: 'registration',
+        title: Text('Registration'),
+        drawer: DrawerTile(
+            title: Text('Registration'), leading: Icon(Icons.person)),
+        body: Registration()),
+    PageModel(
+        route: 'question',
+        title: Text('Ask a question'),
+        drawer: DrawerTile(
+            title: Text('Ask question'), leading: Icon(Icons.person)),
+        body: Question())
   ];
 
   static Map<String, Widget Function(BuildContext)> getRoutes() {
