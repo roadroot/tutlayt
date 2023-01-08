@@ -1,5 +1,19 @@
 {
     "appName": "My Language",
     "drawerHome": "Home",
-    "drawerAsk": "Ask a question"
+    "drawerAsk": "Ask a question",
+    "username": "Username",
+    "usernameHint": "Enter your username",
+    "email": "Email",
+    "emailHint": "Enter your email",
+    "password": "Password",
+    "passwordHint": "Enter your password",
+    "phone": "Phone",
+    "signup": "Signup",
+    "alreadyHaveAccount": "You already have an account ?",
+    "dontHaveAccount": "Do not have an account yet ?",
+    "login": "Login",
+    "forgotPassword": "Forgot password ?",
+    "resetPassword": "Reset it",
+    "acceptUserAgreement": "By checking this box, you agree to our terms of service, privacy policy and cookie policy"
 }

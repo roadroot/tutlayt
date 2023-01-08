@@ -1,5 +1,19 @@
 {
     "appName": "Ma langue",
     "drawerHome": "Acceuil",
-    "drawerAsk": "Poser une question"
+    "drawerAsk": "Poser une question",
+    "username": "Nom d'utilisateur",
+    "usernameHint": "Entrer votre nom d'utilisateur",
+    "email": "Adresse électronique",
+    "emailHint": "Entrer votre adresse électronique",
+    "password": "Mot de passe",
+    "passwordHint": "Entrer votre mot de passse",
+    "phone": "Numéro de téléphone",
+    "signup": "S'enregistrer",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "dontHaveAccount": "Vous n'avez pas encore de compte ?",
+    "login": "Se connecter",
+    "forgotPassword": "Mot de passe oublié ?",
+    "resetPassword": "Réinitialisez le",
+    "acceptUserAgreement": "En cochant cette case, vous acceptez nos conditions d'utilisation, notre politique de confidentialité et notre politique en matière de cookies"
 }

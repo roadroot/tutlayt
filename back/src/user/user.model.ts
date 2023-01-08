@@ -15,8 +15,8 @@ export class UserDTO {
   @Field()
   phone: string;
 
-  @Field()
-  picture: string;
+  @Field({ nullable: true })
+  picture?: string;
 
   @Field(() => [QuestionDTO], { nullable: true })
   questions?: QuestionDTO[];

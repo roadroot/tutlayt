@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tutlayt/configuration/config.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -7,7 +9,7 @@ class Login extends StatelessWidget {
     return Center(
       child: Form(
         child: SizedBox(
-          width: 350, // TODO place this in a yaml file
+          width: Config.loginPanelWidth,
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
@@ -15,47 +17,48 @@ class Login extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: TextFormField(
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        label: Text('Username'), // TODO i18n
-                        prefixIcon: Icon(Icons.person)),
+                    decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        label: Text(AppLocalizations.of(context)!.username),
+                        prefixIcon: const Icon(Icons.person)),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: TextFormField(
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        label: Text('Password'), // TODO i18n
-                        prefixIcon: Icon(Icons.lock)),
+                    decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        label: Text(AppLocalizations.of(context)!.password),
+                        prefixIcon: const Icon(Icons.lock)),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 30),
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 15),
                   child: ElevatedButton(
                     style: const ButtonStyle(
                         visualDensity: VisualDensity.standard),
                     onPressed: () => null,
-                    child: const Text('Login'), // TODO i18n
+                    child: Text(AppLocalizations.of(context)!.login),
                   ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("You don't yet have an account?"), // TODO i18n
+                    Text(AppLocalizations.of(context)!.dontHaveAccount),
                     TextButton(
                         onPressed: () => Navigator.pushReplacementNamed(
                             context, 'registration'),
-                        child: const Text('Sign Up')) // TODO i18n
+                        child: Text(AppLocalizations.of(context)!.signup))
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Forgot your password?"), // TODO i18n
+                    Text(AppLocalizations.of(context)!.forgotPassword),
                     TextButton(
                         onPressed: () => null,
-                        child: const Text('Reset it')) // TODO i18n
+                        child:
+                            Text(AppLocalizations.of(context)!.resetPassword))
                   ],
                 ),
               ]),

@@ -14,7 +14,7 @@ type User {
   username: String!
   email: String!
   phone: String!
-  picture: String!
+  picture: String
   questions: [Question!]!
 }
 

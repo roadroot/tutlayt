@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tutlayt/configuration/config.dart';
+import 'package:tutlayt/graphql/graphql.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Registration extends StatelessWidget {
   const Registration({super.key});
@@ -8,7 +11,7 @@ class Registration extends StatelessWidget {
     return Center(
         child: Form(
       child: SizedBox(
-        width: 350, // TODO place this in a yaml file
+        width: Config.loginPanelWidth,
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
@@ -16,30 +19,30 @@ class Registration extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: TextFormField(
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      label: Text('Username'), // TODO i18n
-                      prefixIcon: Icon(Icons.person)),
+                  decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      label: Text(AppLocalizations.of(context)!.username),
+                      prefixIcon: const Icon(Icons.person)),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: TextFormField(
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      label: Text('Email'), // TODO i18n
-                      hintText: 'Enter your email',
-                      prefixIcon: Icon(Icons.lock)),
+                  decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      label: Text(AppLocalizations.of(context)!.email),
+                      hintText: AppLocalizations.of(context)!.emailHint,
+                      prefixIcon: const Icon(Icons.email)),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: TextFormField(
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      label: Text('Password'), // TODO i18n
-                      hintText: 'Enter your password',
-                      prefixIcon: Icon(Icons.lock)),
+                  decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      label: Text(AppLocalizations.of(context)!.password),
+                      hintText: AppLocalizations.of(context)!.passwordHint,
+                      prefixIcon: const Icon(Icons.lock)),
                 ),
               ),
               Padding(
@@ -51,31 +54,34 @@ class Registration extends StatelessWidget {
                       value: false,
                       onChanged: (bool? value) {},
                     ),
-                    const Flexible(
+                    Flexible(
                       child: Text(
-                        'By checking this box, you agree to our terms of service, privacy policy and cookie policy',
+                        AppLocalizations.of(context)!.acceptUserAgreement,
                       ),
-                    ), // TODO i18n
+                    ),
                   ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 30),
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 15),
                 child: ElevatedButton(
                   style:
                       const ButtonStyle(visualDensity: VisualDensity.standard),
-                  onPressed: () => null, 
-                  child: const Text('Signup'), // TODO i18n
+                  onPressed: () async {
+                    print(await ApiClient().createUser(
+                        username: 'celine', email: 'djeddi', phone: '0777411'));
+                  },
+                  child: Text(AppLocalizations.of(context)!.signup),
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("You already have an account?"), // TODO i18n
+                  Text(AppLocalizations.of(context)!.alreadyHaveAccount),
                   TextButton(
                       onPressed: () =>
-                          Navigator.pushReplacementNamed(context, 'login'),// TODO
-                      child: const Text('Login')) // TODO i18n
+                          Navigator.pushReplacementNamed(context, 'login'),
+                      child: Text(AppLocalizations.of(context)!.login))
                 ],
               ),
             ]),
