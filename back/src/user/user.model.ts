@@ -12,8 +12,8 @@ export class UserDTO {
   @Field()
   email: string;
 
-  @Field()
-  phone: string;
+  @Field({ nullable: true })
+  phone?: string;
 
   @Field({ nullable: true })
   picture?: string;

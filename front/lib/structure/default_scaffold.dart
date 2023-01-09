@@ -8,16 +8,17 @@ class DefaultScaffold extends StatelessWidget {
   const DefaultScaffold(this.route, {super.key});
 
   final String route;
-  static const List<PageModel> pages = [
+  static List<PageModel> pages = [
     PageModel(
         route: 'login',
-        title: Text('Login'),
-        drawer: DrawerTile(title: Text('Login'), leading: Icon(Icons.person)),
+        title: const Text('Login'),
+        drawer:
+            const DrawerTile(title: Text('Login'), leading: Icon(Icons.person)),
         body: Login()),
     PageModel(
         route: 'registration',
-        title: Text('Registration'),
-        drawer: DrawerTile(
+        title: const Text('Registration'),
+        drawer: const DrawerTile(
             title: Text('Registration'), leading: Icon(Icons.person)),
         body: Registration()),
   ];
@@ -34,27 +35,28 @@ class DefaultScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     PageModel page = getPage(route);
-    return Hero(
-      tag: '',
-      child: Scaffold(
-        appBar: AppBar(
-          title: page.title,
-        ),
-        body: page.body,
-        drawer: Drawer(
-            child: ListView(
-          children: pages
-              .map((page) => ListTile(
-                    title: page.drawer.title,
-                    leading: page.drawer.leading,
-                    trailing: page.drawer.trailing,
-                    selected: route == page.route,
-                    onTap: (() =>
-                        Navigator.pushReplacementNamed(context, page.route)),
-                  ))
-              .toList(),
-        )),
+    return Scaffold(
+      appBar: AppBar(
+        title: page.title,
       ),
+      body: page.body,
+      drawer: Drawer(
+          child: ListView(
+        children: pages
+            .map((page) => ListTile(
+                  title: page.drawer.title,
+                  leading: page.drawer.leading,
+                  trailing: page.drawer.trailing,
+                  selected: route == page.route,
+                  onTap: () => Navigator.pushReplacement(
+                    context,
+                    PageRouteBuilder(
+                        pageBuilder: (context, animation, animation2) =>
+                            DefaultScaffold(page.route)),
+                  ),
+                ))
+            .toList(),
+      )),
     );
   }
 }

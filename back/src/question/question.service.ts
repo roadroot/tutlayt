@@ -1,4 +1,4 @@
-import { QuestionDataDTO } from './question-data.model';
+import { QuestionDataDTO } from './question_data.model';
 import { PrismaService } from './../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { QuestionDTO } from './question.model';
@@ -25,7 +25,9 @@ export class QuestionService {
     });
   }
 
-  async createQuestion(data: QuestionDataDTO): Promise<QuestionDTO> {
+  async createQuestion(
+    data: QuestionDataDTO & { userId: number },
+  ): Promise<QuestionDTO> {
     return await this.prisma.question.create({
       data,
     });

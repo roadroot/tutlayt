@@ -1,4 +1,4 @@
-import { QuestionDataDTO } from './question-data.model';
+import { QuestionDataDTO } from './question_data.model';
 import { UserDTO } from 'src/user/user.model';
 import { UserService } from './../user/user.service';
 import { QuestionService } from './question.service';
@@ -11,6 +11,9 @@ import {
   ResolveField,
   Mutation,
 } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/strategy/jwt/jwt.guard';
+import { CurrentUser } from 'src/auth/util/current_user.util';
 
 @Resolver(() => QuestionDTO)
 export default class QuestionResolver {
@@ -19,11 +22,13 @@ export default class QuestionResolver {
     private readonly user: UserService,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Query(() => QuestionDTO, { name: 'question' })
   async getQuestion(@Args('id', { type: () => Int }) id: number) {
     return await this.question.getQuestion({ id });
   }
 
+  @UseGuards(JwtAuthGuard)
   @ResolveField('user', () => UserDTO)
   async getUser(parent: QuestionDTO): Promise<UserDTO> {
     return (
@@ -34,10 +39,12 @@ export default class QuestionResolver {
     );
   }
 
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => QuestionDTO)
   async createQuestion(
     @Args('data', { type: () => QuestionDataDTO }) data: QuestionDataDTO,
+    @CurrentUser() user: UserDTO,
   ): Promise<QuestionDTO> {
-    return await this.question.createQuestion(data);
+    return await this.question.createQuestion({ userId: user.id, ...data });
   }
 }

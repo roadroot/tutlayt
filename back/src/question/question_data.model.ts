@@ -1,4 +1,4 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 
 @InputType('QuestionData')
 export class QuestionDataDTO {
@@ -7,7 +7,4 @@ export class QuestionDataDTO {
 
   @Field()
   body: string;
-
-  @Field(() => Int)
-  userId: number;
 }

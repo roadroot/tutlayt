@@ -13,7 +13,7 @@ type User {
   id: Int!
   username: String!
   email: String!
-  phone: String!
+  phone: String
   picture: String
   questions: [Question!]!
 }
@@ -24,18 +24,24 @@ type Query {
 }
 
 type Mutation {
-  createUser(data: UserData!): User!
+  login(data: LoginParam!): String!
+  register(data: UserData!): String!
   createQuestion(data: QuestionData!): Question!
+}
+
+input LoginParam {
+  username: String!
+  password: String!
 }
 
 input UserData {
   username: String!
   email: String!
-  phone: String!
+  password: String!
+  phone: String
 }
 
 input QuestionData {
   title: String!
   body: String!
-  userId: Int!
 }

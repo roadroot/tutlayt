@@ -15,5 +15,15 @@
     "login": "Se connecter",
     "forgotPassword": "Mot de passe oublié ?",
     "resetPassword": "Réinitialisez le",
-    "acceptUserAgreement": "En cochant cette case, vous acceptez nos conditions d'utilisation, notre politique de confidentialité et notre politique en matière de cookies"
+    "acceptUserAgreement": "En cochant cette case, vous acceptez nos conditions d'utilisation, notre politique de confidentialité et notre politique en matière de cookies",
+    "incorrectPasswordFormat": "Format incorrect (exemple: hmimi@tutlayt.iw)",
+    "weakPasswordError": "Faible mot de passe, essayez d'ajouter des caractères spéciaux",
+    "shortPasswordError": "Mot de passe trop court",
+    "shortUsernameError": "Nom d'utilisateur trop court",
+    "longUsernameError": "Nom d'utilisateur trop long",
+    "incorrectUsernameFormat": "Que les caractères alphanumeriques et _ sont authorisés (exemple: massa_tiziri)",
+    "connectionError": "Connxion échouée",
+    "signupError": "inscription échouée"
+
+
 }

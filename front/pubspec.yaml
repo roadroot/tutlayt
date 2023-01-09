@@ -41,6 +41,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   graphql_flutter: ^5.1.1
   flutter_dotenv: ^5.0.2
+  jwt_decoder: ^2.0.1
+  faker: ^2.1.0
 
 dev_dependencies:
   flutter_test:

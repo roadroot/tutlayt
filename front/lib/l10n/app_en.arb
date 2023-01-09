@@ -15,5 +15,13 @@
     "login": "Login",
     "forgotPassword": "Forgot password ?",
     "resetPassword": "Reset it",
-    "acceptUserAgreement": "By checking this box, you agree to our terms of service, privacy policy and cookie policy"
+    "acceptUserAgreement": "By checking this box, you agree to our terms of service, privacy policy and cookie policy",
+    "incorrectPasswordFormat": "Wrong format (example: mulu@tutlayt.iw)",
+    "weakPasswordError": "Password too weak, try adding special caracters",
+    "shortPasswordError": "Password too short",
+    "shortUsernameError": "Username too short",
+    "longUsernameError": "Username too short",
+    "incorrectUsernameFormat": "Only alphanumeric and _ allowed (example: lalla_wezna)",
+    "connectionError": "Connection failed",
+    "signupError": "Could not sign up"
 }

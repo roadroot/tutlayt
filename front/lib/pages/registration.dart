@@ -1,15 +1,27 @@
+import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:tutlayt/configuration/config.dart';
-import 'package:tutlayt/graphql/graphql.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:tutlayt/graphql/graphql.dart';
+import 'package:tutlayt/helper/message.dart';
+import 'package:tutlayt/helper/util.dart';
+import 'package:tutlayt/structure/default_scaffold.dart';
 
 class Registration extends StatelessWidget {
-  const Registration({super.key});
+  Registration({super.key});
+  final GlobalKey<FormState> _form = GlobalKey(debugLabel: 'registrationForm');
+  final TextEditingController _username =
+      TextEditingController(text: faker.internet.userName());
+  final TextEditingController _password =
+      TextEditingController(text: faker.internet.password());
+  final TextEditingController _email =
+      TextEditingController(text: faker.internet.email());
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, [bool mounted = true]) {
     return Center(
         child: Form(
+      key: _form,
       child: SizedBox(
         width: Config.loginPanelWidth,
         child: Column(
@@ -19,6 +31,16 @@ class Registration extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: TextFormField(
+                  controller: _username,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) => value == null || value.length < 6
+                      ? AppLocalizations.of(context)!.shortUsernameError
+                      : value.length > 30
+                          ? AppLocalizations.of(context)!.longUsernameError
+                          : Regex.username.hasMatch(value)
+                              ? null
+                              : AppLocalizations.of(context)!
+                                  .incorrectUsernameFormat,
                   decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       label: Text(AppLocalizations.of(context)!.username),
@@ -28,6 +50,11 @@ class Registration extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: TextFormField(
+                  controller: _email,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) => Regex.email.hasMatch(value)
+                      ? null
+                      : AppLocalizations.of(context)!.incorrectPasswordFormat,
                   decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       label: Text(AppLocalizations.of(context)!.email),
@@ -38,6 +65,13 @@ class Registration extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: TextFormField(
+                  controller: _password,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) => value == null || value.length < 8
+                      ? AppLocalizations.of(context)!.shortPasswordError
+                      : Util.getStrength(value) == Strength.weak
+                          ? AppLocalizations.of(context)!.weakPasswordError
+                          : null,
                   decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       label: Text(AppLocalizations.of(context)!.password),
@@ -68,8 +102,19 @@ class Registration extends StatelessWidget {
                   style:
                       const ButtonStyle(visualDensity: VisualDensity.standard),
                   onPressed: () async {
-                    print(await ApiClient().createUser(
-                        username: 'celine', email: 'djeddi', phone: '0777411'));
+                    if (_form.currentState!.validate()) {
+                      User? user = await ApiClient().createUser(
+                          username: _username.text,
+                          email: _email.text,
+                          password: _password.text);
+
+                      if (mounted && user == null) {
+                        Message.error.show(
+                            context, AppLocalizations.of(context)!.signupError);
+                      }
+
+                      // TODO next?
+                    }
                   },
                   child: Text(AppLocalizations.of(context)!.signup),
                 ),
@@ -79,8 +124,12 @@ class Registration extends StatelessWidget {
                 children: [
                   Text(AppLocalizations.of(context)!.alreadyHaveAccount),
                   TextButton(
-                      onPressed: () =>
-                          Navigator.pushReplacementNamed(context, 'login'),
+                      onPressed: () => Navigator.pushReplacement(
+                            context,
+                            PageRouteBuilder(
+                                pageBuilder: (context, animation, animation2) =>
+                                    const DefaultScaffold('login')),
+                          ),
                       child: Text(AppLocalizations.of(context)!.login))
                 ],
               ),
