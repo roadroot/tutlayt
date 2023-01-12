@@ -67,6 +67,9 @@ class Registration extends StatelessWidget {
                 child: TextFormField(
                   controller: _password,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
+                  obscureText: true,
+                  enableSuggestions: false,
+                  autocorrect: false,
                   validator: (value) => value == null || value.length < 8
                       ? AppLocalizations.of(context)!.shortPasswordError
                       : Util.getStrength(value) == Strength.weak

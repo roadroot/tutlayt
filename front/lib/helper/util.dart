@@ -1,7 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:tutlayt/graphql/graphql.dart';
 
 abstract class Util {
   static const List<String> _blackList = ['azerty', '123', 'qwerty'];
@@ -49,6 +50,7 @@ abstract class Util {
 
 class SecuredStore {
   static const String _tokenEntry = 'token';
+  static const String _refreshTokenEntry = 'refreshToken';
   static final SecuredStore _singleton = SecuredStore._internal();
 
   final _storage = const FlutterSecureStorage();
@@ -61,8 +63,18 @@ class SecuredStore {
     return await _storage.read(key: _tokenEntry);
   }
 
-  Future<void> setToken(String token) async {
-    return await _storage.write(key: _tokenEntry, value: token);
+  Future<String?> get jwtRefreshToken async {
+    return await _storage.read(key: _refreshTokenEntry);
+  }
+
+  Future<void> setToken(String? token, String? refreshToken) async {
+    await _storage.write(key: _tokenEntry, value: token);
+    await _storage.write(key: _refreshTokenEntry, value: refreshToken);
+  }
+
+  Future<User?> get user async {
+    final token = await jwtToken;
+    return token == null ? null : User.from(JwtDecoder.decode(token));
   }
 
   SecuredStore._internal();

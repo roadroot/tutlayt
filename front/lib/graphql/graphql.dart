@@ -22,30 +22,37 @@ class ApiClient {
           ),
         );
 
-  static const String _createUserMutation =
-      """
+  static const String _registerMutation = """
     mutation(\$username: String!, \$email: String!, \$password: String!) {
       register(data: {
         username: \$username
         email: \$email
         password: \$password
       }) {
-        id
-        username
-        email
-        phone
-        picture
+        token
+        refreshToken
       }
     }
   """;
 
-  static const String _loginMutation =
-      """
+  static const String _loginMutation = """
     mutation(\$username: String!, \$password: String!) {
       login(data: {
         username: \$username
         password: \$password
-      })
+      }) {
+        token
+        refreshToken
+      }
+    }
+  """;
+
+  static const String _refreshMutation = """
+    mutation(\$refreshToken: String!) {
+      refresh(data: \$refreshToken) {
+        token
+        refreshToken
+      }
     }
   """;
 
@@ -55,10 +62,11 @@ class ApiClient {
       required String password}) async {
     client.value.cache.store.reset();
     QueryResult<User?> result = await client.value.mutate(MutationOptions(
-      document: gql(_createUserMutation),
+      document: gql(_registerMutation),
       variables: {'username': username, 'email': email, 'password': password},
       parserFn: (data) {
-        Map<String, dynamic> user = JwtDecoder.decode(data['register']);
+        Map<String, dynamic> user =
+            JwtDecoder.decode(data['register']?['token']);
         return User(
             id: user['id'],
             username: user['username'],
@@ -67,17 +75,20 @@ class ApiClient {
             picture: user['picture']);
       },
     ));
-    await SecuredStore().setToken(result.data?['register']);
+    await SecuredStore().setToken(result.data?['register']?['token'],
+        result.data?['register']?['refreshToken']);
     return result.parsedData;
   }
 
   Future<User?> login(
       {required String username, required String password}) async {
+    client.value.cache.store.reset();
     QueryResult<User?> result = await client.value.mutate(MutationOptions(
       document: gql(_loginMutation),
       variables: {'username': username, 'password': password},
       parserFn: (data) {
-        Map<String, dynamic> user = JwtDecoder.decode(data['login']);
+        Map<String, dynamic> user =
+            JwtDecoder.decode(data['register']?['token']);
         return User(
             id: user['id'],
             username: user['username'],
@@ -86,7 +97,28 @@ class ApiClient {
             picture: user['picture']);
       },
     ));
-    await SecuredStore().setToken(result.data?['login']);
+    await SecuredStore().setToken(result.data?['register']?['token'],
+        result.data?['register']?['refreshToken']);
+    return result.parsedData;
+  }
+
+  Future<User?> refresh(String refreshToken) async {
+    client.value.cache.store.reset();
+    QueryResult<User?> result = await client.value.mutate(MutationOptions(
+      document: gql(_refreshMutation),
+      variables: {'refreshToken': refreshToken},
+      parserFn: (data) {
+        Map<String, dynamic> user = JwtDecoder.decode(data['refresh']['token']);
+        return User(
+            id: user['id'],
+            username: user['username'],
+            email: user['email'],
+            phone: user['phone'],
+            picture: user['picture']);
+      },
+    ));
+    await SecuredStore().setToken(result.data?['refresh']?['token'],
+        result.data?['refresh']?['refreshToken']);
     return result.parsedData;
   }
 }
@@ -104,4 +136,10 @@ class User {
       required this.email,
       required this.phone,
       this.picture});
+
+  static User from(Map<String, dynamic> data) => User(
+      id: data['id'],
+      username: data['username'],
+      email: data['email'],
+      phone: data['phone']);
 }

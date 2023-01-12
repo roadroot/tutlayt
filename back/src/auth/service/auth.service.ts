@@ -6,6 +6,7 @@ import { Args, Mutation } from '@nestjs/graphql';
 import { LoginParam } from '../model/login.param';
 import { UserDTO } from 'src/user/user.model';
 import { UserDataDTO } from 'src/user/user_data.model';
+import { Token } from '../model/token.model';
 
 @Injectable()
 export class AuthService {
@@ -41,13 +42,35 @@ export class AuthService {
     return await this.jwt.signAsync(user);
   }
 
-  @Mutation(() => String)
+  @Mutation(() => Token)
   async register(
     @Args('data', { type: () => UserDataDTO }) userData: UserDataDTO,
-  ): Promise<string> {
+  ): Promise<Token> {
     const { password, ...data } = userData;
     const user = await this.user.createUser(data);
     await this.cred.generatePassword(user.id, password);
-    return await this.jwt.signAsync(user);
+    return {
+      token: await this.jwt.signAsync(user),
+      refreshToken: await this.jwt.signAsync(user, {
+        secret: process.env.JWT_REFRESH_TOKEN_SECRET_KEY,
+        expiresIn: process.env.JWT_REFRESH_TOKEN_LIFE_SPAN,
+      }),
+    };
+  }
+
+  @Mutation(() => Token)
+  async refresh(
+    @Args('data', { type: () => String }) refreshToken: string,
+  ): Promise<Token> {
+    const user: UserDTO = await this.jwt.verifyAsync(refreshToken, {
+      secret: process.env.JWT_REFRESH_TOKEN_SECRET_KEY,
+    });
+    return {
+      token: await this.jwt.signAsync(user),
+      refreshToken: await this.jwt.signAsync(user, {
+        secret: process.env.JWT_REFRESH_TOKEN_SECRET_KEY,
+        expiresIn: process.env.JWT_REFRESH_TOKEN_LIFE_SPAN,
+      }),
+    };
   }
 }

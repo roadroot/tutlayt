@@ -23,7 +23,6 @@
     "longUsernameError": "Nom d'utilisateur trop long",
     "incorrectUsernameFormat": "Que les caractères alphanumeriques et _ sont authorisés (exemple: massa_tiziri)",
     "connectionError": "Connxion échouée",
-    "signupError": "inscription échouée"
-
-
+    "signupError": "inscription échouée",
+    "loading": "Chargement..."
 }

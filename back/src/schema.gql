@@ -18,6 +18,11 @@ type User {
   questions: [Question!]!
 }
 
+type Token {
+  token: String!
+  refreshToken: String!
+}
+
 type Query {
   user(id: Int!): User!
   question(id: Int!): Question!
@@ -25,7 +30,8 @@ type Query {
 
 type Mutation {
   login(data: LoginParam!): String!
-  register(data: UserData!): String!
+  register(data: UserData!): Token!
+  refresh(data: String!): Token!
   createQuestion(data: QuestionData!): Question!
 }
 

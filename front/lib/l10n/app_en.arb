@@ -23,5 +23,6 @@
     "longUsernameError": "Username too short",
     "incorrectUsernameFormat": "Only alphanumeric and _ allowed (example: lalla_wezna)",
     "connectionError": "Connection failed",
-    "signupError": "Could not sign up"
+    "signupError": "Could not sign up",
+    "loading": "Loading..."
 }
