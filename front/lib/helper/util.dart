@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+
 abstract class Util {
   static const List<String> _blackList = ['azerty', '123', 'qwerty'];
 
@@ -42,6 +45,27 @@ abstract class Util {
     int distinctChars = chars.toSet().length;
     return pow(score * distinctChars, size);
   }
+}
+
+class SecuredStore {
+  static const String _tokenEntry = 'token';
+  static final SecuredStore _singleton = SecuredStore._internal();
+
+  final _storage = const FlutterSecureStorage();
+
+  factory SecuredStore() {
+    return _singleton;
+  }
+
+  Future<String?> get jwtToken async {
+    return await _storage.read(key: _tokenEntry);
+  }
+
+  Future<void> setToken(String token) async {
+    return await _storage.write(key: _tokenEntry, value: token);
+  }
+
+  SecuredStore._internal();
 }
 
 enum Strength {

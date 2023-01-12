@@ -103,7 +103,7 @@ class Registration extends StatelessWidget {
                       const ButtonStyle(visualDensity: VisualDensity.standard),
                   onPressed: () async {
                     if (_form.currentState!.validate()) {
-                      User? user = await ApiClient().createUser(
+                      User? user = await ApiClient().register(
                           username: _username.text,
                           email: _email.text,
                           password: _password.text);
