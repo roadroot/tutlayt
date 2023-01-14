@@ -5,10 +5,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tutlayt/graphql/graphql.dart';
 import 'package:tutlayt/helper/message.dart';
 import 'package:tutlayt/helper/util.dart';
+import 'package:tutlayt/structure/routes.dart';
+import 'package:tutlayt/widget/controlled_check_box.dart';
+import 'package:tutlayt/widget/password_field.dart';
 import 'package:tutlayt/structure/default_scaffold.dart';
 
-class Registration extends StatelessWidget {
-  Registration({super.key});
+class Register extends StatelessWidget {
+  Register({super.key});
   final GlobalKey<FormState> _form = GlobalKey(debugLabel: 'registrationForm');
   final TextEditingController _username =
       TextEditingController(text: faker.internet.userName());
@@ -64,22 +67,15 @@ class Registration extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: TextFormField(
+                child: PasswordField(
                   controller: _password,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  obscureText: true,
-                  enableSuggestions: false,
-                  autocorrect: false,
+                  title: AppLocalizations.of(context)!.password,
+                  hintText: AppLocalizations.of(context)!.passwordHint,
                   validator: (value) => value == null || value.length < 8
                       ? AppLocalizations.of(context)!.shortPasswordError
                       : Util.getStrength(value) == Strength.weak
                           ? AppLocalizations.of(context)!.weakPasswordError
                           : null,
-                  decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      label: Text(AppLocalizations.of(context)!.password),
-                      hintText: AppLocalizations.of(context)!.passwordHint,
-                      prefixIcon: const Icon(Icons.lock)),
                 ),
               ),
               Padding(
@@ -87,9 +83,8 @@ class Registration extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Checkbox(
-                      value: false,
-                      onChanged: (bool? value) {},
+                    ControlledCheckBox(
+                      controller: BoolController(),
                     ),
                     Flexible(
                       child: Text(
@@ -131,7 +126,8 @@ class Registration extends StatelessWidget {
                             context,
                             PageRouteBuilder(
                                 pageBuilder: (context, animation, animation2) =>
-                                    const DefaultScaffold('login')),
+                                    const DefaultScaffold(
+                                        RouteUtils.loginRoute)),
                           ),
                       child: Text(AppLocalizations.of(context)!.login))
                 ],

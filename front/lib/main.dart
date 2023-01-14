@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:tutlayt/graphql/graphql.dart';
 import 'package:tutlayt/structure/default_scaffold.dart';
+import 'package:tutlayt/structure/routes.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.green,
         ),
-        home: const DefaultScaffold('login'),
+        initialRoute: RouteUtils.homeRoute,
         routes: DefaultScaffold.getRoutes(),
       ),
     );

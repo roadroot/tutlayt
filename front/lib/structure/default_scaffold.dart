@@ -1,37 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:tutlayt/helper/util.dart';
-import 'package:tutlayt/pages/login.dart';
 import 'package:tutlayt/pagination/page.model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import '../pages/registration.dart';
+import 'package:tutlayt/structure/routes.dart';
 
 class DefaultScaffold extends StatelessWidget {
   const DefaultScaffold(this.route, {super.key});
 
   final String route;
-  static List<PageModel> pages = [
-    PageModel(
-        route: 'login',
-        title: const Text('Login'),
-        drawer:
-            const DrawerTile(title: Text('Login'), leading: Icon(Icons.person)),
-        body: Login()),
-    PageModel(
-        route: 'registration',
-        title: const Text('Registration'),
-        drawer: const DrawerTile(
-            title: Text('Registration'), leading: Icon(Icons.person)),
-        body: Registration()),
-  ];
 
   static Map<String, Widget Function(BuildContext)> getRoutes() {
-    return Map.fromEntries(pages.map((page) =>
+    return Map.fromEntries(RouteUtils.pages.map((page) =>
         MapEntry(page.route, (context) => DefaultScaffold(page.route))));
   }
 
   PageModel getPage(String route) {
-    return pages.firstWhere((page) => page.route == route);
+    return RouteUtils.pages.firstWhere((page) => page.route == route);
   }
 
   @override
@@ -45,7 +29,7 @@ class DefaultScaffold extends StatelessWidget {
       drawer: FutureBuilder(
           future: SecuredStore().user,
           builder: (context, user) {
-            final widgets = pages
+            final widgets = RouteUtils.pages
                 .map<Widget>((page) => ListTile(
                       title: page.drawer.title,
                       leading: page.drawer.leading,

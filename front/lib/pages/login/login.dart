@@ -3,6 +3,8 @@ import 'package:tutlayt/configuration/config.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tutlayt/graphql/graphql.dart';
 import 'package:tutlayt/helper/message.dart';
+import 'package:tutlayt/structure/routes.dart';
+import 'package:tutlayt/widget/password_field.dart';
 import 'package:tutlayt/structure/default_scaffold.dart';
 
 class Login extends StatelessWidget {
@@ -35,15 +37,9 @@ class Login extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10),
-                  child: TextFormField(
+                  child: PasswordField(
                     controller: _password,
-                    obscureText: true,
-                    enableSuggestions: false,
-                    autocorrect: false,
-                    decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        label: Text(AppLocalizations.of(context)!.password),
-                        prefixIcon: const Icon(Icons.lock)),
+                    title: AppLocalizations.of(context)!.password,
                   ),
                 ),
                 Padding(
@@ -71,9 +67,11 @@ class Login extends StatelessWidget {
                         onPressed: () => Navigator.pushReplacement(
                               context,
                               PageRouteBuilder(
-                                  pageBuilder: (context, animation,
-                                          animation2) =>
-                                      const DefaultScaffold('registration')),
+                                pageBuilder: (context, animation, animation2) =>
+                                    const DefaultScaffold(
+                                  RouteUtils.registerRoute,
+                                ),
+                              ),
                             ),
                         child: Text(AppLocalizations.of(context)!.signup))
                   ],
