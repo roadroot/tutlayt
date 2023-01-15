@@ -1,4 +1,4 @@
-import { UserDTO } from 'src/user/user.model';
+import { UserDTO } from 'src/user/model/user.model';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType('Question')

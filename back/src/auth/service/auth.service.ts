@@ -4,8 +4,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Args, Mutation } from '@nestjs/graphql';
 import { LoginParam } from '../model/login.param';
-import { UserDTO } from 'src/user/user.model';
-import { UserDataDTO } from 'src/user/user_data.model';
+import { UserDTO } from 'src/user/model/user.model';
+import { RegisterParam } from 'src/user/model/register.param';
 import { Token } from '../model/token.model';
 
 @Injectable()
@@ -44,7 +44,7 @@ export class AuthService {
 
   @Mutation(() => Token)
   async register(
-    @Args('data', { type: () => UserDataDTO }) userData: UserDataDTO,
+    @Args('data', { type: () => RegisterParam }) userData: RegisterParam,
   ): Promise<Token> {
     const { password, ...data } = userData;
     const user = await this.user.createUser(data);

@@ -1,4 +1,4 @@
-import { UserDTO } from 'src/user/user.model';
+import { UserDTO } from 'src/user/model/user.model';
 import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';

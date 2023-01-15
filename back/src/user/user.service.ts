@@ -1,4 +1,4 @@
-import { UserDTO } from 'src/user/user.model';
+import { UserDTO } from 'src/user/model/user.model';
 import { PrismaService } from '../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 
@@ -7,7 +7,7 @@ export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
   async getUser(
-    id: {
+    where: {
       id?: number;
       username?: string;
       email?: string;
@@ -16,15 +16,13 @@ export class UserService {
       creds: false,
       questions: false,
     },
-  ) {
-    return await this.prisma.user.findFirst({
-      include,
-      where: {
-        id: id.id,
-        username: id.username,
-        email: id.email,
-      },
-    });
+  ): Promise<UserDTO> {
+    return UserDTO.from(
+      await this.prisma.user.findFirst({
+        include: { pictures: true, ...include },
+        where,
+      }),
+    );
   }
 
   async createUser(data: {
@@ -36,5 +34,29 @@ export class UserService {
       data,
     });
     return user;
+  }
+
+  async update(
+    userId: number,
+    params: { username?: string; pictureId?: string },
+  ): Promise<UserDTO> {
+    return UserDTO.from(
+      await this.prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          username: params.username,
+          pictures: {
+            connect: {
+              id: params.pictureId,
+            },
+          },
+        },
+        include: {
+          pictures: true,
+        },
+      }),
+    );
   }
 }

@@ -1,5 +1,5 @@
 import { QuestionDataDTO } from './question_data.model';
-import { UserDTO } from 'src/user/user.model';
+import { UserDTO } from 'src/user/model/user.model';
 import { UserService } from './../user/user.service';
 import { QuestionService } from './question.service';
 import { QuestionDTO } from 'src/question/question.model';
