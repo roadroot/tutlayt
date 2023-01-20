@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:tutlayt/configuration/config.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:tutlayt/graphql/graphql.dart';
-import 'package:tutlayt/helper/message.dart';
-import 'package:tutlayt/structure/routes.dart';
+import 'package:tutlayt/services/user/user.model.dart';
+import 'package:tutlayt/services/api_service.dart';
+import 'package:tutlayt/services/util/message.dart';
+import 'package:tutlayt/pagination/route.util.dart';
 import 'package:tutlayt/widget/password_field.dart';
-import 'package:tutlayt/structure/default_scaffold.dart';
 
-class Login extends StatelessWidget {
-  Login({super.key});
+class LoginPage extends StatelessWidget {
+  LoginPage({super.key});
 
   final GlobalKey<FormState> _form = GlobalKey(debugLabel: 'registrationForm');
   final TextEditingController _username = TextEditingController();
@@ -48,7 +49,7 @@ class Login extends StatelessWidget {
                     style: const ButtonStyle(
                         visualDensity: VisualDensity.standard),
                     onPressed: () async {
-                      User? user = await ApiClient().login(
+                      User? user = await GetIt.I<ApiService>().login(
                           username: _username.text, password: _password.text);
                       if (mounted && user == null) {
                         Message.error.show(context,
@@ -64,14 +65,9 @@ class Login extends StatelessWidget {
                   children: [
                     Text(AppLocalizations.of(context)!.dontHaveAccount),
                     TextButton(
-                        onPressed: () => Navigator.pushReplacement(
+                        onPressed: () => Navigator.pushReplacementNamed(
                               context,
-                              PageRouteBuilder(
-                                pageBuilder: (context, animation, animation2) =>
-                                    const DefaultScaffold(
-                                  RouteUtils.registerRoute,
-                                ),
-                              ),
+                              RouteUtil.registerRoute,
                             ),
                         child: Text(AppLocalizations.of(context)!.signup))
                   ],
@@ -81,7 +77,7 @@ class Login extends StatelessWidget {
                   children: [
                     Text(AppLocalizations.of(context)!.forgotPassword),
                     TextButton(
-                        onPressed: () => null,
+                        onPressed: () {}, // TODO implement reset password
                         child:
                             Text(AppLocalizations.of(context)!.resetPassword))
                   ],

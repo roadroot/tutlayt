@@ -1,12 +1,12 @@
 import { QuestionDTO } from 'src/question/question.model';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { File, User } from '@prisma/client';
 import { StorageService } from 'src/storage/storage.service';
 
 @ObjectType('User')
 export class UserDTO {
-  @Field(() => Int)
-  id: number;
+  @Field()
+  id: string;
 
   @Field()
   username: string;

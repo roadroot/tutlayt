@@ -1,15 +1,15 @@
 import { UserDTO } from 'src/user/model/user.model';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType('Question')
 export class QuestionDTO {
-  @Field(() => Int)
-  id: number;
+  @Field()
+  id: string;
 
   @Field(() => UserDTO, { nullable: true })
   user?: UserDTO;
 
-  userId: number;
+  userId: string;
 
   updateDate: Date;
 

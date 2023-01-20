@@ -8,7 +8,7 @@ export class UserService {
 
   async getUser(
     where: {
-      id?: number;
+      id?: string;
       username?: string;
       email?: string;
     },
@@ -37,7 +37,7 @@ export class UserService {
   }
 
   async update(
-    userId: number,
+    userId: string,
     params: { username?: string; pictureId?: string },
   ): Promise<UserDTO> {
     return UserDTO.from(

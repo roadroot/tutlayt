@@ -2,14 +2,7 @@ import { QuestionService } from './../question/question.service';
 import { UserDTO } from 'src/user/model/user.model';
 import { UserService } from './../user/user.service';
 import { QuestionDTO } from 'src/question/question.model';
-import {
-  Query,
-  Resolver,
-  Int,
-  Args,
-  ResolveField,
-  Mutation,
-} from '@nestjs/graphql';
+import { Query, Resolver, Args, ResolveField, Mutation } from '@nestjs/graphql';
 import { UpdateUserParam } from './model/update_user.param';
 import { StorageService } from 'src/storage/storage.service';
 
@@ -22,7 +15,7 @@ export class UserResolver {
   ) {}
 
   @Query(() => UserDTO, { name: 'user' })
-  async getUser(@Args('id', { type: () => Int }) id: number): Promise<UserDTO> {
+  async getUser(@Args('id') id: string): Promise<UserDTO> {
     return await this.user.getUser({ id });
   }
 

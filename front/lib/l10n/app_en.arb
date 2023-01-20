@@ -24,5 +24,6 @@
     "incorrectUsernameFormat": "Only alphanumeric and _ allowed (example: lalla_wezna)",
     "connectionError": "Connection failed",
     "signupError": "Could not sign up",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "userNotFound": "Sorry, we couldn't find that user!"
 }

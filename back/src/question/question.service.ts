@@ -8,7 +8,7 @@ export class QuestionService {
   constructor(private readonly prisma: PrismaService) {}
 
   async getQuestion(
-    where: { id: number },
+    where: { id: string },
     include = { user: false },
   ): Promise<QuestionDTO> {
     return await this.prisma.question.findUnique({
@@ -17,7 +17,7 @@ export class QuestionService {
     });
   }
 
-  async getQuestionsForUser(userId: number): Promise<QuestionDTO[]> {
+  async getQuestionsForUser(userId: string): Promise<QuestionDTO[]> {
     return await this.prisma.question.findMany({
       where: {
         userId,
@@ -26,7 +26,7 @@ export class QuestionService {
   }
 
   async createQuestion(
-    data: QuestionDataDTO & { userId: number },
+    data: QuestionDataDTO & { userId: string },
   ): Promise<QuestionDTO> {
     return await this.prisma.question.create({
       data,
