@@ -3,14 +3,7 @@ import { UserDTO } from 'src/user/model/user.model';
 import { UserService } from './../user/user.service';
 import { QuestionService } from './question.service';
 import { QuestionDTO } from 'src/question/question.model';
-import {
-  Query,
-  Resolver,
-  Int,
-  Args,
-  ResolveField,
-  Mutation,
-} from '@nestjs/graphql';
+import { Query, Resolver, Args, ResolveField, Mutation } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/strategy/jwt/jwt.guard';
 import { CurrentUser } from 'src/auth/util/current_user.util';
@@ -24,7 +17,7 @@ export default class QuestionResolver {
 
   @UseGuards(JwtAuthGuard)
   @Query(() => QuestionDTO, { name: 'question' })
-  async getQuestion(@Args('id', { type: () => Int }) id: number) {
+  async getQuestion(@Args('id') id: string) {
     return await this.question.getQuestion({ id });
   }
 

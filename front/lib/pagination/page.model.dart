@@ -1,16 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tutlayt/pagination/default_scaffold.dart';
 
-class PageModel {
-  const PageModel(
-      {required this.route,
-      required this.title,
-      required this.drawer,
-      required this.body});
+abstract class PageModel {
+  const PageModel({
+    required this.route,
+    required this.title,
+    this.drawer,
+    Widget Function(BuildContext context, Map<String, String?> params)? builder,
+    String? routePatern,
+  })  : _builder = builder,
+        _routePatern = routePatern;
   final String route;
+  final String? _routePatern;
+  String get routePatern => _routePatern ?? '^$route\$';
   final Widget title;
-  final Widget body;
-  final DrawerTile drawer;
+  Widget get body;
+  final DrawerTile? drawer;
+  final Widget Function(BuildContext context, Map<String, String?> params)?
+      _builder;
+
+  get builder => _builder ?? defaultBuilder;
+
+  Map<String, String?> get params => const {};
+
+  Widget defaultBuilder(BuildContext context, Map<String, String?> params) {
+    return DefaultScaffold(route: route);
+  }
 }
 
 class DrawerTile {

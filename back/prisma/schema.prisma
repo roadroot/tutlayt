@@ -8,7 +8,7 @@ datasource db {
 }
 
 model User {
-  id           Int          @id @default(autoincrement())
+  id           String       @id @default(nanoid())
   username     String       @unique
   email        String       @unique
   phone        String?      @unique
@@ -20,16 +20,16 @@ model User {
 }
 
 model Credential {
-  id           Int      @id @default(autoincrement())
-  userId       Int
+  id           String   @id @default(nanoid())
+  userId       String
   password     String
   creationDate DateTime @default(now())
   user         User     @relation(fields: [userId], references: [id])
 }
 
 model Question {
-  id           Int      @id @default(autoincrement())
-  userId       Int
+  id           String   @id @default(nanoid())
+  userId       String
   updateDate   DateTime @updatedAt
   creationDate DateTime @default(now())
   title        String
@@ -43,8 +43,8 @@ model File {
   path         String    @unique
   updateDate   DateTime  @updatedAt
   creationDate DateTime  @default(now())
-  questionId   Int?
+  questionId   String?
   Question     Question? @relation(fields: [questionId], references: [id])
   User         User?     @relation(fields: [userId], references: [id])
-  userId       Int?
+  userId       String?
 }

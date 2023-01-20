@@ -49,7 +49,7 @@ export class StorageService {
   }
 
   async saveProfilePicture(
-    userId: number,
+    userId: string,
     file?: Promise<FileUpload>,
   ): Promise<File> | undefined {
     return await this.createFile(

@@ -1,17 +1,18 @@
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:tutlayt/configuration/config.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:tutlayt/graphql/graphql.dart';
-import 'package:tutlayt/helper/message.dart';
-import 'package:tutlayt/helper/util.dart';
-import 'package:tutlayt/structure/routes.dart';
+import 'package:tutlayt/services/user/user.model.dart';
+import 'package:tutlayt/services/api_service.dart';
+import 'package:tutlayt/services/util/message.dart';
+import 'package:tutlayt/services/util/util.dart';
+import 'package:tutlayt/pagination/route.util.dart';
 import 'package:tutlayt/widget/controlled_check_box.dart';
 import 'package:tutlayt/widget/password_field.dart';
-import 'package:tutlayt/structure/default_scaffold.dart';
 
-class Register extends StatelessWidget {
-  Register({super.key});
+class RegisterPage extends StatelessWidget {
+  RegisterPage({super.key});
   final GlobalKey<FormState> _form = GlobalKey(debugLabel: 'registrationForm');
   final TextEditingController _username =
       TextEditingController(text: faker.internet.userName());
@@ -101,7 +102,7 @@ class Register extends StatelessWidget {
                       const ButtonStyle(visualDensity: VisualDensity.standard),
                   onPressed: () async {
                     if (_form.currentState!.validate()) {
-                      User? user = await ApiClient().register(
+                      User? user = await GetIt.I<ApiService>().register(
                           username: _username.text,
                           email: _email.text,
                           password: _password.text);
@@ -122,13 +123,8 @@ class Register extends StatelessWidget {
                 children: [
                   Text(AppLocalizations.of(context)!.alreadyHaveAccount),
                   TextButton(
-                      onPressed: () => Navigator.pushReplacement(
-                            context,
-                            PageRouteBuilder(
-                                pageBuilder: (context, animation, animation2) =>
-                                    const DefaultScaffold(
-                                        RouteUtils.loginRoute)),
-                          ),
+                      onPressed: () => Navigator.pushReplacementNamed(
+                          context, RouteUtil.loginRoute),
                       child: Text(AppLocalizations.of(context)!.login))
                 ],
               ),

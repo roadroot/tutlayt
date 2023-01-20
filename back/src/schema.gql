@@ -3,14 +3,14 @@
 # ------------------------------------------------------
 
 type Question {
-  id: Int!
+  id: String!
   user: User!
   title: String!
   body: String!
 }
 
 type User {
-  id: Int!
+  id: String!
   username: String!
   email: String!
   phone: String
@@ -24,8 +24,8 @@ type Token {
 }
 
 type Query {
-  user(id: Int!): User!
-  question(id: Int!): Question!
+  user(id: String!): User!
+  question(id: String!): Question!
 }
 
 type Mutation {
@@ -53,7 +53,7 @@ input RegisterData {
 scalar Upload
 
 input UserUpdateData {
-  id: Int!
+  id: String!
   username: String
   image: Upload
 }

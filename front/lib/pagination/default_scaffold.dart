@@ -1,46 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:tutlayt/helper/util.dart';
+import 'package:get_it/get_it.dart';
 import 'package:tutlayt/pagination/page.model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:tutlayt/structure/routes.dart';
+import 'package:tutlayt/pagination/route.util.dart';
+import 'package:tutlayt/services/user/user.service.dart';
 
 class DefaultScaffold extends StatelessWidget {
-  const DefaultScaffold(this.route, {super.key});
+  const DefaultScaffold({this.route, this.pageModel, super.key, this.body})
+      : assert(
+            pageModel == null && route != null ||
+                pageModel != null && route == null,
+            "Must specify a pageModel or route but not both.");
 
-  final String route;
+  final Widget? body;
+  final PageModel? pageModel;
+
+  final String? route;
 
   static Map<String, Widget Function(BuildContext)> getRoutes() {
-    return Map.fromEntries(RouteUtils.pages.map((page) =>
-        MapEntry(page.route, (context) => DefaultScaffold(page.route))));
+    return Map.fromEntries(RouteUtil.pages.map((page) =>
+        MapEntry(page.route, (context) => DefaultScaffold(route: page.route))));
   }
 
   PageModel getPage(String route) {
-    return RouteUtils.pages.firstWhere((page) => page.route == route);
+    return RouteUtil.pages.firstWhere((page) => page.route == route);
   }
 
   @override
   Widget build(BuildContext context) {
-    PageModel page = getPage(route);
+    PageModel page = pageModel ?? getPage(route!);
     return Scaffold(
       appBar: AppBar(
         title: page.title,
       ),
-      body: page.body,
+      body: body ?? page.body,
       drawer: FutureBuilder(
-          future: SecuredStore().user,
+          future: GetIt.I<UserService>().user,
           builder: (context, user) {
-            final widgets = RouteUtils.pages
+            final widgets = RouteUtil.pages
+                .where((element) => element.drawer != null)
                 .map<Widget>((page) => ListTile(
-                      title: page.drawer.title,
-                      leading: page.drawer.leading,
-                      trailing: page.drawer.trailing,
+                      title: page.drawer!.title,
+                      leading: page.drawer!.leading,
+                      trailing: page.drawer!.trailing,
                       selected: route == page.route,
-                      onTap: () => Navigator.pushReplacement(
-                        context,
-                        PageRouteBuilder(
-                            pageBuilder: (context, animation, animation2) =>
-                                DefaultScaffold(page.route)),
-                      ),
+                      onTap: () =>
+                          Navigator.pushReplacementNamed(context, page.route),
                     ))
                 .toList();
             if (user.hasData) {

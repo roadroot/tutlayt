@@ -7,7 +7,7 @@ import { Credential } from '@prisma/client';
 export class CredentialService {
   constructor(private readonly prisma: PrismaService) {}
 
-  private async _getLatestCredential(userId: number): Promise<Credential> {
+  private async _getLatestCredential(userId: string): Promise<Credential> {
     return await this.prisma.credential.findFirst({
       where: {
         userId,
@@ -22,7 +22,7 @@ export class CredentialService {
     });
   }
 
-  async verifyPassword(userId: number, password: string): Promise<boolean> {
+  async verifyPassword(userId: string, password: string): Promise<boolean> {
     return await compare(
       password,
       (
@@ -32,7 +32,7 @@ export class CredentialService {
   }
 
   async generatePassword(
-    userId: number,
+    userId: string,
     password: string,
   ): Promise<Credential> {
     return await this.prisma.credential.create({

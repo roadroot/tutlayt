@@ -24,5 +24,7 @@
     "incorrectUsernameFormat": "Que les caractères alphanumeriques et _ sont authorisés (exemple: massa_tiziri)",
     "connectionError": "Connxion échouée",
     "signupError": "inscription échouée",
-    "loading": "Chargement..."
+    "loading": "Chargement...",
+    "userNotFound": "Désolé, nous n'avons pas pu trouver cet utilisateur !"
+
 }

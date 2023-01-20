@@ -1,9 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:tutlayt/graphql/graphql.dart';
-
 abstract class Util {
   static const List<String> _blackList = ['azerty', '123', 'qwerty'];
 
@@ -48,38 +44,6 @@ abstract class Util {
   }
 }
 
-class SecuredStore {
-  static const String _tokenEntry = 'token';
-  static const String _refreshTokenEntry = 'refreshToken';
-  static final SecuredStore _singleton = SecuredStore._internal();
-
-  final _storage = const FlutterSecureStorage();
-
-  factory SecuredStore() {
-    return _singleton;
-  }
-
-  Future<String?> get jwtToken async {
-    return await _storage.read(key: _tokenEntry);
-  }
-
-  Future<String?> get jwtRefreshToken async {
-    return await _storage.read(key: _refreshTokenEntry);
-  }
-
-  Future<void> setToken(String? token, String? refreshToken) async {
-    await _storage.write(key: _tokenEntry, value: token);
-    await _storage.write(key: _refreshTokenEntry, value: refreshToken);
-  }
-
-  Future<User?> get user async {
-    final token = await jwtToken;
-    return token == null ? null : User.from(JwtDecoder.decode(token));
-  }
-
-  SecuredStore._internal();
-}
-
 enum Strength {
   weak,
   medium,
@@ -106,13 +70,14 @@ enum Regex {
 
   username(r'^[a-zA-Z][a-zA-Z0-9_\.]+$'),
   password(r'.{8,32}'),
-  email(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+  email(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"),
+  id(r"[a-zA-Z0-9\-]+");
 
-  final String _value;
+  final String value;
 
   bool hasMatch(String? value) {
-    return value != null && RegExp(_value).hasMatch(value);
+    return value != null && RegExp(this.value).hasMatch(value);
   }
 
-  const Regex(this._value);
+  const Regex(this.value);
 }
