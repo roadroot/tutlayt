@@ -5,12 +5,13 @@ class User {
   final String? phone;
   final String? picture;
 
-  const User(
-      {required this.id,
-      required this.username,
-      required this.email,
-      this.phone,
-      this.picture});
+  const User({
+    required this.id,
+    required this.username,
+    required this.email,
+    this.phone,
+    this.picture,
+  });
 
   static User from(Map<String, dynamic> data) => User(
       id: data['id'],
