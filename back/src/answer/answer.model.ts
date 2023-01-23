@@ -6,7 +6,7 @@ export class AnswerDTO {
   @Field()
   id: string;
 
-  @Field(() => UserDTO, { nullable: true })
+  @Field({ nullable: true })
   user?: UserDTO;
 
   userId: string;
