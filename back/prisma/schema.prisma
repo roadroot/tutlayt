@@ -17,6 +17,7 @@ model User {
   creds        Credential[]
   questions    Question[]
   pictures     File[]
+  Answer       Answer[]
 }
 
 model Credential {
@@ -36,6 +37,20 @@ model Question {
   body         String
   files        File[]
   user         User     @relation(fields: [userId], references: [id])
+  Answer       Answer[]
+}
+
+model Answer {
+  id           String      @id @default(nanoid())
+  question     Question @relation(fields: [questionId], references: [id])
+  userId       String
+  updateDate   DateTime @updatedAt
+  creationDate DateTime @default(now())
+  title        String?
+  body         String
+  files        File[]
+  user         User     @relation(fields: [userId], references: [id])
+  questionId   String
 }
 
 model File {
@@ -47,4 +62,6 @@ model File {
   Question     Question? @relation(fields: [questionId], references: [id])
   User         User?     @relation(fields: [userId], references: [id])
   userId       String?
+  Answer       Answer?   @relation(fields: [answerId], references: [id])
+  answerId     String?
 }
