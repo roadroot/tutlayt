@@ -17,7 +17,6 @@ const myPlugin: ApolloServerPlugin = {
   // Fires whenever a GraphQL request is received from a client.
   async requestDidStart(requestContext) {
     console.log('Request started! Query:\n' + requestContext.request.query);
-    const c = requestContext.debug ?? false;
     return {
       async didEncounterErrors(requestContext) {
         console.log(
