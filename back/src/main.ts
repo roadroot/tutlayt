@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { graphqlUploadExpress } from 'graphql-upload-ts/dist/graphqlUploadExpress';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: false }); // TODO add cors
   app.use(
     graphqlUploadExpress({
       maxFieldSize: parseInt(process.env.API_UPLOADS_MAX_FILESIZE),

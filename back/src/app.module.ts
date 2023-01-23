@@ -9,6 +9,22 @@ import { QuestionModule } from './question/question.module';
 import { ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloDriver } from '@nestjs/apollo/dist/drivers';
 import { StorageModule } from './storage/storage.module';
+import { ApolloServerPlugin } from 'apollo-server-plugin-base';
+
+const myPlugin: ApolloServerPlugin = {
+  // Fires whenever a GraphQL request is received from a client.
+  async requestDidStart(requestContext) {
+    console.log('Request started! Query:\n' + requestContext.request.query);
+
+    return {
+      async didEncounterErrors(requestContext) {
+        console.log(
+          `Encountered errors! ${JSON.stringify(requestContext.errors)}`,
+        );
+      },
+    };
+  },
+};
 
 @Module({
   imports: [
@@ -16,6 +32,7 @@ import { StorageModule } from './storage/storage.module';
       driver: ApolloDriver,
       context: ({ req }) => ({ req }),
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      plugins: process.env.API_LOG_REQUESTS == 'true' ? [myPlugin] : [],
     }),
     PrismaModule,
     AuthModule,

@@ -28,10 +28,10 @@ export class AuthService {
       : null;
   }
 
-  @Mutation(() => String)
+  @Mutation(() => Token)
   async login(
     @Args('data', { type: () => LoginParam }) credentials: LoginParam,
-  ): Promise<string> {
+  ): Promise<Token> {
     const user = await this.validateUser(
       credentials.username,
       credentials.password,
@@ -39,7 +39,13 @@ export class AuthService {
     if (user === null) {
       throw new UnauthorizedException();
     }
-    return await this.jwt.signAsync(user);
+    return {
+      token: await this.jwt.signAsync(user),
+      refreshToken: await this.jwt.signAsync(user, {
+        secret: process.env.JWT_REFRESH_TOKEN_SECRET_KEY,
+        expiresIn: process.env.JWT_REFRESH_TOKEN_LIFE_SPAN,
+      }),
+    };
   }
 
   @Mutation(() => Token)

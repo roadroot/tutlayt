@@ -29,7 +29,7 @@ type Query {
 }
 
 type Mutation {
-  login(data: LoginParam!): String!
+  login(data: LoginParam!): Token!
   register(data: RegisterData!): Token!
   refresh(data: String!): Token!
   updateUser(data: UserUpdateData!): User!

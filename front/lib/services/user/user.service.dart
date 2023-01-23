@@ -19,7 +19,7 @@ class UserService {
     if (userId == null) {
       return await user;
     }
-    await Future.delayed(const Duration(seconds: 3)); // TODO: remove this
+    // await Future.delayed(const Duration(seconds: 3)); // TODO: remove this
     return await GetIt.I<ApiService>().queryUser(userId);
   }
 }

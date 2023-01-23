@@ -32,8 +32,11 @@ export class UserService {
   }): Promise<UserDTO> {
     const user = await this.prisma.user.create({
       data,
+      include: {
+        pictures: true,
+      },
     });
-    return user;
+    return UserDTO.from(user);
   }
 
   async update(

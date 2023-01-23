@@ -1,7 +1,6 @@
-import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
-import { ExtractJwt } from 'passport-jwt';
+import { ExtractJwt, Strategy } from 'passport-jwt';
 import { UserDTO } from 'src/user/model/user.model';
 
 @Injectable()

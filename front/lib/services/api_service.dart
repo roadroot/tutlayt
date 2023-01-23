@@ -101,8 +101,7 @@ class ApiService {
       document: gql(_loginMutation),
       variables: {'username': username, 'password': password},
       parserFn: (data) {
-        Map<String, dynamic> user =
-            JwtDecoder.decode(data['register']?['token']);
+        Map<String, dynamic> user = JwtDecoder.decode(data['login']?['token']);
         return User(
             id: user['id'],
             username: user['username'],
@@ -112,8 +111,8 @@ class ApiService {
       },
     ));
     await GetIt.I<SecuredStoreService>().setToken(
-        result.data?['register']?['token'],
-        result.data?['register']?['refreshToken']);
+        result.data?['login']?['token'],
+        result.data?['login']?['refreshToken']);
     return result.parsedData;
   }
 

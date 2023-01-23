@@ -9,7 +9,13 @@ class UserNotFound extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: [Text(AppLocalizations.of(context)!.userNotFound)],
+      children: [
+        Image.asset(
+          'assets/images/not-found.png',
+          width: 200,
+        ),
+        Text(AppLocalizations.of(context)!.userNotFound),
+      ],
     );
   }
 }
