@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-
+import { FileUpload, GraphQLUpload } from 'graphql-upload-ts';
 @InputType('AnswerData')
 export class AnswerDataDTO {
   @Field({nullable: true})
@@ -10,4 +10,7 @@ export class AnswerDataDTO {
 
   @Field()
   questionId: string;
+
+  @Field(() => [GraphQLUpload])
+  files: Promise<FileUpload>[];
 }

@@ -28,6 +28,7 @@ type Answer {
   user: User!
   title: String
   body: String!
+  files: [String!]!
 }
 
 type Query {
@@ -76,4 +77,5 @@ input AnswerData {
   title: String
   body: String!
   questionId: String!
+  files: [Upload!]!
 }

@@ -12,16 +12,13 @@ import { StorageModule } from './storage/storage.module';
 import { AnswerModule } from './answer/answer.module';
 import { ApolloServerPlugin } from 'apollo-server-plugin-base';
 
-
 const myPlugin: ApolloServerPlugin = {
   // Fires whenever a GraphQL request is received from a client.
   async requestDidStart(requestContext) {
     console.log('Request started! Query:\n' + requestContext.request.query);
     return {
       async didEncounterErrors(requestContext) {
-        console.log(
-          `Encountered errors! ${requestContext.errors[0]}`,
-        );
+        console.log(`Encountered errors! ${requestContext.errors}`);
       },
     };
   },

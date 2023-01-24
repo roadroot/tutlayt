@@ -66,7 +66,7 @@ export class StorageService {
   }
 
   async saveQuestionPictures(
-    questionId: number,
+    questionId: string,
     files?: Promise<FileUpload>[],
   ): Promise<File[]> | undefined {
     return await this.createFiles(
@@ -78,8 +78,21 @@ export class StorageService {
     );
   }
 
+  async saveAnswerFiles(
+    answerId: string,
+    files?: Promise<FileUpload>[],
+  ): Promise<File[]> | undefined {
+    return await this.createFiles(
+      process.env.ANSWER_STORAGE_PATH.replace(
+        '$answerId',
+        answerId.toString(),
+      ).replace('$timestamp', new Date().getTime().toString()),
+      files,
+    );
+  }
+
   async saveCommentPictures(
-    commentId: number,
+    commentId: string,
     files?: Promise<FileUpload>[],
   ): Promise<File[]> | undefined {
     return await this.createFiles(

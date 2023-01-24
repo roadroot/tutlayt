@@ -41,7 +41,7 @@ model Question {
 }
 
 model Answer {
-  id           String      @id @default(nanoid())
+  id           String   @id @default(nanoid())
   question     Question @relation(fields: [questionId], references: [id])
   userId       String
   updateDate   DateTime @updatedAt
