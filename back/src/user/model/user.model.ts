@@ -2,6 +2,7 @@ import { QuestionDTO } from 'src/question/question.model';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { File, User } from '@prisma/client';
 import { StorageService } from 'src/storage/storage.service';
+import { AnswerDTO } from 'src/answer/answer.model';
 
 @ObjectType('User')
 export class UserDTO {
@@ -22,6 +23,9 @@ export class UserDTO {
 
   @Field(() => [QuestionDTO], { nullable: true })
   questions?: QuestionDTO[];
+
+  @Field(() => [AnswerDTO], { nullable: true })
+  answers?: AnswerDTO[];
 
   updateDate: Date;
 

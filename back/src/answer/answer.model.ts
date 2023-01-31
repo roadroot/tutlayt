@@ -1,5 +1,5 @@
 import { UserDTO } from 'src/user/model/user.model';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { StorageService } from 'src/storage/storage.service';
 import { File } from '@prisma/client';
 
@@ -8,7 +8,7 @@ export class AnswerDTO {
   @Field()
   id: string;
 
-  @Field({ nullable: true })
+  @Field(() => UserDTO, { nullable: true })
   user?: UserDTO;
 
   userId: string;
@@ -17,14 +17,14 @@ export class AnswerDTO {
 
   creationDate: Date;
 
-  @Field({nullable: true})
+  @Field({ nullable: true })
   title?: string;
 
   @Field()
   body: string;
 
   @Field(() => [String])
-  files: String[];
+  files: string[];
 
   static from({
     id,
@@ -53,8 +53,7 @@ export class AnswerDTO {
       body,
       userId,
       title,
-      files: 
-        files?.map((file) => StorageService.getUrl(file))
+      files: files?.map((file) => StorageService.getUrl(file)),
     };
   }
 }

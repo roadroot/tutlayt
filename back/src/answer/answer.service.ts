@@ -51,7 +51,7 @@ export class AnswerService {
     const completeAnswer = await this.prisma.answer.update({
       data: {
         files: {
-          connect: fileUrls,
+          connect: fileUrls.map((file) => ({ id: file.id })),
         },
       },
       where: {

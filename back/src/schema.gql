@@ -9,6 +9,14 @@ type Question {
   body: String!
 }
 
+type Answer {
+  id: String!
+  user: User!
+  title: String
+  body: String!
+  files: [String!]!
+}
+
 type User {
   id: String!
   username: String!
@@ -16,19 +24,12 @@ type User {
   phone: String
   picture: String
   questions: [Question!]!
+  answers: [Answer!]!
 }
 
 type Token {
   token: String!
   refreshToken: String!
-}
-
-type Answer {
-  id: String!
-  user: User!
-  title: String
-  body: String!
-  files: [String!]!
 }
 
 type Query {
@@ -77,5 +78,5 @@ input AnswerData {
   title: String
   body: String!
   questionId: String!
-  files: [Upload!]!
+  files: [Upload!]
 }

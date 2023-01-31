@@ -4,9 +4,10 @@ import { UserResolver } from './user.resolver';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { QuestionModule } from 'src/question/question.module';
 import { StorageModule } from 'src/storage/storage.module';
+import { AnswerModule } from 'src/answer/answer.module';
 
 @Module({
-  imports: [PrismaModule, QuestionModule, StorageModule],
+  imports: [PrismaModule, QuestionModule, StorageModule, AnswerModule],
   providers: [UserService, UserResolver],
   exports: [UserService],
 })

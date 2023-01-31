@@ -6,7 +6,7 @@ import { PrismaModule } from 'src/prisma/prisma.module';
 import { StorageModule } from 'src/storage/storage.module';
 
 @Module({
-  imports: [UserModule, PrismaModule, StorageModule],
+  imports: [forwardRef(() => UserModule), PrismaModule, StorageModule],
   providers: [AnswerService, AnswerResolver],
   exports: [AnswerService],
 })
