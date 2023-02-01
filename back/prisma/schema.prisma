@@ -18,6 +18,7 @@ model User {
   questions    Question[]
   pictures     File[]
   Answer       Answer[]
+  Comment      Comment[]
 }
 
 model Credential {
@@ -53,6 +54,16 @@ model Answer {
   questionId   String
 }
 
+model Comment {
+  id           String   @id @default(nanoid())
+  userId       String
+  updateDate   DateTime @updatedAt
+  creationDate DateTime @default(now())
+  body         String
+  files        File[]
+  user         User     @relation(fields: [userId], references: [id])
+}
+
 model File {
   id           String    @id @default(cuid())
   path         String    @unique
@@ -64,4 +75,6 @@ model File {
   userId       String?
   Answer       Answer?   @relation(fields: [answerId], references: [id])
   answerId     String?
+  Comment      Comment?  @relation(fields: [commentId], references: [id])
+  commentId    String?
 }

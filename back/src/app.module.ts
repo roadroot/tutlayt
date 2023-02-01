@@ -11,6 +11,7 @@ import { ApolloDriver } from '@nestjs/apollo/dist/drivers';
 import { StorageModule } from './storage/storage.module';
 import { AnswerModule } from './answer/answer.module';
 import { ApolloServerPlugin } from 'apollo-server-plugin-base';
+import { CommentModule } from './comment/comment.module';
 
 const myPlugin: ApolloServerPlugin = {
   // Fires whenever a GraphQL request is received from a client.
@@ -38,6 +39,7 @@ const myPlugin: ApolloServerPlugin = {
     QuestionModule,
     AnswerModule,
     StorageModule,
+    CommentModule,
   ],
   providers: [CredentialService],
 })
