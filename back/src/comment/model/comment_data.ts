@@ -1,14 +1,13 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { GraphQLUpload } from 'graphql-upload-ts/dist/GraphQLUpload';
-import { FileUpload } from 'src/storage/model/file_upload';
+import { FileUpload, GraphQLUpload } from 'graphql-upload-ts';
 
-@InputType('QuestionData')
-export class QuestionData {
-  @Field({ nullable: true })
-  username?: string;
+@InputType('CommentData')
+export class CommentDataDTO {
+  @Field()
+  body: string;
 
   @Field(() => [GraphQLUpload], { nullable: true })
-  files?: Promise<FileUpload[]>;
+  files?: Promise<FileUpload>[];
 
   @Field({
     description:
@@ -17,7 +16,7 @@ export class QuestionData {
       'Forbidden if answerId is provided. ',
     nullable: true,
   })
-  questionId: string;
+  questionId?: string;
 
   @Field({
     description:
@@ -26,8 +25,5 @@ export class QuestionData {
       'Forbidden if questionId is provided. ',
     nullable: true,
   })
-  answerId: string;
-
-  @Field()
-  body: string;
+  answerId?: string;
 }

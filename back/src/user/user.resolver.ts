@@ -49,8 +49,13 @@ export class UserResolver {
     @Args('data', { type: () => UpdateUserParam }) userData: UpdateUserParam,
   ): Promise<UserDTO> {
     const { image, ...data } = userData;
-    const pictureId = (await this.storage.saveProfilePicture(data.id, image))
-      .id;
+    const pictureId = (
+      await this.storage.saveFile(
+        process.env.PROFILE_STORAGE_PATH,
+        data.id,
+        image,
+      )
+    ).id;
     return await this.user.update(data.id, {
       pictureId,
       ...data,

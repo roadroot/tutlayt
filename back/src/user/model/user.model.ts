@@ -39,7 +39,7 @@ export class UserDTO {
       phone: user.phone,
       picture:
         user.pictures.length == 0
-          ? `${process.env.SERVER_URL}/storage/tazerzit.png` // TODO very bad idea
+          ? `${process.env.SERVER_URL}/storage/${process.env.DEFAULT_PROFILE_PICTURE}` // TODO very bad idea
           : StorageService.getUrl(
               user.pictures.reduce((a, b) =>
                 a.creationDate.getTime() > b.creationDate.getTime() ? a : b,

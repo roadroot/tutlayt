@@ -10,9 +10,8 @@ export class StorageController {
 
   @Get('/:id')
   async getFile(@Res() res: Response, @Param('id') id: string) {
-    // TODO very bad idea
-    if (id === 'tazerzit.png') {
-      createReadStream('tazerzit.png').pipe(res);
+    if (id === process.env.DEFAULT_PROFILE_PICTURE) {
+      createReadStream(process.env.DEFAULT_PROFILE_PICTURE).pipe(res);
     } else {
       createReadStream((await this.storageService.getFile(id)).path).pipe(res);
     }

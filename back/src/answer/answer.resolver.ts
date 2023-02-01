@@ -3,13 +3,7 @@ import { UserDTO } from 'src/user/model/user.model';
 import { UserService } from './../user/user.service';
 import { AnswerService } from './answer.service';
 import { AnswerDTO } from 'src/answer/answer.model';
-import {
-  Query,
-  Resolver,
-  Args,
-  ResolveField,
-  Mutation,
-} from '@nestjs/graphql';
+import { Query, Resolver, Args, ResolveField, Mutation } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/strategy/jwt/jwt.guard';
 import { CurrentUser } from 'src/auth/util/current_user.util';
@@ -40,10 +34,21 @@ export default class AnswerResolver {
 
   @UseGuards(JwtAuthGuard)
   @Mutation(() => AnswerDTO)
-  async createAnswer( // TODO add current user
+  async createAnswer(
+    // TODO add current user
     @Args('data') data: AnswerDataDTO,
-    @CurrentUser() user: UserDTO
+    @CurrentUser() user: UserDTO,
   ): Promise<AnswerDTO> {
-    return await this.answer.createAnswer({...data, userId: user.id });
+    return await this.answer.createAnswer({ ...data, userId: user.id });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => AnswerDTO)
+  async delete(
+    // TODO add current user
+    @Args('answerId') id: string,
+    @CurrentUser() user: UserDTO,
+  ): Promise<AnswerDTO> {
+    return await this.answer.delete(id, user.id);
   }
 }

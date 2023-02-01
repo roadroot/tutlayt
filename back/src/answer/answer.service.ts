@@ -1,6 +1,10 @@
 import { AnswerDataDTO } from './answer_data.model';
 import { PrismaService } from './../prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { AnswerDTO } from './answer.model';
 import { StorageService } from 'src/storage/storage.service';
 
@@ -46,7 +50,11 @@ export class AnswerService {
         files: true,
       },
     });
-    const fileUrls = await this.storage.saveAnswerFiles(answer.id, files);
+    const fileUrls = await this.storage.saveFiles(
+      process.env.ANSWER_STORAGE_PATH,
+      answer.id,
+      files,
+    );
 
     const completeAnswer = await this.prisma.answer.update({
       data: {
@@ -62,5 +70,32 @@ export class AnswerService {
       },
     });
     return AnswerDTO.from(completeAnswer);
+  }
+
+  async delete(id: string, userId: string): Promise<AnswerDTO> {
+    const answer = await this.prisma.answer.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        userId: true,
+      },
+    });
+    if (!!answer) {
+      throw new NotFoundException();
+    }
+    if (answer.userId !== userId) {
+      throw new ForbiddenException();
+    }
+    return AnswerDTO.from(
+      await this.prisma.answer.delete({
+        where: {
+          id: id,
+        },
+        include: {
+          files: true,
+        },
+      }),
+    );
   }
 }

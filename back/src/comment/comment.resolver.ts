@@ -1,43 +1,43 @@
 import { CurrentUser } from 'src/auth/util/current_user.util';
-import { QuestionDataDTO } from './../question/question_data.model';
 import { UserDTO } from './../user/model/user.model';
-import { QuestionDTO } from './../question/question.model';
 import { JwtAuthGuard } from './../auth/strategy/jwt/jwt.guard';
 import { UseGuards } from '@nestjs/common';
 import { UserService } from './../user/user.service';
-import { QuestionService } from './../question/question.service';
 import { Resolver, Query, Args, ResolveField, Mutation } from '@nestjs/graphql';
+import { CommentDTO } from './model/comment.model';
+import { CommentService } from './comment.service';
+import { CommentDataDTO } from './model/comment_data';
 
-@Resolver()
+@Resolver(() => CommentDTO)
 export class CommentResolver {
   constructor(
-    private readonly question: QuestionService,
+    private readonly comment: CommentService,
     private readonly user: UserService,
   ) {}
 
   @UseGuards(JwtAuthGuard)
-  @Query(() => QuestionDTO, { name: 'question' })
-  async getQuestion(@Args('id') id: string) {
-    return await this.question.getQuestion({ id });
+  @Query(() => CommentDTO, { name: 'comment' })
+  async getQuestion(@Args('id') id: string): Promise<CommentDTO> {
+    return await this.comment.getComment({ id });
   }
 
   @UseGuards(JwtAuthGuard)
   @ResolveField('user', () => UserDTO)
-  async getUser(parent: QuestionDTO): Promise<UserDTO> {
+  async getUser(parent: CommentDTO): Promise<UserDTO> {
     return (
       parent.user ??
       (await this.user.getUser({
-        id: parent.id,
+        id: parent.userId,
       }))
     );
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation(() => QuestionDTO)
-  async createQuestion(
-    @Args('data', { type: () => QuestionDataDTO }) data: QuestionDataDTO,
+  @Mutation(() => CommentDTO)
+  async createComment(
+    @Args('data', { type: () => CommentDataDTO }) data: CommentDataDTO,
     @CurrentUser() user: UserDTO,
-  ): Promise<QuestionDTO> {
-    return await this.question.createQuestion({ userId: user.id, ...data });
+  ): Promise<CommentDTO> {
+    return await this.comment.createComment({ userId: user.id, ...data });
   }
 }

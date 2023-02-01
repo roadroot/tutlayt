@@ -5,9 +5,16 @@ import { PrismaModule } from 'src/prisma/prisma.module';
 import { QuestionModule } from 'src/question/question.module';
 import { StorageModule } from 'src/storage/storage.module';
 import { AnswerModule } from 'src/answer/answer.module';
+import { CommentModule } from 'src/comment/comment.module';
 
 @Module({
-  imports: [PrismaModule, QuestionModule, StorageModule, AnswerModule],
+  imports: [
+    PrismaModule,
+    QuestionModule,
+    StorageModule,
+    AnswerModule,
+    CommentModule,
+  ],
   providers: [UserService, UserResolver],
   exports: [UserService],
 })

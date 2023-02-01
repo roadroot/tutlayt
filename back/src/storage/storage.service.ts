@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { FileUpload } from './model/file_upload';
 import { join } from 'path';
 import { createWriteStream, existsSync } from 'fs';
 import { mkdir } from 'fs/promises';
 import { File } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { FileUpload } from 'graphql-upload-ts';
 
 @Injectable()
 export class StorageService {
@@ -48,59 +48,33 @@ export class StorageService {
     );
   }
 
-  async saveProfilePicture(
-    userId: string,
-    file?: Promise<FileUpload>,
-  ): Promise<File> | undefined {
-    return await this.createFile(
-      process.env.PROFILE_STORAGE_PATH.replace(
-        '$userId',
-        userId.toString(),
-      ).replace('$timestamp', new Date().getTime().toString()),
-      file,
-    );
-  }
-
   static getUrl(file: File): string {
     return `${process.env.SERVER_URL}/storage/${file.id}`;
   }
 
-  async saveQuestionPictures(
-    questionId: string,
+  async saveFiles(
+    template: string,
+    id: string,
     files?: Promise<FileUpload>[],
-  ): Promise<File[]> | undefined {
+  ): Promise<File[]> {
     return await this.createFiles(
-      process.env.QUESTION_STORAGE_PATH.replace(
-        '$questionId',
-        questionId.toString(),
-      ).replace('$timestamp', new Date().getTime().toString()),
+      template
+        .replace('$id', id)
+        .replace('$timestamp', new Date().getTime().toString()),
       files,
     );
   }
 
-  async saveAnswerFiles(
-    answerId: string,
-    files?: Promise<FileUpload>[],
-  ): Promise<File[]> | undefined {
-    return await this.createFiles(
-      process.env.ANSWER_STORAGE_PATH.replace(
-        '$answerId',
-        answerId.toString(),
-      ).replace('$timestamp', new Date().getTime().toString()),
-      files,
-    );
-  }
-
-  async saveCommentPictures(
-    commentId: string,
-    files?: Promise<FileUpload>[],
-  ): Promise<File[]> | undefined {
-    return await this.createFiles(
-      process.env.QUESTION_STORAGE_PATH.replace(
-        '$commentId',
-        commentId.toString(),
-      ).replace('$timestamp', new Date().getTime().toString()),
-      files,
+  async saveFile(
+    template: string,
+    id: string,
+    file?: Promise<FileUpload>,
+  ): Promise<File> {
+    return await this.createFile(
+      template
+        .replace('$id', id)
+        .replace('$timestamp', new Date().getTime().toString()),
+      file,
     );
   }
 
