@@ -45,7 +45,6 @@ export default class AnswerResolver {
   @UseGuards(JwtAuthGuard)
   @Mutation(() => AnswerDTO)
   async delete(
-    // TODO add current user
     @Args('answerId') id: string,
     @CurrentUser() user: UserDTO,
   ): Promise<AnswerDTO> {
