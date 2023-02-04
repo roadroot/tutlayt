@@ -1,6 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { GraphQLUpload } from 'graphql-upload-ts/dist/GraphQLUpload';
-import { FileUpload } from 'src/storage/model/file_upload';
+import { FileUpload, GraphQLUpload } from 'graphql-upload-ts';
 
 @InputType('UserUpdateData')
 export class UpdateUserParam {

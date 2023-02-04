@@ -27,7 +27,7 @@ export default class QuestionResolver {
     return (
       parent.user ??
       (await this.user.getUser({
-        id: parent.id,
+        id: parent.userId,
       }))
     );
   }

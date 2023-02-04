@@ -9,18 +9,17 @@ import { QuestionModule } from './question/question.module';
 import { ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloDriver } from '@nestjs/apollo/dist/drivers';
 import { StorageModule } from './storage/storage.module';
+import { AnswerModule } from './answer/answer.module';
 import { ApolloServerPlugin } from 'apollo-server-plugin-base';
+import { CommentModule } from './comment/comment.module';
 
 const myPlugin: ApolloServerPlugin = {
   // Fires whenever a GraphQL request is received from a client.
   async requestDidStart(requestContext) {
     console.log('Request started! Query:\n' + requestContext.request.query);
-
     return {
       async didEncounterErrors(requestContext) {
-        console.log(
-          `Encountered errors! ${JSON.stringify(requestContext.errors)}`,
-        );
+        console.log(`Encountered errors! ${requestContext.errors}`);
       },
     };
   },
@@ -38,7 +37,9 @@ const myPlugin: ApolloServerPlugin = {
     AuthModule,
     UserModule,
     QuestionModule,
+    AnswerModule,
     StorageModule,
+    CommentModule,
   ],
   providers: [CredentialService],
 })

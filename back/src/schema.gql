@@ -9,6 +9,14 @@ type Question {
   body: String!
 }
 
+type Answer {
+  id: String!
+  user: User!
+  title: String
+  body: String!
+  files: [String!]!
+}
+
 type User {
   id: String!
   username: String!
@@ -16,6 +24,15 @@ type User {
   phone: String
   picture: String
   questions: [Question!]!
+  answers: [Answer!]!
+  comments: [Comment!]!
+}
+
+type Comment {
+  id: String!
+  user: User!
+  body: String!
+  files: [String!]
 }
 
 type Token {
@@ -26,6 +43,8 @@ type Token {
 type Query {
   user(id: String!): User!
   question(id: String!): Question!
+  answer(id: String!): Answer!
+  comment(id: String!): Comment!
 }
 
 type Mutation {
@@ -34,6 +53,9 @@ type Mutation {
   refresh(data: String!): Token!
   updateUser(data: UserUpdateData!): User!
   createQuestion(data: QuestionData!): Question!
+  createAnswer(data: AnswerData!): Answer!
+  delete(answerId: String!): Answer!
+  createComment(data: CommentData!): Comment!
 }
 
 input LoginParam {
@@ -61,4 +83,27 @@ input UserUpdateData {
 input QuestionData {
   title: String!
   body: String!
+  files: [Upload!]
+}
+
+input AnswerData {
+  title: String
+  body: String!
+  questionId: String!
+  files: [Upload!]
+}
+
+input CommentData {
+  body: String!
+  files: [Upload!]
+
+  """
+  The question that you want to comment. Required if answerId is not provided. Forbidden if answerId is provided. 
+  """
+  questionId: String
+
+  """
+  The answer that you want to comment. Required if questionId is not provided. Forbidden if questionId is provided. 
+  """
+  answerId: String
 }

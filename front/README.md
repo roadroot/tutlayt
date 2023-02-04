@@ -1,6 +1,7 @@
-# tutlayt
+## Prerequisites
 
-A new Flutter project.
+* Have flutter installed, please follow the instructions at https://docs.flutter.dev/get-started/install
+* Have the services launched, please follow
 
 ## Getting Started
 
@@ -17,6 +18,12 @@ samples, guidance on mobile development, and a full API reference.
 
 
 ## Setup
+### Env file
+Create a `.env` file respecting the template in `.env.template`. You can run this command to make a copy of template to the `.env` file: 
+```bash
+cp .env.template .env
+```
+
 
 ### Cors
 Consider installing  *flutter_cors* to enable or disable CORS.

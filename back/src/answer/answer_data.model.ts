@@ -1,13 +1,15 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { FileUpload, GraphQLUpload } from 'graphql-upload-ts';
-
-@InputType('QuestionData')
-export class QuestionDataDTO {
-  @Field()
-  title: string;
+@InputType('AnswerData')
+export class AnswerDataDTO {
+  @Field({ nullable: true })
+  title?: string;
 
   @Field()
   body: string;
+
+  @Field()
+  questionId: string;
 
   @Field(() => [GraphQLUpload], { nullable: true })
   files?: Promise<FileUpload>[];
