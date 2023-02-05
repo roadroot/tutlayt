@@ -1,6 +1,6 @@
 # Tutlayt
 
-This is a cultrual project the *Amaziγ* (*ⵜⴰⵎⴰⵣⵉⵖⵜ*) people and language.
+This is a cultrual project about the [*Amaziɣ* (*ⴰⵎⴰⵣⵉⵖ*)](https://en.wiktionary.org/wiki/Amazigh) people and language.
 
 ## Prerequisites
 
@@ -30,8 +30,8 @@ docker compose -f docker-compose.yaml up
 > **_NOTE:_** You can run this command to delete the existing containers: **docker rm $(docker ps -aq)**
 
 ## Back End
-The back end is a nestjs project that can be found in `./back/` directory. Please read the instructions described in the README file located in `./back/README.md`
+The back end is a [NestJS](https://nestjs.com/) project that can be found in [`./back/`](./back/) directory. Please read the instructions described in the README file located in [`./back/README.md`](./back/README.md)
 
 ## Front End
-The front end is a flutter project that can be found in `./front/` directory. Please read the instructions described in the README file located in `./front/README.md`
+The front end is a flutter project that can be found in [`./front/`](./front/) directory. Please read the instructions described in the README file located in [`./front/README.md`](./front/README.md)
 
