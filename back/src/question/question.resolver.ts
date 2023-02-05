@@ -40,4 +40,9 @@ export default class QuestionResolver {
   ): Promise<QuestionDTO> {
     return await this.question.createQuestion({ userId: user.id, ...data });
   }
+
+  @Query(() => [QuestionDTO], { name: 'questions' })
+  async getQuestions(): Promise<QuestionDTO[]> {
+    return await this.question.getQuestions();
+  }
 }

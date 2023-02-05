@@ -41,7 +41,7 @@ export class StorageService {
     files?: Promise<FileUpload>[],
   ): Promise<File[]> | undefined {
     if (!files) {
-      return undefined;
+      return [];
     }
     return Promise.all(
       files.map(async (file) => await this.createFile(path, file)),
