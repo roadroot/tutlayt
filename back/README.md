@@ -17,7 +17,7 @@ CONTAINER ID   IMAGE   COMMAND   CREATED   STATUS   PORTS   NAMES
 
 ## Setup
 
-Please read and follow the instructions on the readme located at `../README.md` before this one.
+Please read and follow the instructions on the readme located at [`../README.md`](../README.md) before this one.
 
 ### Env file
 Create a `.env` file respecting the template in `.env.template`. You can run this command to make a copy of template to the `.env` file: 
@@ -39,7 +39,7 @@ docker compose -f ../docker-compose.yaml up
 
 Please run `prisma db push` to update the database schema. This command will update the database schema against the one described in the relative path `./prisma/schema.prisma`.
 
-Each time you modify the schema, run `prisma generate` to generate the prisma client, or `prisma generate` to generate the prisma client and update the database schema.
+Each time you modify the schema, run `prisma generate` to generate the prisma client, or `prisma db push` to generate the prisma client and update the database schema.
 
 ### npm
 
