@@ -59,7 +59,7 @@ class LoginPage extends StatelessWidget {
                         if (user == null) {
                           Message.error.show(
                             context,
-                            AppLocalizations.of(context)!.signupError,
+                            AppLocalizations.of(context)!.loginError,
                           );
                         } else {
                           Navigator.pushReplacementNamed(

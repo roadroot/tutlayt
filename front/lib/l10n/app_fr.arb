@@ -22,7 +22,7 @@
     "shortUsernameError": "Nom d'utilisateur trop court",
     "longUsernameError": "Nom d'utilisateur trop long",
     "incorrectUsernameFormat": "Que les caractères alphanumeriques et _ sont authorisés (exemple: massa_tiziri)",
-    "connectionError": "Connxion échouée",
+    "loginError": "Connxion échouée",
     "signupError": "inscription échouée",
     "loading": "Chargement...",
     "userNotFound": "Désolé, nous n'avons pas pu trouver cet utilisateur !"
