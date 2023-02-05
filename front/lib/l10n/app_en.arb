@@ -22,7 +22,7 @@
     "shortUsernameError": "Username too short",
     "longUsernameError": "Username too short",
     "incorrectUsernameFormat": "Only alphanumeric and _ allowed (example: lalla_wezna)",
-    "connectionError": "Connection failed",
+    "loginError": "Connection failed",
     "signupError": "Could not sign up",
     "loading": "Loading...",
     "userNotFound": "Sorry, we couldn't find that user!"

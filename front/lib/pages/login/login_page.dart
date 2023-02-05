@@ -31,9 +31,10 @@ class LoginPage extends StatelessWidget {
                   child: TextFormField(
                     controller: _username,
                     decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        label: Text(AppLocalizations.of(context)!.username),
-                        prefixIcon: const Icon(Icons.person)),
+                      border: const OutlineInputBorder(),
+                      label: Text(AppLocalizations.of(context)!.username),
+                      prefixIcon: const Icon(Icons.person),
+                    ),
                   ),
                 ),
                 Padding(
@@ -47,15 +48,26 @@ class LoginPage extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(10, 10, 10, 15),
                   child: ElevatedButton(
                     style: const ButtonStyle(
-                        visualDensity: VisualDensity.standard),
+                      visualDensity: VisualDensity.standard,
+                    ),
                     onPressed: () async {
                       User? user = await GetIt.I<ApiService>().login(
-                          username: _username.text, password: _password.text);
-                      if (mounted && user == null) {
-                        Message.error.show(context,
-                            AppLocalizations.of(context)!.connectionError);
+                        username: _username.text,
+                        password: _password.text,
+                      );
+                      if (mounted) {
+                        if (user == null) {
+                          Message.error.show(
+                            context,
+                            AppLocalizations.of(context)!.loginError,
+                          );
+                        } else {
+                          Navigator.pushReplacementNamed(
+                            context,
+                            RouteUtil.userRoute,
+                          );
+                        }
                       }
-                      // TODO next
                     },
                     child: Text(AppLocalizations.of(context)!.login),
                   ),

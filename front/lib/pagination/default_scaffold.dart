@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:tutlayt/pagination/page.model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tutlayt/pagination/route.util.dart';
+import 'package:tutlayt/services/user/user.model.dart';
 import 'package:tutlayt/services/user/user.service.dart';
 
 class DefaultScaffold extends StatelessWidget {
@@ -48,32 +49,40 @@ class DefaultScaffold extends StatelessWidget {
                           Navigator.pushReplacementNamed(context, page.route),
                     ))
                 .toList();
-            if (user.hasData) {
+            User? data = user.data;
+            if (data != null) {
               widgets.insert(
                 0,
-                DrawerHeader(
-                  decoration: const BoxDecoration(),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 75,
-                        width: 75,
-                        margin: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Theme.of(context).primaryColor,
+                GestureDetector(
+                  onTap: () => Navigator.pushReplacementNamed(
+                    context,
+                    RouteUtil.userRoute,
+                  ),
+                  child: DrawerHeader(
+                    decoration: const BoxDecoration(),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Material(
+                          elevation: 25,
+                          shape: const CircleBorder(),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.grey.shade100,
+                            foregroundImage: NetworkImage(data.picture ?? ''),
+                            maxRadius: 50,
+                          ),
                         ),
-                      ),
-                      Text(user.data!.username,
-                          style: const TextStyle(fontWeight: FontWeight.bold)),
-                      Text(
-                          user.hasData
-                              ? user.data!.email
-                              : AppLocalizations.of(context)!.loading,
-                          style: TextStyle(
-                              color: Theme.of(context).disabledColor)),
-                    ],
+                        Text(
+                          data.username,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          data.email,
+                          style:
+                              TextStyle(color: Theme.of(context).disabledColor),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );
