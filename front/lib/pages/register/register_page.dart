@@ -103,16 +103,24 @@ class RegisterPage extends StatelessWidget {
                   onPressed: () async {
                     if (_form.currentState!.validate()) {
                       User? user = await GetIt.I<ApiService>().register(
-                          username: _username.text,
-                          email: _email.text,
-                          password: _password.text);
+                        username: _username.text,
+                        email: _email.text,
+                        password: _password.text,
+                      );
 
-                      if (mounted && user == null) {
-                        Message.error.show(
-                            context, AppLocalizations.of(context)!.signupError);
+                      if (mounted) {
+                        if (user == null) {
+                          Message.error.show(
+                            context,
+                            AppLocalizations.of(context)!.signupError,
+                          );
+                        } else {
+                          Navigator.pushReplacementNamed(
+                            context,
+                            RouteUtil.userRoute,
+                          );
+                        }
                       }
-
-                      // TODO next?
                     }
                   },
                   child: Text(AppLocalizations.of(context)!.signup),
@@ -124,7 +132,9 @@ class RegisterPage extends StatelessWidget {
                   Text(AppLocalizations.of(context)!.alreadyHaveAccount),
                   TextButton(
                       onPressed: () => Navigator.pushReplacementNamed(
-                          context, RouteUtil.loginRoute),
+                            context,
+                            RouteUtil.loginRoute,
+                          ),
                       child: Text(AppLocalizations.of(context)!.login))
                 ],
               ),

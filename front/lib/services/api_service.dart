@@ -12,15 +12,17 @@ class ApiService {
   ApiService()
       : client = ValueNotifier(
           GraphQLClient(
-            link: HttpLink(
+            link: AuthLink(
+              getToken: () async =>
+                  'Bearer ${await GetIt.I<SecuredStoreService>().jwtToken}',
+            ).concat(HttpLink(
               dotenv.env['API_URL'] ?? '',
-            ),
+            )),
             cache: GraphQLCache(store: HiveStore()),
           ),
         );
 
-  static const String _userQuery =
-      """
+  static const String _userQuery = """
         query(\$id: String!) {
           user(id: \$id) {
             id
@@ -32,8 +34,7 @@ class ApiService {
         }
   """;
 
-  static const String _registerMutation =
-      """
+  static const String _registerMutation = """
     mutation(\$username: String!, \$email: String!, \$password: String!) {
       register(data: {
         username: \$username
@@ -46,8 +47,7 @@ class ApiService {
     }
   """;
 
-  static const String _loginMutation =
-      """
+  static const String _loginMutation = """
     mutation(\$username: String!, \$password: String!) {
       login(data: {
         username: \$username
@@ -59,8 +59,7 @@ class ApiService {
     }
   """;
 
-  static const String _refreshMutation =
-      """
+  static const String _refreshMutation = """
     mutation(\$refreshToken: String!) {
       refresh(data: \$refreshToken) {
         token
