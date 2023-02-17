@@ -2,20 +2,38 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Question {
-  id: String!
-  user: User!
-  title: String!
-  body: String!
-  files: [String!]!
-}
-
 type Answer {
   id: String!
+  files: [String!]!
   user: User!
   title: String
   body: String!
+}
+
+type Question {
+  id: String!
   files: [String!]!
+  user: User!
+  title: String!
+  body: String!
+}
+
+type QuestionEdges {
+  cursor: String!
+  node: Question!
+}
+
+type QuestionPage {
+  pageInfo: PageInfoType!
+  edges: [QuestionEdges!]
+}
+
+type PageInfoType {
+  startCursor: String
+  endCursor: String
+  hasNextPage: Boolean!
+  pageSize: Int!
+  count: Int!
 }
 
 type User {
@@ -31,9 +49,9 @@ type User {
 
 type Comment {
   id: String!
+  files: [String!]!
   user: User!
   body: String!
-  files: [String!]
 }
 
 type Token {
@@ -44,7 +62,7 @@ type Token {
 type Query {
   user(id: String!): User!
   question(id: String!): Question!
-  questions: [Question!]!
+  questions(take: Int, cursor: String): QuestionPage!
   answer(id: String!): Answer!
   comment(id: String!): Comment!
 }

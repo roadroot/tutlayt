@@ -1,14 +1,12 @@
-import { QuestionDTO } from 'src/question/question.model';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { File, User } from '@prisma/client';
-import { StorageService } from 'src/storage/storage.service';
 import { AnswerDTO } from 'src/answer/answer.model';
+import { GraphqlModel } from 'src/pagination/graphql_model';
+import { QuestionDTO } from 'src/question/question.model';
+import { StorageService } from 'src/storage/storage.service';
 
 @ObjectType('User')
-export class UserDTO {
-  @Field()
-  id: string;
-
+export class UserDTO extends GraphqlModel {
   @Field()
   username: string;
 
@@ -28,8 +26,6 @@ export class UserDTO {
   answers?: AnswerDTO[];
 
   updateDate: Date;
-
-  creationDate: Date;
 
   static from(user: User & { pictures: File[] }): UserDTO {
     return {

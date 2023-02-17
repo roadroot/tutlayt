@@ -1,12 +1,12 @@
-import { PrismaService } from './../prisma/prisma.service';
 import {
   ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CommentDataDTO } from './model/comment_data';
 import { StorageService } from 'src/storage/storage.service';
+import { PrismaService } from './../prisma/prisma.service';
 import { CommentDTO } from './model/comment.model';
+import { CommentDataDTO } from './model/comment_data';
 
 @Injectable()
 export class CommentService {

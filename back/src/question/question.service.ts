@@ -1,8 +1,9 @@
-import { QuestionDataDTO } from './question_data.model';
-import { PrismaService } from './../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { QuestionDTO } from './question.model';
+import { Base64 } from 'src/pagination/pagination';
 import { StorageService } from 'src/storage/storage.service';
+import { PrismaService } from './../prisma/prisma.service';
+import { QuestionDTO } from './question.model';
+import { QuestionDataDTO } from './question_data.model';
 
 @Injectable()
 export class QuestionService {
@@ -70,10 +71,24 @@ export class QuestionService {
     return QuestionDTO.from(question);
   }
 
-  async getQuestions(include = { user: false }): Promise<QuestionDTO[]> {
+  async getQuestions({
+    take = 20,
+    cursor,
+    include = { user: false },
+  }: {
+    take?: number;
+    cursor?: string;
+    include?: { user: boolean };
+  }): Promise<QuestionDTO[]> {
     return (
       await this.prisma.question.findMany({
+        take: take + 1,
         include: { ...include, files: true },
+        cursor: !!cursor
+          ? {
+              id: Base64.decode(cursor),
+            }
+          : undefined,
       })
     ).map((question) => QuestionDTO.from(question));
   }
