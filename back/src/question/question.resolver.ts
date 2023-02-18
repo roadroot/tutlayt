@@ -1,12 +1,19 @@
-import { QuestionDataDTO } from './question_data.model';
+import { UseGuards } from '@nestjs/common';
+import {
+  Args,
+  Int,
+  Mutation,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
+import { JwtAuthGuard } from 'src/auth/strategy/jwt/jwt.guard';
+import { CurrentUser } from 'src/auth/util/current_user.util';
+import { QuestionDTO, QuestionPage } from 'src/question/question.model';
 import { UserDTO } from 'src/user/model/user.model';
 import { UserService } from './../user/user.service';
 import { QuestionService } from './question.service';
-import { QuestionDTO } from 'src/question/question.model';
-import { Query, Resolver, Args, ResolveField, Mutation } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/strategy/jwt/jwt.guard';
-import { CurrentUser } from 'src/auth/util/current_user.util';
+import { QuestionDataDTO } from './question_data.model';
 
 @Resolver(() => QuestionDTO)
 export default class QuestionResolver {
@@ -39,5 +46,16 @@ export default class QuestionResolver {
     @CurrentUser() user: UserDTO,
   ): Promise<QuestionDTO> {
     return await this.question.createQuestion({ userId: user.id, ...data });
+  }
+
+  @Query(() => QuestionPage, { name: 'questions' })
+  async getQuestions(
+    @Args('take', { type: () => Int, nullable: true }) take = 20,
+    @Args('cursor', { type: () => String, nullable: true }) cursor?: string,
+  ): Promise<QuestionPage> {
+    return new QuestionPage(
+      await this.question.getQuestions({ take, cursor }),
+      take,
+    );
   }
 }

@@ -1,11 +1,10 @@
-import { UserDTO } from 'src/user/model/user.model';
 import { Field, ObjectType } from '@nestjs/graphql';
+import { HasFilesGraphqlModel } from 'src/pagination/graphql_model';
+import { Paginated } from 'src/pagination/pagination';
+import { UserDTO } from 'src/user/model/user.model';
 
 @ObjectType('Question')
-export class QuestionDTO {
-  @Field()
-  id: string;
-
+export class QuestionDTO extends HasFilesGraphqlModel {
   @Field(() => UserDTO, { nullable: true })
   user?: UserDTO;
 
@@ -13,11 +12,15 @@ export class QuestionDTO {
 
   updateDate: Date;
 
-  creationDate: Date;
-
   @Field()
   title: string;
 
   @Field()
   body: string;
+
+  @Field(() => [String])
+  files: string[];
 }
+
+@ObjectType()
+export class QuestionPage extends Paginated(QuestionDTO, 'Question') {}
