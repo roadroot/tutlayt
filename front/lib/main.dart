@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
         title: 'Tutlayt',
         theme: ThemeData(
           primarySwatch: Colors.green,
+          useMaterial3: true,
         ),
         onGenerateRoute: RouteUtil.onGenerateRoute,
       ),

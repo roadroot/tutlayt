@@ -3,6 +3,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:tutlayt/services/auth/models/auth.dart';
+import 'package:tutlayt/services/auth/models/params/credentials.dart';
+import 'package:tutlayt/services/auth/models/params/register.dart';
 import 'package:tutlayt/services/user/user.model.dart';
 import 'package:tutlayt/services/secured_store.service.dart';
 
@@ -22,69 +25,23 @@ class ApiService {
           ),
         );
 
-  static const String _userQuery = """
-        query(\$id: String!) {
-          user(id: \$id) {
-            id
-            username
-            picture
-            email
-            phone
-          }
-        }
-  """;
-
-  static const String _registerMutation = """
-    mutation(\$username: String!, \$email: String!, \$password: String!) {
-      register(data: {
-        username: \$username
-        email: \$email
-        password: \$password
-      }) {
-        token
-        refreshToken
-      }
-    }
-  """;
-
-  static const String _loginMutation = """
-    mutation(\$username: String!, \$password: String!) {
-      login(data: {
-        username: \$username
-        password: \$password
-      }) {
-        token
-        refreshToken
-      }
-    }
-  """;
-
-  static const String _refreshMutation = """
-    mutation(\$refreshToken: String!) {
-      refresh(data: \$refreshToken) {
-        token
-        refreshToken
-      }
-    }
-  """;
-
-  Future<User?> register(
-      {required String username,
-      required String email,
-      required String password}) async {
+  Future<UserResult?> register({
+    required String username,
+    required String email,
+    required String password,
+  }) async {
     client.value.cache.store.reset();
-    QueryResult<User?> result = await client.value.mutate(MutationOptions(
-      document: gql(_registerMutation),
-      variables: {'username': username, 'email': email, 'password': password},
+    QueryResult<UserResult?> result = await client.value.mutate(MutationOptions(
+      document: gql(AuthQl.register(
+          data: RegisterParamResult(
+        email: email,
+        password: password,
+        username: username,
+      ))),
       parserFn: (data) {
         Map<String, dynamic> user =
             JwtDecoder.decode(data['register']?['token']);
-        return User(
-            id: user['id'],
-            username: user['username'],
-            email: user['email'],
-            phone: user['phone'],
-            picture: user['picture']);
+        return UserResult.fromMap(user);
       },
     ));
     await GetIt.I<SecuredStoreService>().setToken(
@@ -93,41 +50,33 @@ class ApiService {
     return result.parsedData;
   }
 
-  Future<User?> login(
+  Future<UserResult?> login(
       {required String username, required String password}) async {
     client.value.cache.store.reset();
-    QueryResult<User?> result = await client.value.mutate(MutationOptions(
-      document: gql(_loginMutation),
-      variables: {'username': username, 'password': password},
-      parserFn: (data) {
-        Map<String, dynamic> user = JwtDecoder.decode(data['login']?['token']);
-        return User(
-            id: user['id'],
-            username: user['username'],
-            email: user['email'],
-            phone: user['phone'],
-            picture: user['picture']);
-      },
-    ));
+    QueryResult<UserResult?> result = await client.value.mutate(
+      MutationOptions(
+        document: gql(
+          AuthQl.login(
+              data: CredentialsResult(username: username, password: password)),
+        ),
+        parserFn: (data) {
+          return UserResult.fromMap(JwtDecoder.decode(data['login']?['token']));
+        },
+      ),
+    );
     await GetIt.I<SecuredStoreService>().setToken(
         result.data?['login']?['token'],
         result.data?['login']?['refreshToken']);
     return result.parsedData;
   }
 
-  Future<User?> refresh(String refreshToken) async {
+  Future<UserResult?> refresh(String refreshToken) async {
     client.value.cache.store.reset();
-    QueryResult<User?> result = await client.value.mutate(MutationOptions(
-      document: gql(_refreshMutation),
+    QueryResult<UserResult?> result = await client.value.mutate(MutationOptions(
+      document: gql(AuthQl.refresh(data: refreshToken)),
       variables: {'refreshToken': refreshToken},
       parserFn: (data) {
-        Map<String, dynamic> user = JwtDecoder.decode(data['refresh']['token']);
-        return User(
-            id: user['id'],
-            username: user['username'],
-            email: user['email'],
-            phone: user['phone'],
-            picture: user['picture']);
+        return UserResult.fromMap(JwtDecoder.decode(data['refresh']['token']));
       },
     ));
     await GetIt.I<SecuredStoreService>().setToken(
@@ -136,19 +85,13 @@ class ApiService {
     return result.parsedData;
   }
 
-  Future<User?> queryUser(String userId) async {
+  Future<UserResult?> queryUser(String userId) async {
     client.value.cache.store.reset();
-    QueryResult<User?> result = await client.value.query(QueryOptions(
-      document: gql(_userQuery),
+    QueryResult<UserResult?> result = await client.value.query(QueryOptions(
+      document: gql(UserQl.user(id: userId)),
       variables: {'id': userId},
       parserFn: (data) {
-        Map<String, dynamic> user = data['user'];
-        return User(
-            id: user['id'],
-            username: user['username'],
-            email: user['email'],
-            phone: user['phone'],
-            picture: user['picture']);
+        return UserResult.fromMap(data['user']);
       },
     ));
     return result.parsedData;

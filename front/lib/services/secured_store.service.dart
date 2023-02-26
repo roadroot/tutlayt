@@ -21,8 +21,8 @@ class SecuredStoreService {
     await _storage.write(key: _refreshTokenEntry, value: refreshToken);
   }
 
-  Future<User?> getUserOrCurrentUser(String? userId) async {
+  Future<UserResult?> getUserOrCurrentUser(String? userId) async {
     final token = await jwtToken;
-    return token == null ? null : User.from(JwtDecoder.decode(token));
+    return token == null ? null : UserResult.fromMap(JwtDecoder.decode(token));
   }
 }

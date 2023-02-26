@@ -1,12 +1,12 @@
-import { AnswerDataDTO } from './answer_data.model';
+import { UseGuards } from '@nestjs/common';
+import { Args, Mutation, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { AnswerDTO } from 'src/answer/answer.model';
+import { JwtAuthGuard } from 'src/auth/strategy/jwt/jwt.guard';
+import { CurrentUser } from 'src/auth/util/current_user.util';
 import { UserDTO } from 'src/user/model/user.model';
 import { UserService } from './../user/user.service';
 import { AnswerService } from './answer.service';
-import { AnswerDTO } from 'src/answer/answer.model';
-import { Query, Resolver, Args, ResolveField, Mutation } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/strategy/jwt/jwt.guard';
-import { CurrentUser } from 'src/auth/util/current_user.util';
+import { AnswerDataDTO } from './answer_data.model';
 
 @Resolver(() => AnswerDTO)
 export default class AnswerResolver {

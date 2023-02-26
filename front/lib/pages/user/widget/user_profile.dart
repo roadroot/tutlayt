@@ -6,7 +6,7 @@ class UserProfile extends StatelessWidget {
   static const double avatarHeight = 75;
   const UserProfile(this.user, {super.key});
 
-  final User user;
+  final UserResult user;
 
   @override
   Widget build(BuildContext context) {

@@ -9,7 +9,8 @@ async function bootstrap() {
   app.enableCors({
     origin: function (origin, callback) {
       const whitelist = process.env.API_CORS_WHITELIST.split(',');
-      if (whitelist.includes(origin) || !origin) {
+      // origin mathes regex in whitelist
+      if (whitelist.some((item) => new RegExp(item).test(origin)) || !origin) {
         callback(null, true);
       } else {
         callback(new ForbiddenError('Not allowed by CORS'));

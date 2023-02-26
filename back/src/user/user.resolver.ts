@@ -1,14 +1,14 @@
-import { CommentService } from './../comment/comment.service';
-import { CommentDTO } from './../comment/model/comment.model';
-import { UpdateUserParam } from './model/update_user.param';
-import { QuestionService } from './../question/question.service';
-import { UserDTO } from 'src/user/model/user.model';
-import { UserService } from './../user/user.service';
-import { QuestionDTO } from 'src/question/question.model';
-import { Query, Resolver, Args, ResolveField, Mutation } from '@nestjs/graphql';
-import { StorageService } from 'src/storage/storage.service';
+import { Args, Mutation, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { AnswerDTO } from 'src/answer/answer.model';
 import { AnswerService } from 'src/answer/answer.service';
+import { QuestionDTO } from 'src/question/question.model';
+import { StorageService } from 'src/storage/storage.service';
+import { UserDTO } from 'src/user/model/user.model';
+import { CommentService } from './../comment/comment.service';
+import { CommentDTO } from './../comment/model/comment.model';
+import { QuestionService } from './../question/question.service';
+import { UserService } from './../user/user.service';
+import { UpdateUserParam } from './model/update_user.param';
 
 @Resolver(() => UserDTO)
 export class UserResolver {

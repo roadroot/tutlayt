@@ -1,0 +1,9 @@
+name: graphql_decorator
+description: A graphql decorators for query generation.
+
+publish_to: 'none'
+
+version: 0.0.1
+
+environment:
+  sdk: '>=3.0.0-257.0.dev <4.0.0'

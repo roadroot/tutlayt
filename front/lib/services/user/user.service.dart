@@ -5,15 +5,15 @@ import 'package:tutlayt/services/api_service.dart';
 import 'package:tutlayt/services/secured_store.service.dart';
 
 class UserService {
-  Future<User?> get user async {
+  Future<UserResult?> get user async {
     final token = await GetIt.I<SecuredStoreService>().jwtToken;
-    return token == null ? null : User.from(JwtDecoder.decode(token));
+    return token == null ? null : UserResult.fromMap(JwtDecoder.decode(token));
   }
 
   /// get the user with id [userId]
   /// or return the current logged user if there is one and if
   /// [userId] is null
-  Future<User?> getUser({
+  Future<UserResult?> getUser({
     String? userId,
   }) async {
     if (userId == null) {

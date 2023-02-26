@@ -1,11 +1,11 @@
-import { CurrentUser } from 'src/auth/util/current_user.util';
-import { UserDTO } from './../user/model/user.model';
-import { JwtAuthGuard } from './../auth/strategy/jwt/jwt.guard';
 import { UseGuards } from '@nestjs/common';
+import { Args, Mutation, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { CurrentUser } from 'src/auth/util/current_user.util';
+import { JwtAuthGuard } from './../auth/strategy/jwt/jwt.guard';
+import { UserDTO } from './../user/model/user.model';
 import { UserService } from './../user/user.service';
-import { Resolver, Query, Args, ResolveField, Mutation } from '@nestjs/graphql';
-import { CommentDTO } from './model/comment.model';
 import { CommentService } from './comment.service';
+import { CommentDTO } from './model/comment.model';
 import { CommentDataDTO } from './model/comment_data';
 
 @Resolver(() => CommentDTO)
