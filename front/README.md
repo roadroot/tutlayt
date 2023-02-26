@@ -23,7 +23,15 @@ Create a `.env` file respecting the template in `.env.template`. You can run thi
 ```bash
 cp .env.template .env
 ```
-
+### build_runner
+To generate graphql files run 
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
+```
+To watch for changes and generate graphql files run 
+```bash
+flutter pub run build_runner watch --delete-conflicting-outputs
+```
 
 ### Cors
 Consider installing  *flutter_cors* to enable or disable CORS.

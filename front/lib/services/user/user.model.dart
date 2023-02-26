@@ -1,8 +1,19 @@
-class User {
+import 'package:graphql_decorator/annotations.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+
+part 'user.model.g.dart';
+
+@QlEntity(name: 'user')
+abstract class User {
+  @QlField()
   final String id;
+  @QlField()
   final String username;
+  @QlField()
   final String email;
+  @QlField()
   final String? phone;
+  @QlField()
   final String? picture;
 
   const User({
@@ -13,10 +24,6 @@ class User {
     this.picture,
   });
 
-  static User from(Map<String, dynamic> data) => User(
-      id: data['id'],
-      username: data['username'],
-      email: data['email'],
-      phone: data['phone'],
-      picture: data['picture']);
+  @QlQuery()
+  User user(String id);
 }

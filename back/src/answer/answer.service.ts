@@ -1,12 +1,12 @@
-import { AnswerDataDTO } from './answer_data.model';
-import { PrismaService } from './../prisma/prisma.service';
 import {
   ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { AnswerDTO } from './answer.model';
 import { StorageService } from 'src/storage/storage.service';
+import { PrismaService } from './../prisma/prisma.service';
+import { AnswerDTO } from './answer.model';
+import { AnswerDataDTO } from './answer_data.model';
 
 @Injectable()
 export class AnswerService {

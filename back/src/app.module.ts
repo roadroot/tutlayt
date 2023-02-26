@@ -1,17 +1,17 @@
-import { Module } from '@nestjs/common';
-import { GraphQLModule } from '@nestjs/graphql';
-import { join } from 'path';
-import { AuthModule } from './auth/auth.module';
-import { CredentialService } from './auth/service/credential.service';
-import { UserModule } from './user/user.module';
-import { PrismaModule } from './prisma/prisma.module';
-import { QuestionModule } from './question/question.module';
 import { ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloDriver } from '@nestjs/apollo/dist/drivers';
-import { StorageModule } from './storage/storage.module';
-import { AnswerModule } from './answer/answer.module';
+import { Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloServerPlugin } from 'apollo-server-plugin-base';
+import { join } from 'path';
+import { AnswerModule } from './answer/answer.module';
+import { AuthModule } from './auth/auth.module';
+import { CredentialService } from './auth/service/credential.service';
 import { CommentModule } from './comment/comment.module';
+import { PrismaModule } from './prisma/prisma.module';
+import { QuestionModule } from './question/question.module';
+import { StorageModule } from './storage/storage.module';
+import { UserModule } from './user/user.module';
 
 const myPlugin: ApolloServerPlugin = {
   // Fires whenever a GraphQL request is received from a client.
@@ -32,6 +32,11 @@ const myPlugin: ApolloServerPlugin = {
       context: ({ req }) => ({ req }),
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       plugins: process.env.API_LOG_REQUESTS == 'true' ? [myPlugin] : [],
+      playground: {
+        settings: {
+          'schema.polling.enable': false,
+        },
+      },
     }),
     PrismaModule,
     AuthModule,

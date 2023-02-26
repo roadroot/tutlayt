@@ -1,12 +1,12 @@
-import { CredentialService } from './credential.service';
-import { UserService } from '../../user/user.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { Args, Mutation } from '@nestjs/graphql';
-import { LoginParam } from '../model/login.param';
-import { UserDTO } from 'src/user/model/user.model';
+import { JwtService } from '@nestjs/jwt';
 import { RegisterParam } from 'src/user/model/register.param';
+import { UserDTO } from 'src/user/model/user.model';
+import { UserService } from '../../user/user.service';
+import { LoginParam } from '../model/login.param';
 import { Token } from '../model/token.model';
+import { CredentialService } from './credential.service';
 
 @Injectable()
 export class AuthService {

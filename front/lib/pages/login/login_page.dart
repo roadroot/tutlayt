@@ -51,7 +51,7 @@ class LoginPage extends StatelessWidget {
                       visualDensity: VisualDensity.standard,
                     ),
                     onPressed: () async {
-                      User? user = await GetIt.I<ApiService>().login(
+                      UserResult? user = await GetIt.I<ApiService>().login(
                         username: _username.text,
                         password: _password.text,
                       );

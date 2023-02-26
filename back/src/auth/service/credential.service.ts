@@ -1,7 +1,7 @@
-import { compare, hash } from 'bcrypt';
-import { PrismaService } from '../../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { Credential } from '@prisma/client';
+import { compare, hash } from 'bcrypt';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class CredentialService {

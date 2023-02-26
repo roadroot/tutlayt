@@ -47,16 +47,16 @@ type User {
   comments: [Comment!]!
 }
 
+type Token {
+  token: String!
+  refreshToken: String!
+}
+
 type Comment {
   id: String!
   files: [String!]!
   user: User!
   body: String!
-}
-
-type Token {
-  token: String!
-  refreshToken: String!
 }
 
 type Query {

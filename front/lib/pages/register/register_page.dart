@@ -102,7 +102,7 @@ class RegisterPage extends StatelessWidget {
                       const ButtonStyle(visualDensity: VisualDensity.standard),
                   onPressed: () async {
                     if (_form.currentState!.validate()) {
-                      User? user = await GetIt.I<ApiService>().register(
+                      UserResult? user = await GetIt.I<ApiService>().register(
                         username: _username.text,
                         email: _email.text,
                         password: _password.text,

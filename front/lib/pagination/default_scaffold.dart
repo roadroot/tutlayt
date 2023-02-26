@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tutlayt/pagination/page.model.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tutlayt/pagination/route.util.dart';
 import 'package:tutlayt/services/user/user.model.dart';
 import 'package:tutlayt/services/user/user.service.dart';
@@ -49,7 +48,7 @@ class DefaultScaffold extends StatelessWidget {
                           Navigator.pushReplacementNamed(context, page.route),
                     ))
                 .toList();
-            User? data = user.data;
+            UserResult? data = user.data;
             if (data != null) {
               widgets.insert(
                 0,
@@ -69,7 +68,7 @@ class DefaultScaffold extends StatelessWidget {
                           child: CircleAvatar(
                             backgroundColor: Colors.grey.shade100,
                             foregroundImage: NetworkImage(data.picture ?? ''),
-                            maxRadius: 50,
+                            maxRadius: 40,
                           ),
                         ),
                         Text(
