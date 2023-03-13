@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tutlayt/configuration/config.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:tutlayt/services/auth/auth.service.dart';
 import 'package:tutlayt/services/user/user.model.dart';
-import 'package:tutlayt/services/api_service.dart';
 import 'package:tutlayt/services/util/message.dart';
 import 'package:tutlayt/services/util/util.dart';
 import 'package:tutlayt/pagination/route.util.dart';
@@ -102,7 +102,8 @@ class RegisterPage extends StatelessWidget {
                       const ButtonStyle(visualDensity: VisualDensity.standard),
                   onPressed: () async {
                     if (_form.currentState!.validate()) {
-                      UserResult? user = await GetIt.I<ApiService>().register(
+                      UserResult? user =
+                          await GetIt.I<AuthService>().signUpCredentials(
                         username: _username.text,
                         email: _email.text,
                         password: _password.text,

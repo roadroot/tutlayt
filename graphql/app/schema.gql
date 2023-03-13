@@ -1,0 +1,129 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Answer {
+  id: String!
+  files: [String!]!
+  user: User!
+  title: String
+  body: String!
+}
+
+type Question {
+  id: String!
+  files: [String!]!
+  user: User!
+  title: String!
+  body: String!
+}
+
+type QuestionEdges {
+  cursor: String!
+  node: Question!
+}
+
+type QuestionPage {
+  pageInfo: PageInfoType!
+  edges: [QuestionEdges!]
+}
+
+type PageInfoType {
+  startCursor: String
+  endCursor: String
+  hasNextPage: Boolean!
+  pageSize: Int!
+  count: Int!
+}
+
+type User {
+  id: String!
+  username: String!
+  email: String!
+  phone: String
+  picture: String
+  questions: [Question!]!
+  answers: [Answer!]!
+  comments: [Comment!]!
+}
+
+type Token {
+  token: String!
+  refreshToken: String!
+}
+
+type Comment {
+  id: String!
+  files: [String!]!
+  user: User!
+  body: String!
+}
+
+type Query {
+  user(id: String!): User!
+  question(id: String!): Question!
+  questions(take: Int, cursor: String): QuestionPage!
+  answer(id: String!): Answer!
+  comment(id: String!): Comment!
+}
+
+type Mutation {
+  login(data: LoginParam!): Token!
+  register(data: RegisterData!): Token!
+  refresh(data: String!): Token!
+  updateUser(data: UserUpdateData!): User!
+  createQuestion(data: QuestionData!): Question!
+  createAnswer(data: AnswerData!): Answer!
+  delete(answerId: String!): Answer!
+  createComment(data: CommentData!): Comment!
+}
+
+input LoginParam {
+  username: String!
+  password: String!
+}
+
+input RegisterData {
+  username: String!
+  email: String!
+  password: String!
+  phone: String
+  image: Upload
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input UserUpdateData {
+  id: String!
+  username: String
+  image: Upload
+}
+
+input QuestionData {
+  title: String!
+  body: String!
+  files: [Upload!]
+}
+
+input AnswerData {
+  title: String
+  body: String!
+  questionId: String!
+  files: [Upload!]
+}
+
+input CommentData {
+  body: String!
+  files: [Upload!]
+
+  """
+  The question that you want to comment. Required if answerId is not provided. Forbidden if answerId is provided. 
+  """
+  questionId: String
+
+  """
+  The answer that you want to comment. Required if questionId is not provided. Forbidden if questionId is provided. 
+  """
+  answerId: String
+}

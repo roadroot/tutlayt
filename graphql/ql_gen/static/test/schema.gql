@@ -1,0 +1,8 @@
+type Answer {
+  id: String!
+}
+
+type Question {
+  lm: String!
+  df: String!
+}

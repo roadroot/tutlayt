@@ -1,11 +1,9 @@
-import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/visitor.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:graphql_generator/src/element_type.dart';
 import 'package:graphql_generator/src/field_data.dart';
 import 'package:graphql_generator/src/function_structure.dart';
 import 'package:source_gen/source_gen.dart';
-import 'package:analyzer/dart/element/type.dart';
 
 class QlEntityVisitor extends SimpleElementVisitor<void> {
   QlEntityVisitor(this.output);
@@ -22,12 +20,7 @@ class QlEntityVisitor extends SimpleElementVisitor<void> {
 
   @override
   visitConstructorElement(ConstructorElement element) {
-    className = new VariableType(
-      name: element.returnType.getDisplayString(withNullability: false),
-      isObject: true,
-      isList: false,
-      isNullable: false,
-    );
+    className = VariableType(element.returnType);
   }
 
   @override
@@ -48,41 +41,10 @@ class QlEntityVisitor extends SimpleElementVisitor<void> {
         Variable(
           alias: name.isNull ? field.displayName : name.stringValue,
           technicalName: field.displayName,
-          type: VariableType(
-            name: getListType(field.type)
-                .getDisplayString(withNullability: false),
-            isObject: isObject(getListType(field.type)),
-            isList: field.type.isDartCoreList,
-            isNullable:
-                field.type.nullabilitySuffix == NullabilitySuffix.question,
-          ),
+          type: VariableType(field.type),
         ),
       );
     });
-  }
-
-  getListType(DartType type) {
-    if (type is ParameterizedType && type.isDartCoreList) {
-      return type.typeArguments.first;
-    }
-    return type;
-  }
-
-  /// Checks if the [type] is a non dart core object
-  static bool isObject(DartType type) {
-    return !(type.isBottom ||
-        type.isDartCoreBool ||
-        type.isDartCoreDouble ||
-        type.isDartCoreInt ||
-        type.isDartCoreList ||
-        type.isDartCoreMap ||
-        type.isDartCoreNum ||
-        type.isDartCoreObject ||
-        type.isDartCoreSet ||
-        type.isDartCoreString ||
-        type.isDartCoreSymbol ||
-        type.isDynamic ||
-        type.isVoid);
   }
 
   @override
@@ -119,27 +81,13 @@ class QlEntityVisitor extends SimpleElementVisitor<void> {
         .forEach((meta) {
       final reader = ConstantReader(meta.computeConstantValue());
       final name = reader.read('name');
-      final returnType = VariableType(
-        name: getListType(element.returnType)
-            .getDisplayString(withNullability: false),
-        isObject: isObject(getListType(element.returnType)),
-        isList: element.returnType.isDartCoreList,
-        isNullable:
-            element.returnType.nullabilitySuffix == NullabilitySuffix.question,
-      );
+      final returnType = VariableType(element.returnType);
 
       final parameters = element.parameters
           .map((e) => Variable(
                 alias: e.name,
                 technicalName: e.name,
-                type: VariableType(
-                  name: getListType(e.type)
-                      .getDisplayString(withNullability: false),
-                  isObject: isObject(getListType(e.type)),
-                  isList: e.type.isDartCoreList,
-                  isNullable:
-                      e.type.nullabilitySuffix == NullabilitySuffix.question,
-                ),
+                type: VariableType(e.type),
               ))
           .toList();
       functions.add(FunctionStruture(
@@ -156,27 +104,13 @@ class QlEntityVisitor extends SimpleElementVisitor<void> {
         .forEach((meta) {
       final reader = ConstantReader(meta.computeConstantValue());
       final name = reader.read('name');
-      final returnType = VariableType(
-        name: getListType(element.returnType)
-            .getDisplayString(withNullability: false),
-        isObject: isObject(getListType(element.returnType)),
-        isList: element.returnType.isDartCoreList,
-        isNullable:
-            element.returnType.nullabilitySuffix == NullabilitySuffix.question,
-      );
+      final returnType = VariableType(element.returnType);
       final parameters = element.parameters
           .map(
             (e) => Variable(
               alias: e.name,
               technicalName: e.name,
-              type: VariableType(
-                name: getListType(e.type)
-                    .getDisplayString(withNullability: false),
-                isObject: isObject(getListType(e.type)),
-                isList: e.type.isDartCoreList,
-                isNullable:
-                    e.type.nullabilitySuffix == NullabilitySuffix.question,
-              ),
+              type: VariableType(e.type),
             ),
           )
           .toList();

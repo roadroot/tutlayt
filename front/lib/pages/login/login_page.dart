@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tutlayt/configuration/config.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:tutlayt/services/auth/auth.service.dart';
 import 'package:tutlayt/services/user/user.model.dart';
-import 'package:tutlayt/services/api_service.dart';
 import 'package:tutlayt/services/util/message.dart';
 import 'package:tutlayt/pagination/route.util.dart';
 import 'package:tutlayt/widget/password_field.dart';
@@ -51,7 +51,8 @@ class LoginPage extends StatelessWidget {
                       visualDensity: VisualDensity.standard,
                     ),
                     onPressed: () async {
-                      UserResult? user = await GetIt.I<ApiService>().login(
+                      UserResult? user =
+                          await GetIt.I<AuthService>().signInCrendetials(
                         username: _username.text,
                         password: _password.text,
                       );

@@ -37,7 +37,13 @@ class GraphQLGenerator extends GeneratorForAnnotation<QlEntity> {
 
   static String genateClass(QlEntityVisitor visitor) {
     StringBuffer output = StringBuffer();
-    output.writeln('class ${visitor.className!.toQlClassName()} {');
+    output.write('class ${visitor.className!.toQlClassName()}');
+    if (visitor.className!.genericTypes.isNotEmpty) {
+      output.write(
+        '<${visitor.className!.genericTypes.map((e) => e.toQlClassName()).join(', ')}>',
+      );
+    }
+    output.writeln(' {');
     output.writeln(genenateFields(visitor));
     output.writeln(generateConstructor(visitor));
     output.writeln(generateQueries(visitor));
@@ -215,7 +221,12 @@ class GraphQLGenerator extends GeneratorForAnnotation<QlEntity> {
       return 'data[\'${field.alias}\'] as List<${field.type.toResultName()}>';
     }
     if (field.type.isObject) {
-      return '${field.type.toResultName()}.fromMap(data[\'${field.alias}\'])';
+      String output =
+          '${field.type.toResultName()}.fromMap(data[\'${field.alias}\'])';
+      if (!field.type.isNullable) {
+        output += '!';
+      }
+      return output;
     }
 
     return 'data[\'${field.alias}\'] as ${field.type.toResultName(withNullability: true)}';

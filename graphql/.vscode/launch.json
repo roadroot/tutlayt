@@ -3,7 +3,7 @@
     "configurations": [
         {
             "name": "Debug Generator",
-            "cwd": "app",
+            "cwd": "dummy_app",
             "request": "launch",
             "program": "build.dart",
             "type": "dart",

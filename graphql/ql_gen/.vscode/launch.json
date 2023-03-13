@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "name": "example",
+            "type": "dart",
+            "request": "launch",
+            "program": "example/ql_gen_example.dart",
+            "args": ["--enable-experiment=records"],
+        }
+    ]
+}

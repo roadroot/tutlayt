@@ -1,5 +1,4 @@
 import 'package:graphql_decorator/annotations.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 
 part 'user.model.g.dart';
 
