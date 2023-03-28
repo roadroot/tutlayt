@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { join } from 'path';
+import { File } from '@prisma/client';
 import { createWriteStream, existsSync } from 'fs';
 import { mkdir } from 'fs/promises';
-import { File } from '@prisma/client';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { FileUpload } from 'graphql-upload-ts';
+import { join } from 'path';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class StorageService {

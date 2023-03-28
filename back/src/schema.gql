@@ -10,6 +10,13 @@ type Answer {
   body: String!
 }
 
+type Comment {
+  id: String!
+  files: [String!]!
+  user: User!
+  body: String!
+}
+
 type Question {
   id: String!
   files: [String!]!
@@ -42,21 +49,14 @@ type User {
   email: String!
   phone: String
   picture: String
-  questions: [Question!]!
-  answers: [Answer!]!
-  comments: [Comment!]!
+  questions: [Question!]
+  answers: [Answer!]
+  comments: [Comment!]
 }
 
 type Token {
   token: String!
   refreshToken: String!
-}
-
-type Comment {
-  id: String!
-  files: [String!]!
-  user: User!
-  body: String!
 }
 
 type Query {

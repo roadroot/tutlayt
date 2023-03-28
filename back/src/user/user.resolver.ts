@@ -25,19 +25,19 @@ export class UserResolver {
     return await this.user.getUser({ id });
   }
 
-  @ResolveField(() => [QuestionDTO], { name: 'questions' })
+  @ResolveField(() => [QuestionDTO], { name: 'questions', nullable: true })
   async resolveQuestions(parent: UserDTO): Promise<QuestionDTO[]> {
     return (
       parent.questions ?? (await this.questions.getQuestionsForUser(parent.id))
     );
   }
 
-  @ResolveField(() => [AnswerDTO], { name: 'answers' })
+  @ResolveField(() => [AnswerDTO], { name: 'answers', nullable: true })
   async resolveAnswers(parent: UserDTO): Promise<AnswerDTO[]> {
     return parent.answers ?? (await this.answer.getAnswersForUser(parent.id));
   }
 
-  @ResolveField(() => [CommentDTO], { name: 'comments' })
+  @ResolveField(() => [CommentDTO], { name: 'comments', nullable: true })
   async resolveComment(parent: UserDTO): Promise<CommentDTO[]> {
     return (
       parent.questions ?? (await this.comment.getCommentsForUser(parent.id))

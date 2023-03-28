@@ -45,3 +45,4 @@ app.*.map.json
 generated*
 Generated*
 *.g.dart
+/lib/ql.dart

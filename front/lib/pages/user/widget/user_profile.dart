@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:tutlayt/services/user/user.model.dart';
+import 'package:tutlayt/ql.dart';
 
 class UserProfile extends StatelessWidget {
   static const double headerHeight = 150;
   static const double avatarHeight = 75;
   const UserProfile(this.user, {super.key});
 
-  final UserResult user;
+  final User user;
 
   @override
   Widget build(BuildContext context) {

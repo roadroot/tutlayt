@@ -20,16 +20,11 @@ class ApiService {
           ),
         );
 
-  Future<T?> query<T>({
-    required String query,
-    required T? Function(Map<String, dynamic> data) parserFn,
-  }) async {
-    QueryResult<T?> result = await client.value.query(QueryOptions(
-      document: gql(query),
-      parserFn: (data) {
-        return parserFn(data);
-      },
-    ));
-    return result.parsedData;
+  Future<Map<String, dynamic>?> executor(String query) async {
+    return await client.value
+        .query(QueryOptions(
+          document: gql(query),
+        ))
+        .then((value) => value.data);
   }
 }

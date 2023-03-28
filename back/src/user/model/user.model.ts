@@ -1,6 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { File, User } from '@prisma/client';
 import { AnswerDTO } from 'src/answer/answer.model';
+import { CommentDTO } from 'src/comment/model/comment.model';
 import { GraphqlModel } from 'src/pagination/graphql_model';
 import { QuestionDTO } from 'src/question/question.model';
 import { StorageService } from 'src/storage/storage.service';
@@ -24,6 +25,9 @@ export class UserDTO extends GraphqlModel {
 
   @Field(() => [AnswerDTO], { nullable: true })
   answers?: AnswerDTO[];
+
+  @Field(() => [CommentDTO], { nullable: true })
+  comments?: AnswerDTO[];
 
   updateDate: Date;
 

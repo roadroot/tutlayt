@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:tutlayt/ql.dart';
 import 'package:tutlayt/services/api_service.dart';
 import 'package:tutlayt/services/auth/auth.service.dart';
 import 'package:tutlayt/services/secured_store.service.dart';
@@ -10,4 +11,6 @@ void setupGetIt() {
   getIt.registerLazySingleton(() => UserService());
   getIt.registerLazySingleton(() => ApiService());
   getIt.registerLazySingleton(() => AuthService());
+  getIt.registerLazySingleton(() => Query(getIt.get<ApiService>().executor));
+  getIt.registerLazySingleton(() => Mutation(getIt.get<ApiService>().executor));
 }
