@@ -1,6 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:tutlayt/services/user/user.model.dart';
+import 'package:tutlayt/ql.dart';
 
 class SecuredStoreService {
   static const String _tokenEntry = 'token';
@@ -21,8 +21,8 @@ class SecuredStoreService {
     await _storage.write(key: _refreshTokenEntry, value: refreshToken);
   }
 
-  Future<UserResult?> getUserOrCurrentUser(String? userId) async {
+  Future<User?> getUserOrCurrentUser(String? userId) async {
     final token = await jwtToken;
-    return token == null ? null : UserResult.fromMap(JwtDecoder.decode(token));
+    return token == null ? null : User.fromMap(JwtDecoder.decode(token));
   }
 }

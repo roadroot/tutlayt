@@ -4,7 +4,7 @@ import { UserDTO } from 'src/user/model/user.model';
 
 @ObjectType('Comment')
 export class CommentDTO extends HasFilesGraphqlModel {
-  @Field({ nullable: true })
+  @Field(() => UserDTO, { nullable: true })
   user?: UserDTO;
 
   userId: string;

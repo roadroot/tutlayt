@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tutlayt/pagination/page.model.dart';
 import 'package:tutlayt/pagination/route.util.dart';
-import 'package:tutlayt/services/user/user.model.dart';
+import 'package:tutlayt/ql.dart';
 import 'package:tutlayt/services/user/user.service.dart';
 
 class DefaultScaffold extends StatelessWidget {
@@ -48,7 +48,7 @@ class DefaultScaffold extends StatelessWidget {
                           Navigator.pushReplacementNamed(context, page.route),
                     ))
                 .toList();
-            UserResult? data = user.data;
+            User? data = user.data;
             if (data != null) {
               widgets.insert(
                 0,
