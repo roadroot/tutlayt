@@ -46,3 +46,5 @@ generated*
 Generated*
 *.g.dart
 /lib/ql.dart
+
+/tmp

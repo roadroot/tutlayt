@@ -11,14 +11,16 @@ class QlField {
   String get constructorField =>
       '${type.isNullable ? '' : 'required '}this.$name,';
   String get parameter => '$this,';
+  String get nameWithNullable => '$name${type.isNullable ? '?' : ''}';
 
-  String get input {
+  String input(bool inMethod) {
     StringBuffer output = StringBuffer();
     if (type.isNullable) {
       output.writeln('if ($name != null) {');
     }
     if (type.isString) {
-      output.write('output.writeln(\'$name: "\$$name"\');');
+      output.write(
+          'output.writeln(\'$name: "\${$name${type.isNullable && !inMethod ? '?' : ''}.replaceAll(\'\\\'\', \'\\\\\\\'\')}"\');');
     } else if (type.isList) {
       output.writeln('output.writeln(\'$name: [\');');
       output.writeln('output.writeln($nameWithRequired.join(\',\\n\'));');

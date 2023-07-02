@@ -71,7 +71,8 @@ enum Regex {
   username(r'^[a-zA-Z][a-zA-Z0-9_\.]+$'),
   password(r'.{8,32}'),
   email(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"),
-  id(r"[a-zA-Z0-9\-]+");
+  id(r"[a-zA-Z0-9\-]+"),
+  ask(r"ask");
 
   final String value;
 

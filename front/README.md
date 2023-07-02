@@ -23,15 +23,13 @@ Create a `.env` file respecting the template in `.env.template`. You can run thi
 ```bash
 cp .env.template .env
 ```
-### build_runner
-To generate graphql files run 
+### ql_gen
+To generate graphql api run
 ```bash
-flutter pub run build_runner build --delete-conflicting-outputs
+dart run ql_gen -s ../src/schema.gql
 ```
-To watch for changes and generate graphql files run 
-```bash
-flutter pub run build_runner watch --delete-conflicting-outputs
-```
+
+Please read the documentation in *ql_gen* the [README.md](../ql_gen/README.md) for more information.
 
 ### Cors
 Consider installing  *flutter_cors* to enable or disable CORS.
@@ -43,4 +41,4 @@ Consider installing  *flutter_cors* to enable or disable CORS.
 * Run `flutter_cors --enabke` to enable CORS
 
 ### l10n
-To generate translations run `flutter gen-l10n`. 
+To generate translations run `flutter gen-l10n`.

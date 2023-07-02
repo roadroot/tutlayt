@@ -6,18 +6,6 @@ class QlObject {
   final List<QlField> fields;
   final List<QlMethod> methods;
   final QlObjectType type;
-  static final String constructMethod = '''
-  dynamic construct(dynamic data,
-      {dynamic Function(Map<String, dynamic>)? fromMap}) {
-    if (data is List) {
-      return data.map((e) => construct(e, fromMap: fromMap));
-    }
-    if (fromMap != null) {
-      return fromMap(data);
-    }
-    return data;
-  }
-  ''';
 
   bool get hasUploadType => fields.any((e) => e.type.isUploadType);
 
@@ -83,7 +71,7 @@ class QlObject {
     output.writeln('StringBuffer output = StringBuffer();');
     output.writeln('output.writeln(\'{\');');
     for (QlField field in fields) {
-      output.writeln(field.input);
+      output.writeln(field.input(false));
     }
     output.write('output.writeln(\'}\');');
     output.write('return output.toString();');
@@ -92,7 +80,28 @@ class QlObject {
   }
 
   String get fromMap {
-    return 'factory $name.fromMap(Map<String, dynamic> data) {return $name(${fields.map((e) => '${e.name}: data[\'${e.name}\'],').join('')});}';
+    StringBuffer output = StringBuffer();
+    output.writeln('factory $name.fromMap(Map<String, dynamic> data) {');
+    output.writeln('return $name(');
+    for (QlField field in fields) {
+      if (field.type.isBasicTypeOrBasicList) {
+        output.writeln('${field.name}: data[\'${field.name}\'],');
+      } else {
+        if (field.type.isList) {
+          output.writeln(
+              '${field.name}: construct(data[\'${field.name}\'], fromMap: ${field.type.coreType.name}.fromMap),');
+        } else if (field.type.isNullable) {
+          output.writeln(
+              '${field.name}: data[\'${field.name}\'] == null ? null : ${field.type.name}.fromMap(data[\'${field.name}\']),');
+        } else {
+          output.writeln(
+              '${field.name}: ${field.type.name}.fromMap(data[\'${field.name}\']),');
+        }
+      }
+    }
+    output.writeln(');');
+    output.writeln('}');
+    return output.toString();
   }
 
   @override
@@ -104,7 +113,6 @@ class QlObject {
     if (type == QlObjectType.type) {
       output.writeln(fromMap);
     }
-    output.writeln(constructMethod);
     output.writeln(classMethods);
     output.writeln(toStringMethod);
     output.writeln('}');
@@ -151,9 +159,10 @@ class QlObjectSelector {
     return output.toString();
   }
 
-  String get selectGetter {
+  String get toStringMethod {
     StringBuffer output = StringBuffer();
-    output.writeln('String select() {');
+    output.writeln('@override');
+    output.writeln('String toString() {');
     output.writeln('StringBuffer output = StringBuffer();');
     output.writeln('output.writeln(\'{\');');
     for (QlField field in object.nonNullableBasicFields) {
@@ -164,43 +173,15 @@ class QlObjectSelector {
     }
     for (QlField field in object.nullableNonBasicFields) {
       output.writeln('if(${field.name} != null) {');
-      output.writeln(
-          'output.writeln(\'${field.name} \${${field.name}!.select()}\');');
+      output.writeln('output.writeln(\'${field.name} \${${field.name}!}\');');
       output.writeln('}');
     }
     for (QlField field in object.nonNullableNonBasicFields) {
-      output.writeln(
-          'output.writeln(\'${field.name} \${${field.name}.select()}\');');
+      output.writeln('output.writeln(\'${field.name} \$${field.name}\');');
     }
     output.write('output.writeln(\'}\');');
     output.write('return output.toString();');
     output.write('}');
-    return output.toString();
-  }
-
-  String get toStringMethod {
-    StringBuffer output = StringBuffer();
-    output.writeln('@override');
-    output.writeln('String toString() {');
-    output.writeln('StringBuffer output = StringBuffer();');
-    output.writeln('output.writeln(\'{\');');
-    for (QlField field in object.fields) {
-      if (field.type.isNullable) {
-        if (field.type.isBasicTypeOrBasicList) {
-          output.writeln('if(${field.name}) {');
-        } else {
-          output.writeln('if(${field.name} != null) {');
-        }
-      }
-      output.writeln('output.writeln(\'${field.name}\');');
-      if (field.type.isNullable) {
-        output.writeln('}');
-      }
-    }
-    output.writeln('output.writeln(\'}\');');
-    output.writeln('return output.toString();');
-    output.writeln('}');
-
     return output.toString();
   }
 
@@ -209,7 +190,7 @@ class QlObjectSelector {
     if (object.fields.isEmpty) {
       return '';
     }
-    return 'class ${object.selectorName} { $fields $constructor $selectGetter $toStringMethod }';
+    return 'class ${object.selectorName} { $fields $constructor $toStringMethod }';
   }
 }
 

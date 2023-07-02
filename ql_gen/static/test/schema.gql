@@ -12,6 +12,6 @@ type Book {
 
 type Query {
   author(id: ID!): Author
-  book(id: ID!): Book
+  book(id: ID!): Book!
   name(id: ID!): String
 }

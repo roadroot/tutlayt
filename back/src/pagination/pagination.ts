@@ -34,14 +34,14 @@ export class PageInfoType {
   @Field(() => String, { nullable: true })
   endCursor?: string;
 
-  @Field(() => Boolean)
-  hasNextPage: boolean;
+  @Field(() => Boolean, { nullable: true })
+  hasNextPage?: boolean;
 
-  @Field(() => Int)
-  pageSize: number;
+  @Field(() => Int, { nullable: true })
+  pageSize?: number;
 
-  @Field(() => Int)
-  count: number;
+  @Field(() => Int, { nullable: true })
+  count?: number;
 
   constructor(nodes: GraphqlModel[], pageSize: number) {
     this.hasNextPage = nodes.length > pageSize;
@@ -61,7 +61,7 @@ export class PageInfoType {
 export class PaginatedType<T extends GraphqlModel> {
   edges: EdgeType<T>[];
   nodes: T[];
-  @Field()
+  @Field({ nullable: true })
   pageInfo: PageInfoType;
 
   constructor(nodes: T[], pageSize: number) {
@@ -80,12 +80,15 @@ export function Paginated<T extends GraphqlModel>(
 ): Type<PaginatedType<T>> {
   @ObjectType(`${name ?? classRef.name}Edges`)
   abstract class EdgeTypeImpl<T extends GraphqlModel> extends EdgeType<T> {
-    @Field(() => classRef)
+    @Field(() => classRef, { nullable: true })
     node: T;
   }
 
   @ObjectType({ isAbstract: true })
   class PaginatedTypeImpl extends PaginatedType<T> {
+    @Field(() => [classRef], { nullable: true })
+    nodes: T[];
+
     @Field(() => [EdgeTypeImpl], { nullable: true })
     edges: EdgeTypeImpl<T>[];
   }
