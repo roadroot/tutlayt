@@ -35,7 +35,7 @@ class QlMethod {
     }
     output.writeln('output.writeln(\'$name(\');');
     for (QlField e in parameters) {
-      output.writeln(e.input);
+      output.writeln(e.input(true));
     }
     output.writeln('output.writeln(\')\');');
     if (!returnType.isBasicTypeOrBasicList) {
@@ -76,7 +76,7 @@ class QlMethod {
       output.writeln('\$selector,');
     }
     for (QlField e in parameters) {
-      output.writeln('${e.nameWithRequired},');
+      output.writeln('${e.name},');
     }
 
     output.write(')))?[\'$name\'],');

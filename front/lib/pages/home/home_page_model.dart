@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tutlayt/pages/home/home_page.dart';
 import 'package:tutlayt/pagination/page.model.dart';
 import 'package:tutlayt/pagination/route.util.dart';
 
@@ -12,5 +13,5 @@ class HomePageModel extends PageModel {
         );
 
   @override
-  Widget get body => const Center(child: Text('Home'));
+  Widget get body => const HomePage();
 }

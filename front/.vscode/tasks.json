@@ -5,7 +5,7 @@
             "label": "Generate ql file",
             "type": "dart",
             "command": "dart",
-            "args": ["run", "--enable-experiment=records", "ql_gen", "-s", "..\\back\\src\\schema.gql", "-t", ".\\lib\\ql.dart"],
+            "args": ["run", "ql_gen", "-s", "..\\back\\src\\schema.gql", "-t", ".\\lib\\ql.dart"],
             "presentation": {
                 "reveal": "always"
             },

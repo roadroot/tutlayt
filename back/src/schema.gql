@@ -27,20 +27,21 @@ type Question {
 
 type QuestionEdges {
   cursor: String!
-  node: Question!
+  node: Question
 }
 
 type QuestionPage {
-  pageInfo: PageInfoType!
+  pageInfo: PageInfoType
+  nodes: [Question!]
   edges: [QuestionEdges!]
 }
 
 type PageInfoType {
   startCursor: String
   endCursor: String
-  hasNextPage: Boolean!
-  pageSize: Int!
-  count: Int!
+  hasNextPage: Boolean
+  pageSize: Int
+  count: Int
 }
 
 type User {

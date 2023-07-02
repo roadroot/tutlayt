@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tutlayt/pages/ask/ask_page_model.dart';
 import 'package:tutlayt/pages/home/home_page_model.dart';
 import 'package:tutlayt/pages/login/login_page_model.dart';
+import 'package:tutlayt/pages/questions/questions_page_model.dart';
 import 'package:tutlayt/pages/register/register_page_model.dart';
 import 'package:tutlayt/pages/user/user_page_model.dart';
 import 'package:tutlayt/services/util/util.dart';
@@ -11,6 +13,8 @@ abstract class RouteUtil {
   static const String homeRoute = "/";
   static const String registerRoute = "/register";
   static const String userRoute = "/user";
+  static const String questionsRoute = "/questions";
+  static const String askRoute = "/ask";
   static final String userRoutePattern =
       "^$userRoute(/(?<userId>${Regex.id.value}))?";
 
@@ -19,6 +23,8 @@ abstract class RouteUtil {
     LoginPageModel(),
     RegisterPageModel(),
     UserPageModel(),
+    const QuestionsPageModel(),
+    const AskPageModel(),
   ];
 
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {

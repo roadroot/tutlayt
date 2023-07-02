@@ -19,7 +19,7 @@ Given a GraphQL schema, QlGen generates dart code for the following:
 - [x] Types
 - [x] Queries
 - [x] Mutations
-- [x] Subscriptions
+- [-] Subscriptions (not yet tested)
 - [ ] Fragments
 - [ ] Enums
 - [ ] Input Objects
@@ -52,7 +52,7 @@ To use this package, add `ql_gen` as a [dependency in your pubspec.yaml file](ht
 <!-- command and result example -->
 
 ```bash
-dart run --enable-experiment=records .\bin\ql.dart --help
+dart run .\bin\ql.dart --help
 ```
 
 ```bash
@@ -64,7 +64,7 @@ dart run --enable-experiment=records .\bin\ql.dart --help
 ```
 
 ```bash
-dart run --enable-experiment=records .\bin\ql.dart -s schema.gql -t ql.dart
+dart run .\bin\ql.dart -s schema.gql -t ql.dart
 ```
     
 ```graphql
@@ -207,5 +207,5 @@ class BookSelector {
     return output.toString();
   }
 }
-```	
+```
 
