@@ -20,7 +20,7 @@ class QlField {
     }
     if (type.isString) {
       output.write(
-          'output.writeln(\'$name: "\${$name${type.isNullable && !inMethod ? '?' : ''}.replaceAll(\'\\\'\', \'\\\\\\\'\')}"\');');
+          'output.writeln(\'$name: "\${$name${type.isNullable && !inMethod ? '?' : ''}.replaceAll(\'\\\'\', \'\\\\"\')}"\');');
     } else if (type.isList) {
       output.writeln('output.writeln(\'$name: [\');');
       output.writeln('output.writeln($nameWithRequired.join(\',\\n\'));');

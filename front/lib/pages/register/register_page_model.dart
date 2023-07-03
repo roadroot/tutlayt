@@ -6,9 +6,12 @@ import 'package:tutlayt/pagination/route.util.dart';
 class RegisterPageModel extends PageModel {
   RegisterPageModel()
       : super(
-          route: RouteUtil.registerRoute,
-          title: const Text('Register'),
-        );
+            route: RouteUtil.registerRoute,
+            title: const Text('Register'),
+            drawer: const DrawerTile(
+              title: Text('Register'),
+              leading: Icon(CupertinoIcons.person_badge_plus),
+            ));
 
   @override
   Widget get body => RegisterPage();

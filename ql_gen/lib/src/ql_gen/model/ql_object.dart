@@ -85,11 +85,16 @@ class QlObject {
     output.writeln('return $name(');
     for (QlField field in fields) {
       if (field.type.isBasicTypeOrBasicList) {
-        output.writeln('${field.name}: data[\'${field.name}\'],');
+        if (field.type.isList) {
+          output.writeln(
+              '${field.name}: data[\'${field.name}\']?.cast<${field.type.coreType.name}>(),');
+        } else {
+          output.writeln('${field.name}: data[\'${field.name}\'],');
+        }
       } else {
         if (field.type.isList) {
           output.writeln(
-              '${field.name}: construct(data[\'${field.name}\'], fromMap: ${field.type.coreType.name}.fromMap),');
+              '${field.name}: construct(data[\'${field.name}\'], fromMap: ${field.type.coreType.name}.fromMap)?.cast<${field.type.coreType.name}>(),');
         } else if (field.type.isNullable) {
           output.writeln(
               '${field.name}: data[\'${field.name}\'] == null ? null : ${field.type.name}.fromMap(data[\'${field.name}\']),');
