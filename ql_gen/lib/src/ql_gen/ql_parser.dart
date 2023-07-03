@@ -15,7 +15,7 @@ class QlParser {
       {dynamic Function(Map<String, dynamic>)? fromMap}) {
     if(data == null) {return null;}
     if (data is List) {
-      return data.map((e) => construct(e, fromMap: fromMap));
+    return data.map((e) => construct(e, fromMap: fromMap)).toList();
     }
     if (fromMap != null) {
       return fromMap(data);

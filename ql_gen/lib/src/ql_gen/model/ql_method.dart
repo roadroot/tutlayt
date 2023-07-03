@@ -48,17 +48,6 @@ class QlMethod {
     return output.toString();
   }
 
-  dynamic construct(dynamic data,
-      {dynamic Function(Map<String, dynamic>)? fromMap}) {
-    if (data is List) {
-      return data.map((e) => construct(e, fromMap: fromMap));
-    }
-    if (fromMap != null) {
-      return fromMap(data);
-    }
-    return data;
-  }
-
   String get method {
     StringBuffer output = StringBuffer();
 
