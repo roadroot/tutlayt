@@ -13,5 +13,5 @@ class HomePageModel extends PageModel {
         );
 
   @override
-  Widget get body => const HomePage();
+  Widget body(Map<String, String?> params) => const HomePage();
 }

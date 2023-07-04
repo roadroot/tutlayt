@@ -6,7 +6,8 @@ import 'package:tutlayt/ql.dart';
 import 'package:tutlayt/services/user/user.service.dart';
 
 class DefaultScaffold extends StatelessWidget {
-  const DefaultScaffold({this.route, this.pageModel, super.key, this.body})
+  const DefaultScaffold(
+      {required this.params, this.route, this.pageModel, super.key, this.body})
       : assert(
             pageModel == null && route != null ||
                 pageModel != null && route == null,
@@ -14,13 +15,9 @@ class DefaultScaffold extends StatelessWidget {
 
   final Widget? body;
   final PageModel? pageModel;
+  final Map<String, String?> params;
 
   final String? route;
-
-  static Map<String, Widget Function(BuildContext)> getRoutes() {
-    return Map.fromEntries(RouteUtil.pages.map((page) =>
-        MapEntry(page.route, (context) => DefaultScaffold(route: page.route))));
-  }
 
   PageModel getPage(String route) {
     return RouteUtil.pages.firstWhere((page) => page.route == route);
@@ -33,7 +30,7 @@ class DefaultScaffold extends StatelessWidget {
       appBar: AppBar(
         title: page.title,
       ),
-      body: body ?? page.body,
+      body: body ?? page.body(params),
       drawer: FutureBuilder(
           future: GetIt.I<UserService>().user,
           builder: (context, user) {

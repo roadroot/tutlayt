@@ -11,5 +11,5 @@ class LoginPageModel extends PageModel {
         );
 
   @override
-  Widget get body => LoginPage();
+  Widget body(Map<String, String?> params) => LoginPage();
 }

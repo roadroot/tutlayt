@@ -14,5 +14,5 @@ class RegisterPageModel extends PageModel {
             ));
 
   @override
-  Widget get body => RegisterPage();
+  Widget body(Map<String, String?> params) => RegisterPage();
 }
