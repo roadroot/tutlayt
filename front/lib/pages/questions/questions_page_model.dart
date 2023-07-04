@@ -16,5 +16,5 @@ class QuestionsPageModel extends PageModel {
         );
 
   @override
-  Widget get body => const QuestionsPage();
+  Widget body(Map<String, String?> params) => const QuestionsPage();
 }

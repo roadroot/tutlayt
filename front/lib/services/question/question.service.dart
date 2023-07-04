@@ -16,4 +16,9 @@ class QuestionService {
     return await GetIt.I<Mutation>().createQuestion(
         const QuestionSelector(), QuestionData(title: title, body: body));
   }
+
+  Future<Question?> getQuestion(String id) async {
+    return await GetIt.I<Query>()
+        .question(const QuestionSelector(user: UserSelector()), id);
+  }
 }

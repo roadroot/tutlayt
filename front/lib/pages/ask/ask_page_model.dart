@@ -9,9 +9,11 @@ class AskPageModel extends PageModel {
           route: RouteUtil.askRoute,
           title: const Text('Ask a question'),
           drawer: const DrawerTile(
-              title: Text('Ask a question'), leading: Icon(Icons.info)),
+            title: Text('Ask a question'),
+            leading: Icon(Icons.info),
+          ),
         );
 
   @override
-  Widget get body => AskPage();
+  Widget body(Map<String, String?> params) => AskPage();
 }

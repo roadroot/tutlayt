@@ -15,17 +15,18 @@ abstract class PageModel {
   final String? _routePatern;
   String get routePatern => _routePatern ?? '^$route\$';
   final Widget title;
-  Widget get body;
   final DrawerTile? drawer;
   final Widget Function(BuildContext context, Map<String, String?> params)?
       _builder;
 
-  get builder => _builder ?? defaultBuilder;
+  Widget Function(BuildContext, Map<String, String?>) get builder =>
+      _builder ?? defaultBuilder;
 
-  Map<String, String?> get params => const {};
+  List<String> get routeParams => const [];
+  Widget body(Map<String, String?> params);
 
   Widget defaultBuilder(BuildContext context, Map<String, String?> params) {
-    return DefaultScaffold(route: route);
+    return DefaultScaffold(route: route, params: params);
   }
 }
 
