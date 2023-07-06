@@ -1,6 +1,13 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { AnswerDTO } from 'src/answer/answer.model';
+import {
+  Args,
+  Int,
+  Mutation,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
+import { AnswerDTO, AnswerPage } from 'src/answer/answer.model';
 import { JwtAuthGuard } from 'src/auth/strategy/jwt/jwt.guard';
 import { CurrentUser } from 'src/auth/util/current_user.util';
 import { UserDTO } from 'src/user/model/user.model';
@@ -49,5 +56,19 @@ export default class AnswerResolver {
     @CurrentUser() user: UserDTO,
   ): Promise<AnswerDTO> {
     return await this.answer.delete(id, user.id);
+  }
+
+  @Query(() => AnswerPage, { name: 'answers' })
+  async getAnswers(
+    @Args('take', { type: () => Int, nullable: true }) take = 20,
+    @Args('cursor', { type: () => String, nullable: true }) cursor?: string,
+    @Args('questionId', { type: () => String, nullable: true })
+    questionId?: string,
+    @Args('userId', { type: () => String, nullable: true }) userId?: string,
+  ): Promise<AnswerPage> {
+    return new AnswerPage(
+      await this.answer.getAnswers({ take, cursor, questionId, userId }),
+      take,
+    );
   }
 }

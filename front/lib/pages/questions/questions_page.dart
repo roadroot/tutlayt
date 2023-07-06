@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:tutlayt/configuration/config.dart';
 import 'package:tutlayt/pages/user/widget/loading.dart';
 import 'package:tutlayt/pages/user/widget/user_not_found.dart';
 import 'package:tutlayt/services/question/question.service.dart';
@@ -13,7 +14,7 @@ class QuestionsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        width: MediaQuery.of(context).size.width - 300,
+        width: Config.defaultPageWidth,
         child: FutureBuilder(
           future: GetIt.I<QuestionService>().getQuestions(),
           builder: (context, snapshot) {
@@ -38,7 +39,8 @@ class QuestionsPage extends StatelessWidget {
                                 const Divider(),
                               ],
                             )
-                            .toList(),
+                            .toList()
+                          ..insert(0, const Divider()),
                       );
           },
         ),

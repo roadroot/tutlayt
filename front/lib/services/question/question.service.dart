@@ -3,12 +3,13 @@ import 'package:tutlayt/ql.dart';
 
 class QuestionService {
   Future<List<Question>?> getQuestions() async {
-    var a = await GetIt.I<Query>().questions(
-        const QuestionPageSelector(
-            nodes: QuestionSelector(user: UserSelector())),
-        20,
-        null);
-    return (a)?.nodes?.toList();
+    return (await GetIt.I<Query>().questions(
+            const QuestionPageSelector(
+                nodes: QuestionSelector(user: UserSelector())),
+            20,
+            null))
+        .nodes
+        .toList();
   }
 
   Future<Question?> askQuestion(
