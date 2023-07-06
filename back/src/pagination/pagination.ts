@@ -80,16 +80,16 @@ export function Paginated<T extends GraphqlModel>(
 ): Type<PaginatedType<T>> {
   @ObjectType(`${name ?? classRef.name}Edges`)
   abstract class EdgeTypeImpl<T extends GraphqlModel> extends EdgeType<T> {
-    @Field(() => classRef, { nullable: true })
+    @Field(() => classRef)
     node: T;
   }
 
   @ObjectType({ isAbstract: true })
   class PaginatedTypeImpl extends PaginatedType<T> {
-    @Field(() => [classRef], { nullable: true })
+    @Field(() => [classRef])
     nodes: T[];
 
-    @Field(() => [EdgeTypeImpl], { nullable: true })
+    @Field(() => [EdgeTypeImpl])
     edges: EdgeTypeImpl<T>[];
   }
   return PaginatedTypeImpl;

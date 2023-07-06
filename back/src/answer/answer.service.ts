@@ -3,6 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { Base64 } from 'src/pagination/pagination';
 import { StorageService } from 'src/storage/storage.service';
 import { PrismaService } from './../prisma/prisma.service';
 import { AnswerDTO } from './answer.model';
@@ -70,6 +71,36 @@ export class AnswerService {
       },
     });
     return AnswerDTO.from(completeAnswer);
+  }
+
+  async getAnswers({
+    take = 20,
+    cursor,
+    include = { user: false },
+    questionId,
+    userId,
+  }: {
+    take?: number;
+    cursor?: string;
+    userId?: string;
+    questionId?: string;
+    include?: { user: boolean };
+  }): Promise<AnswerDTO[]> {
+    return (
+      await this.prisma.answer.findMany({
+        take: take + 1,
+        include: { ...include, files: true },
+        where: {
+          questionId,
+          userId,
+        },
+        cursor: !!cursor
+          ? {
+              id: Base64.decode(cursor),
+            }
+          : undefined,
+      })
+    ).map((answer) => AnswerDTO.from(answer));
   }
 
   async delete(id: string, userId: string): Promise<AnswerDTO> {

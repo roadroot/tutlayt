@@ -51,8 +51,7 @@ class QlMethod {
   String get method {
     StringBuffer output = StringBuffer();
 
-    output.writeln(
-        'Future<$returnType${returnType.isNullable ? '' : '?'}> $name (');
+    output.writeln('Future<$returnType> $name (');
     if (!returnType.isBasicTypeOrBasicList) {
       output.writeln('${returnType.selectorName} \$selector,');
     }

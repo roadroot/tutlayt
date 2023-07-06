@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:tutlayt/ql.dart';
+import 'package:tutlayt/services/answer/answer_service.dart';
 import 'package:tutlayt/services/api_service.dart';
 import 'package:tutlayt/services/auth/auth.service.dart';
 import 'package:tutlayt/services/question/question.service.dart';
@@ -13,6 +14,7 @@ void setupGetIt() {
   getIt.registerLazySingleton(() => ApiService());
   getIt.registerLazySingleton(() => AuthService());
   getIt.registerLazySingleton(() => QuestionService());
+  getIt.registerLazySingleton(() => AnswerService());
   getIt.registerLazySingleton(() => Query(getIt.get<ApiService>().executor));
   getIt.registerLazySingleton(() => Mutation(getIt.get<ApiService>().executor));
 }

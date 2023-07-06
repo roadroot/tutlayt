@@ -4,6 +4,13 @@ class QlField {
   final String name;
   final QlType type;
 
+  static const Map<String, String> _specialCaractes = {
+    r'\n': r'\\n',
+    r'\r': r'\\r',
+    r'\t': r'\\t',
+    '"': r'\\\"',
+  };
+
   const QlField({required this.name, required this.type});
 
   String get nameWithRequired => '$name${type.isNullable ? '!' : ''}';
@@ -20,7 +27,7 @@ class QlField {
     }
     if (type.isString) {
       output.write(
-          'output.writeln(\'$name: "\${$name${type.isNullable && !inMethod ? '?' : ''}.replaceAll(\'\\\'\', \'\\\\"\')}"\');');
+          'output.writeln(\'$name: "\${$name${type.isNullable && !inMethod ? '?' : ''}${_specialCaractes.entries.map((e) => '.replaceAll(\'${e.key}\', r\'${e.value}\')').reduce((value, element) => value + element)}}"\');');
     } else if (type.isList) {
       output.writeln('output.writeln(\'$name: [\');');
       output.writeln('output.writeln($nameWithRequired.join(\',\\n\'));');

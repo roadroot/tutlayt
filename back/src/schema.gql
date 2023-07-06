@@ -10,6 +10,25 @@ type Answer {
   body: String!
 }
 
+type AnswerEdges {
+  cursor: String!
+  node: Answer!
+}
+
+type AnswerPage {
+  pageInfo: PageInfoType
+  nodes: [Answer!]!
+  edges: [AnswerEdges!]!
+}
+
+type PageInfoType {
+  startCursor: String
+  endCursor: String
+  hasNextPage: Boolean
+  pageSize: Int
+  count: Int
+}
+
 type Comment {
   id: String!
   files: [String!]!
@@ -27,21 +46,13 @@ type Question {
 
 type QuestionEdges {
   cursor: String!
-  node: Question
+  node: Question!
 }
 
 type QuestionPage {
   pageInfo: PageInfoType
-  nodes: [Question!]
-  edges: [QuestionEdges!]
-}
-
-type PageInfoType {
-  startCursor: String
-  endCursor: String
-  hasNextPage: Boolean
-  pageSize: Int
-  count: Int
+  nodes: [Question!]!
+  edges: [QuestionEdges!]!
 }
 
 type User {
@@ -65,6 +76,7 @@ type Query {
   question(id: String!): Question!
   questions(take: Int, cursor: String): QuestionPage!
   answer(id: String!): Answer!
+  answers(take: Int, cursor: String, questionId: String, userId: String): AnswerPage!
   comment(id: String!): Comment!
 }
 
