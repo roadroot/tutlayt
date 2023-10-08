@@ -12,6 +12,7 @@ class AskPageModel extends PageModel {
             title: Text('Ask a question'),
             leading: Icon(Icons.info),
           ),
+          onlyWhenConnected: true,
         );
 
   @override

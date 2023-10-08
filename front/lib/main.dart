@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:get_it/get_it.dart';
+import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logging/logging.dart';
+import 'package:tutlayt/l10n/dicos.dart';
 import 'package:tutlayt/pagination/route.util.dart';
 import 'package:tutlayt/services/api_service.dart';
 import 'package:tutlayt/services/util/locator.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
-  await initHiveForFlutter();
-  setupGetIt();
   hierarchicalLoggingEnabled = true;
+  await initHiveForFlutter();
+  registerServices();
   runApp(const MyApp());
 }
 
@@ -24,18 +23,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GraphQLProvider(
-      client: GetIt.I<ApiService>().client,
-      child: MaterialApp(
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
+      client: Get.find<ApiService>().client,
+      child: GetMaterialApp(
+        translations: Dicos(),
         supportedLocales: const [
           Locale('en', ''),
           Locale('fr', ''),
         ],
+        locale: Get.deviceLocale,
+        fallbackLocale: const Locale('en', 'US'),
         title: 'Tutlayt',
         theme: ThemeData(
           primarySwatch: Colors.green,

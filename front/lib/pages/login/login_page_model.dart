@@ -8,6 +8,11 @@ class LoginPageModel extends PageModel {
       : super(
           route: RouteUtil.loginRoute,
           title: const Text('Login'),
+          drawer: const DrawerTile(
+            title: Text('Login'),
+            leading: Icon(CupertinoIcons.person),
+          ),
+          onlyWhenDisonnected: true,
         );
 
   @override

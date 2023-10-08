@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tutlayt/pages/ask/ask_page_model.dart';
+import 'package:tutlayt/pages/disconnect/disconnect_page_model.dart';
 import 'package:tutlayt/pages/home/home_page_model.dart';
 import 'package:tutlayt/pages/login/login_page_model.dart';
 import 'package:tutlayt/pages/question/question_page_model.dart';
 import 'package:tutlayt/pages/questions/questions_page_model.dart';
 import 'package:tutlayt/pages/register/register_page_model.dart';
 import 'package:tutlayt/pages/user/user_page_model.dart';
+import 'package:tutlayt/services/controller.dart';
 import 'package:tutlayt/services/util/util.dart';
 import 'package:tutlayt/pagination/page.model.dart';
 
@@ -21,7 +24,7 @@ abstract class RouteUtil {
   static final String questionRoutePattern =
       "^${RouteUtil.questionsRoute}/(?<questionId>${Regex.id.value})";
 
-  static List<PageModel> pages = [
+  static final List<PageModel> allPages = [
     const HomePageModel(),
     LoginPageModel(),
     RegisterPageModel(),
@@ -29,12 +32,21 @@ abstract class RouteUtil {
     QuestionPageModel(),
     const QuestionsPageModel(),
     const AskPageModel(),
+    DisconenctPageModel(),
   ];
 
-  static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
+  static List<PageModel> get routedPages => allPages
+      .where((element) => element.route != null)
+      .toList(growable: false);
+
+  static List<PageModel> get pages => Get.find<Controller>().connected
+      ? allPages.where((element) => !element.onlyWhenDisonnected).toList()
+      : allPages.where((element) => !element.onlyWhenConnected).toList();
+
+  static Route? onGenerateRoute(RouteSettings settings) {
     String? name = settings.name;
     if (name != null) {
-      for (PageModel page in pages) {
+      for (PageModel page in routedPages) {
         final match = RegExp(page.routePatern).firstMatch(name);
         if (match != null) {
           Map<String, String?> params = {};

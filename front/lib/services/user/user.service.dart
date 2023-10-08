@@ -1,13 +1,10 @@
-import 'package:get_it/get_it.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:get/get.dart';
 import 'package:tutlayt/ql.dart';
 import 'package:tutlayt/services/secured_store.service.dart';
 
 class UserService {
-  Future<User?> get user async {
-    final token = await GetIt.I<SecuredStoreService>().jwtToken;
-    return token == null ? null : User.fromMap(JwtDecoder.decode(token));
-  }
+  /// get the current logged user
+  Future<User?> get user => SecuredStoreService().currentUser;
 
   /// get the user with id [userId]
   /// or return the current logged user if there is one and if
@@ -19,6 +16,6 @@ class UserService {
       return await user;
     }
     // await Future.delayed(const Duration(seconds: 3)); // TODO: remove this
-    return await GetIt.I<Query>().user(const UserSelector(), userId);
+    return await Get.find<Query>().user(const UserSelector(), userId);
   }
 }

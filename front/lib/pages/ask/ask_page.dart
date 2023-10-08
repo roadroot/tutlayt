@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
+import 'package:get/get.dart';
 import 'package:tutlayt/services/question/question.service.dart';
 
 class AskPage extends StatefulWidget {
@@ -92,7 +92,7 @@ class _AskPageState extends State<AskPage> {
                           ),
                         );
                         try {
-                          GetIt.I<QuestionService>().askQuestion(
+                          Get.find<QuestionService>().askQuestion(
                             title: widget.titleController.text,
                             body: widget.bodyController.text,
                             tags: widget.tags,

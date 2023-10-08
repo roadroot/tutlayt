@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:get_it/get_it.dart';
+import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logging/logging.dart';
 import 'package:tutlayt/services/secured_store.service.dart';
@@ -14,7 +14,7 @@ class ApiService {
           GraphQLClient(
             link: AuthLink(
               getToken: () async =>
-                  'Bearer ${await GetIt.I<SecuredStoreService>().jwtToken}',
+                  'Bearer ${await Get.find<SecuredStoreService>().jwtToken}',
             ).concat(HttpLink(
               dotenv.env['API_URL'] ?? '',
             )),

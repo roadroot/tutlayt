@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+import 'package:get/get.dart';
 import 'package:tutlayt/configuration/config.dart';
 import 'package:tutlayt/pages/user/widget/loading.dart';
 import 'package:tutlayt/pages/user/widget/user_not_found.dart';
@@ -16,7 +16,7 @@ class QuestionsPage extends StatelessWidget {
       child: SizedBox(
         width: Config.defaultPageWidth,
         child: FutureBuilder(
-          future: GetIt.I<QuestionService>().getQuestions(),
+          future: Get.find<QuestionService>().getQuestions(),
           builder: (context, snapshot) {
             return snapshot.connectionState != ConnectionState.done
                 ? const Loading()
