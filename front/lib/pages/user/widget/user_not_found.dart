@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
+import 'package:tutlayt/l10n/abstract_language.dart';
 
 class UserNotFound extends StatelessWidget {
   const UserNotFound({super.key});
@@ -14,7 +15,7 @@ class UserNotFound extends StatelessWidget {
           'assets/images/not-found.png',
           width: 200,
         ),
-        Text(AppLocalizations.of(context)!.userNotFound),
+        Text(userNotFound.tr),
       ],
     );
   }

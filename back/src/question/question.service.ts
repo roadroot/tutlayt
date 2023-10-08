@@ -1,20 +1,20 @@
-import { Injectable } from '@nestjs/common';
-import { Base64 } from 'src/pagination/pagination';
-import { StorageService } from 'src/storage/storage.service';
-import { PrismaService } from './../prisma/prisma.service';
-import { QuestionDTO } from './question.model';
-import { QuestionDataDTO } from './question_data.model';
+import { Injectable } from "@nestjs/common";
+import { Base64 } from "src/pagination/pagination";
+import { StorageService } from "src/storage/storage.service";
+import { PrismaService } from "./../prisma/prisma.service";
+import { QuestionDTO } from "./question.model";
+import { QuestionDataDTO } from "./question_data.model";
 
 @Injectable()
 export class QuestionService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly storage: StorageService,
+    private readonly storage: StorageService
   ) {}
 
   async getQuestion(
     where: { id: string },
-    include = { user: false },
+    include = { user: false }
   ): Promise<QuestionDTO> {
     return QuestionDTO.from(
       await this.prisma.question.findUnique({
@@ -23,7 +23,7 @@ export class QuestionService {
           ...include,
           files: true,
         },
-      }),
+      })
     );
   }
 
@@ -41,7 +41,7 @@ export class QuestionService {
   }
 
   async createQuestion(
-    questionData: QuestionDataDTO & { userId: string },
+    questionData: QuestionDataDTO & { userId: string }
   ): Promise<QuestionDTO> {
     const { files, ...data } = questionData;
     let question = await this.prisma.question.create({
@@ -53,7 +53,7 @@ export class QuestionService {
     const fs = await this.storage.saveFiles(
       process.env.QUESTION_STORAGE_PATH,
       question.id,
-      files,
+      files
     );
     if (!!files) {
       question = await this.prisma.question.update({

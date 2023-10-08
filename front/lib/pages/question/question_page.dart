@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+import 'package:get/get.dart';
 import 'package:tutlayt/configuration/config.dart';
 import 'package:tutlayt/pages/user/widget/loading.dart';
 import 'package:tutlayt/pages/user/widget/user_not_found.dart';
@@ -18,7 +18,7 @@ class QuestionPage extends StatelessWidget {
               Config.defaultPageWidth / 2),
       width: Config.defaultPageWidth,
       child: FutureBuilder(
-        future: GetIt.I<QuestionService>().getQuestion(questionId),
+        future: Get.find<QuestionService>().getQuestion(questionId),
         builder: (context, snapshot) {
           final question = snapshot.data;
           return snapshot.connectionState != ConnectionState.done
@@ -33,7 +33,7 @@ class QuestionPage extends StatelessWidget {
                                   Theme.of(context).textTheme.headlineMedium),
                           Text(question.body),
                           FutureBuilder(
-                            future: GetIt.I<AnswerService>()
+                            future: Get.find<AnswerService>()
                                 .getAnswers(question.id),
                             builder: (context, snapshot) {
                               final answers = snapshot.data;
@@ -69,7 +69,7 @@ class QuestionPage extends StatelessWidget {
                           // answer input
                           TextField(
                             onSubmitted: (body) async {
-                              await GetIt.I<AnswerService>().answerQuestion(
+                              await Get.find<AnswerService>().answerQuestion(
                                   questionId: questionId, body: body);
                               // TODO remove this and replace with subscription
                               Navigator.of(context).pushReplacementNamed(

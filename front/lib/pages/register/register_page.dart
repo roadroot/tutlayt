@@ -1,10 +1,11 @@
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+import 'package:get/get.dart';
 import 'package:tutlayt/configuration/config.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:tutlayt/l10n/abstract_language.dart';
 import 'package:tutlayt/ql.dart';
 import 'package:tutlayt/services/auth/auth.service.dart';
+import 'package:tutlayt/services/controller.dart';
 import 'package:tutlayt/services/util/message.dart';
 import 'package:tutlayt/services/util/util.dart';
 import 'package:tutlayt/pagination/route.util.dart';
@@ -14,15 +15,15 @@ import 'package:tutlayt/widget/password_field.dart';
 class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
   final GlobalKey<FormState> _form = GlobalKey(debugLabel: 'registrationForm');
-  final TextEditingController _username =
-      TextEditingController(text: faker.internet.userName());
+  final TextEditingController _username = TextEditingController(
+      text: faker.internet.userName().replaceAll('-', '_'));
   final TextEditingController _password =
       TextEditingController(text: faker.internet.password());
   final TextEditingController _email =
       TextEditingController(text: faker.internet.email());
 
   @override
-  Widget build(BuildContext context, [bool mounted = true]) {
+  Widget build(BuildContext context) {
     return Center(
         child: Form(
       key: _form,
@@ -38,16 +39,15 @@ class RegisterPage extends StatelessWidget {
                   controller: _username,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) => value == null || value.length < 6
-                      ? AppLocalizations.of(context)!.shortUsernameError
+                      ? shortUsernameError.tr
                       : value.length > 30
-                          ? AppLocalizations.of(context)!.longUsernameError
+                          ? longUsernameError.tr
                           : Regex.username.hasMatch(value)
                               ? null
-                              : AppLocalizations.of(context)!
-                                  .incorrectUsernameFormat,
+                              : incorrectUsernameFormat.tr,
                   decoration: InputDecoration(
                       border: const OutlineInputBorder(),
-                      label: Text(AppLocalizations.of(context)!.username),
+                      label: Text(username.tr),
                       prefixIcon: const Icon(Icons.person)),
                 ),
               ),
@@ -58,11 +58,11 @@ class RegisterPage extends StatelessWidget {
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) => Regex.email.hasMatch(value)
                       ? null
-                      : AppLocalizations.of(context)!.incorrectPasswordFormat,
+                      : incorrectPasswordFormat.tr,
                   decoration: InputDecoration(
                       border: const OutlineInputBorder(),
-                      label: Text(AppLocalizations.of(context)!.email),
-                      hintText: AppLocalizations.of(context)!.emailHint,
+                      label: Text(email.tr),
+                      hintText: emailHint.tr,
                       prefixIcon: const Icon(Icons.email)),
                 ),
               ),
@@ -70,12 +70,12 @@ class RegisterPage extends StatelessWidget {
                 padding: const EdgeInsets.all(10),
                 child: PasswordField(
                   controller: _password,
-                  title: AppLocalizations.of(context)!.password,
-                  hintText: AppLocalizations.of(context)!.passwordHint,
+                  title: password.tr,
+                  hintText: passwordHint.tr,
                   validator: (value) => value == null || value.length < 8
-                      ? AppLocalizations.of(context)!.shortPasswordError
+                      ? shortPasswordError.tr
                       : Util.getStrength(value) == Strength.weak
-                          ? AppLocalizations.of(context)!.weakPasswordError
+                          ? weakPasswordError.tr
                           : null,
                 ),
               ),
@@ -89,7 +89,7 @@ class RegisterPage extends StatelessWidget {
                     ),
                     Flexible(
                       child: Text(
-                        AppLocalizations.of(context)!.acceptUserAgreement,
+                        acceptUserAgreement.tr,
                       ),
                     ),
                   ],
@@ -103,40 +103,36 @@ class RegisterPage extends StatelessWidget {
                   onPressed: () async {
                     if (_form.currentState!.validate()) {
                       User? user =
-                          await GetIt.I<AuthService>().signUpCredentials(
+                          await Get.find<AuthService>().signUpCredentials(
                         username: _username.text,
                         email: _email.text,
                         password: _password.text,
                       );
 
-                      if (mounted) {
-                        if (user == null) {
-                          Message.error.show(
-                            context,
-                            AppLocalizations.of(context)!.signupError,
-                          );
-                        } else {
-                          Navigator.pushReplacementNamed(
-                            context,
-                            RouteUtil.userRoute,
-                          );
-                        }
+                      if (user == null) {
+                        Message.error.show(
+                          signupError.tr,
+                        );
+                      } else {
+                        Get.find<Controller>().user = user;
+                        Get.offNamed(
+                          RouteUtil.userRoute,
+                        );
                       }
                     }
                   },
-                  child: Text(AppLocalizations.of(context)!.signup),
+                  child: Text(signup.tr),
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(AppLocalizations.of(context)!.alreadyHaveAccount),
+                  Text(alreadyHaveAccount.tr),
                   TextButton(
-                      onPressed: () => Navigator.pushReplacementNamed(
-                            context,
+                      onPressed: () => Get.replace(
                             RouteUtil.loginRoute,
                           ),
-                      child: Text(AppLocalizations.of(context)!.login))
+                      child: Text(login.tr))
                 ],
               ),
             ]),

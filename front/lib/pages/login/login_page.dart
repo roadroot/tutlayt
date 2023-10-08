@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+import 'package:get/get.dart';
 import 'package:tutlayt/configuration/config.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:tutlayt/l10n/abstract_language.dart';
 import 'package:tutlayt/ql.dart';
 import 'package:tutlayt/services/auth/auth.service.dart';
+import 'package:tutlayt/services/controller.dart';
 import 'package:tutlayt/services/util/message.dart';
 import 'package:tutlayt/pagination/route.util.dart';
 import 'package:tutlayt/widget/password_field.dart';
@@ -16,7 +17,7 @@ class LoginPage extends StatelessWidget {
   final TextEditingController _password = TextEditingController();
 
   @override
-  Widget build(BuildContext context, [bool mounted = true]) {
+  Widget build(BuildContext context) {
     return Center(
       child: Form(
         key: _form,
@@ -32,7 +33,7 @@ class LoginPage extends StatelessWidget {
                     controller: _username,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
-                      label: Text(AppLocalizations.of(context)!.username),
+                      label: Text(username.tr),
                       prefixIcon: const Icon(Icons.person),
                     ),
                   ),
@@ -41,7 +42,7 @@ class LoginPage extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: PasswordField(
                     controller: _password,
-                    title: AppLocalizations.of(context)!.password,
+                    title: password.tr,
                   ),
                 ),
                 Padding(
@@ -52,47 +53,43 @@ class LoginPage extends StatelessWidget {
                     ),
                     onPressed: () async {
                       User? user =
-                          await GetIt.I<AuthService>().signInCrendetials(
+                          await Get.find<AuthService>().signInCrendetials(
                         username: _username.text,
                         password: _password.text,
                       );
-                      if (mounted) {
-                        if (user == null) {
-                          Message.error.show(
-                            context,
-                            AppLocalizations.of(context)!.loginError,
-                          );
-                        } else {
-                          Navigator.pushReplacementNamed(
-                            context,
-                            RouteUtil.userRoute,
-                          );
-                        }
+                      if (user == null) {
+                        Message.error.show(
+                          loginError.tr,
+                        );
+                      } else {
+                        Get.find<Controller>().user = user;
+                        Get.offNamed(
+                          RouteUtil.userRoute,
+                        );
                       }
                     },
-                    child: Text(AppLocalizations.of(context)!.login),
+                    child: Text(login.tr),
                   ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(AppLocalizations.of(context)!.dontHaveAccount),
+                    Text(dontHaveAccount.tr),
                     TextButton(
                         onPressed: () => Navigator.pushReplacementNamed(
                               context,
                               RouteUtil.registerRoute,
                             ),
-                        child: Text(AppLocalizations.of(context)!.signup))
+                        child: Text(signup.tr))
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(AppLocalizations.of(context)!.forgotPassword),
+                    Text(forgotPassword.tr),
                     TextButton(
                         onPressed: () {}, // TODO implement reset password
-                        child:
-                            Text(AppLocalizations.of(context)!.resetPassword))
+                        child: Text(resetPassword.tr))
                   ],
                 ),
               ]),

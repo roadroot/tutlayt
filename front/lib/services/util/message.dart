@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 enum Message {
   info(Colors.blue),
@@ -9,20 +10,24 @@ enum Message {
 
   final Color _color;
 
-  static void clear(BuildContext context) {
-    ScaffoldMessenger.of(context).clearSnackBars();
+  static void clear() {
+    Get.closeAllSnackbars();
   }
 
-  showWidget(BuildContext context, Widget message) {
-    clear(context);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: message,
+  showWidget(Widget message) {
+    Get.closeAllSnackbars();
+    Get.showSnackbar(GetSnackBar(
       backgroundColor: _color,
+      titleText: message,
     ));
   }
 
-  show(BuildContext context, String message) {
-    showWidget(context, Text(message));
+  show(String message) {
+    Get.closeAllSnackbars();
+    Get.showSnackbar(GetSnackBar(
+      backgroundColor: _color,
+      title: message,
+    ));
   }
 
   const Message(this._color);
