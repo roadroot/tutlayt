@@ -1,0 +1,12 @@
+type Author {
+  id: ID!
+  name: String!
+  books: [String!]
+  phone: String
+}
+
+type Book {
+  id: ID!
+  title: String!
+  author: String!
+}

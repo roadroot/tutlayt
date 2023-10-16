@@ -79,18 +79,33 @@ class QlVisitor {
     assert(token.children.length == 1,
         'Invalid token: $token, it should have a unique child, but it has ${token.children}');
     Token child = token.children.first;
-    if (child.model == QlLang.simpleField) return (visitField(child), null);
+    if (!objectType.isOperation && child.model == QlLang.simpleField) {
+      return (visitField(child), null);
+    }
     return (null, visitMethod(child, objectType));
   }
 
   QlMethod visitMethod(Token token, QlObjectType objectType) {
-    assert(token.model == QlLang.parameteredField,
+    assert(
+        token.model == QlLang.parameteredField ||
+            token.model == QlLang.simpleField,
         'Invalid method token: $token, it should be a method token');
-    assert(token.children.length == 6,
-        'Invalid method token, it should have 6 children: ${token.children}');
+    assert(
+      token.model != QlLang.parameteredField || token.children.length == 6,
+      'Invalid method token, it should have 6 children: ${token.children}',
+    );
+    if (token.model == QlLang.simpleField) {
+      return QlMethod(
+        name: token.children.first.value,
+        parameters: [],
+        returnType: visitType(token.children.last),
+        objectType: objectType,
+      );
+    }
     return QlMethod(
       name: token.children.first.value,
-      parameters: visitParameters(token.children[2]),
+      parameters:
+          token.children.length > 3 ? visitParameters(token.children[2]) : [],
       returnType: visitType(token.children.last),
       objectType: objectType,
     );

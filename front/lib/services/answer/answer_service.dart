@@ -18,4 +18,9 @@ class AnswerService {
         .nodes
         .toList();
   }
+
+  Stream<Answer?> subscribeAnswer(String answerId) {
+    return Get.find<Subscription>()
+        .answerAdded(const AnswerSelector(), answerId);
+  }
 }

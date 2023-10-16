@@ -1,17 +1,18 @@
-<!-- 
+<!--
 This README describes the package. If you publish this package to pub.dev,
 this README's contents appear on the landing page for your package.
 
 For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
+[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
 
 For general information about developing packages, see the Dart guide for
 [creating packages](https://dart.dev/guides/libraries/create-library-packages)
 and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
+[developing packages and plugins](https://flutter.dev/developing-packages).
 -->
 
 **QlGen** is a library for generating dart code from GraphQL schema.
+
 ## Features
 
 Given a GraphQL schema, QlGen generates dart code for the following:
@@ -42,7 +43,6 @@ Given a GraphQL schema, QlGen generates dart code for the following:
 - [ ] Custom code generation for custom directives
 - [ ] Custom code generation for custom types
 
-
 ## Getting started
 
 To use this package, add `ql_gen` as a [dependency in your pubspec.yaml file](https://dart.dev/tools/pub/dependencies).
@@ -52,7 +52,7 @@ To use this package, add `ql_gen` as a [dependency in your pubspec.yaml file](ht
 <!-- command and result example -->
 
 ```bash
-dart run .\bin\ql.dart --help
+dart run .\bin\ql_gen.dart --help
 ```
 
 ```bash
@@ -64,9 +64,9 @@ dart run .\bin\ql.dart --help
 ```
 
 ```bash
-dart run .\bin\ql.dart -s schema.gql -t ql.dart
+dart run .\bin\ql_gen.dart -s static/test/schema.gql -t ql.dart
 ```
-    
+
 ```graphql
 # schema.gql
 type Author {
@@ -208,4 +208,3 @@ class BookSelector {
   }
 }
 ```
-

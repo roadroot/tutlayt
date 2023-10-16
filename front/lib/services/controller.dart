@@ -21,8 +21,8 @@ class Controller extends GetxController {
   Rxn<User?> userObs = Rxn<User?>(null);
   bool get connected => userObs.value != null;
   User? get user => userObs.value;
+
   set user(User? user) {
     userObs.value = user;
-    userObs.refresh();
   }
 }

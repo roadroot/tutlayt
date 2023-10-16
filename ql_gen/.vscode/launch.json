@@ -1,11 +1,15 @@
 {
-    "configurations": [
-        {
-            "name": "example",
-            "type": "dart",
-            "request": "launch",
-            "program": "example/ql_gen_example.dart",
-            "args": ["--enable-experiment=records"],
-        }
-    ]
+  "configurations": [
+    {
+      "name": "example",
+      "type": "dart",
+      "request": "launch",
+      "program": "example/ql_gen_example.dart",
+      "args": [
+        "--enable-experiment=records",
+        "-s",
+        "static/test/mutation/input.gql"
+      ]
+    }
+  ]
 }

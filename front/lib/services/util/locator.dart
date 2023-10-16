@@ -15,7 +15,8 @@ void registerServices() {
   Get.put(AuthService());
   Get.put(QuestionService());
   Get.put(AnswerService());
-  Get.put(Query(Get.find<ApiService>().executor));
-  Get.put(Mutation(Get.find<ApiService>().executor));
+  Get.put(Query(Get.find<ApiService>().query));
+  Get.put(Mutation(Get.find<ApiService>().mutate));
+  Get.put(Subscription(Get.find<ApiService>().subscribe));
   Get.put(Controller());
 }
