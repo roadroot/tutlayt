@@ -5,9 +5,9 @@
     "sourceType": "module"
   },
   "plugins": [
-    "prettier",
     "@typescript-eslint/eslint-plugin",
-    "unused-imports"
+    "unused-imports",
+    "prettier"
   ],
   "extends": [
     "plugin:@typescript-eslint/recommended"
@@ -23,6 +23,7 @@
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "unused-imports/no-unused-imports": "error",
+    "@typescript-eslint/no-unused-vars": "off",
     "unused-imports/no-unused-vars": [
       "error",
       {

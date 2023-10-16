@@ -2,7 +2,7 @@ import 'package:ql_gen/src/lexical/token.dart';
 import 'package:ql_gen/src/ql_lang.dart';
 import 'package:test/test.dart';
 
-import '../../matchers.dart';
+import '../matchers.dart';
 
 void main() {
   group('tokenizeStart', () {

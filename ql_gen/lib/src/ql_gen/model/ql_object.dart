@@ -33,22 +33,24 @@ class QlObject {
 
   String get classFields {
     StringBuffer output = StringBuffer();
-    if (type == QlObjectType.query || type == QlObjectType.mutation) {
-      output.writeln(
-          'final Future<Map<String, dynamic>?> Function(String query) _executor;');
-    } else {
-      for (QlField field in fields) {
-        output.writeln(field.classField);
+    if (type.isOperation) {
+      if (type == QlObjectType.subscription) {
+        output.writeln(
+            'final Stream<Map<String, dynamic>?> Function(String query) _executor;');
+      } else {
+        output.writeln(
+            'final Future<Map<String, dynamic>?> Function(String query) _executor;');
       }
+    }
+    for (QlField field in fields) {
+      output.writeln(field.classField);
     }
     return output.toString();
   }
 
   String get constructor {
     StringBuffer output = StringBuffer();
-    if (type == QlObjectType.query ||
-        type == QlObjectType.mutation ||
-        type == QlObjectType.subscription) {
+    if (type.isOperation) {
       output.writeln('const $name(this._executor);');
     } else {
       output.writeln('const $name({');
@@ -111,6 +113,9 @@ class QlObject {
 
   @override
   String toString() {
+    if (fields.isEmpty && methods.isEmpty) {
+      return '';
+    }
     StringBuffer output = StringBuffer();
     output.writeln('class $name {');
     output.writeln(classFields);
@@ -223,4 +228,9 @@ enum QlObjectType {
         throw Exception('Invalid QlObjectType');
     }
   }
+
+  bool get isOperation =>
+      this == QlObjectType.mutation ||
+      this == QlObjectType.query ||
+      this == QlObjectType.subscription;
 }

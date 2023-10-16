@@ -2,29 +2,32 @@ import {
   ForbiddenException,
   Injectable,
   NotFoundException,
-} from '@nestjs/common';
-import { Base64 } from 'src/pagination/pagination';
-import { StorageService } from 'src/storage/storage.service';
-import { PrismaService } from './../prisma/prisma.service';
-import { AnswerDTO } from './answer.model';
-import { AnswerDataDTO } from './answer_data.model';
+} from "@nestjs/common";
+import { Base64 } from "src/pagination/pagination";
+import { StorageService } from "src/storage/storage.service";
+import { PrismaService } from "./../prisma/prisma.service";
+import { AnswerDTO } from "./answer.model";
+import { AnswerDataDTO } from "./answer_data.model";
+import { ANSWER_ADDED } from "src/subscription/pubsub.cost";
+import { SubService } from "src/subscription/sub.service";
 
 @Injectable()
 export class AnswerService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly storage: StorageService,
+    private readonly subService: SubService
   ) {}
 
   async getAnswer(
     where: { id: string },
-    include = { user: false },
+    include = { user: false }
   ): Promise<AnswerDTO> {
     return AnswerDTO.from(
       await this.prisma.answer.findUnique({
         where,
         include: { files: true, ...include },
-      }),
+      })
     );
   }
 
@@ -42,7 +45,7 @@ export class AnswerService {
   }
 
   async createAnswer(
-    answerData: AnswerDataDTO & { userId: string },
+    answerData: AnswerDataDTO & { userId: string }
   ): Promise<AnswerDTO> {
     const { files, ...data } = answerData;
     const answer = await this.prisma.answer.create({
@@ -54,23 +57,27 @@ export class AnswerService {
     const fileUrls = await this.storage.saveFiles(
       process.env.ANSWER_STORAGE_PATH,
       answer.id,
-      files,
+      files
     );
 
-    const completeAnswer = await this.prisma.answer.update({
-      data: {
-        files: {
-          connect: fileUrls.map((file) => ({ id: file.id })),
+    const completeAnswer = AnswerDTO.from(
+      await this.prisma.answer.update({
+        data: {
+          files: {
+            connect: fileUrls.map((file) => ({ id: file.id })),
+          },
         },
-      },
-      where: {
-        id: answer.id,
-      },
-      include: {
-        files: true,
-      },
-    });
-    return AnswerDTO.from(completeAnswer);
+        where: {
+          id: answer.id,
+        },
+        include: {
+          files: true,
+        },
+      })
+    );
+
+    await this.publishAnswerAdded(completeAnswer);
+    return completeAnswer;
   }
 
   async getAnswers({
@@ -126,7 +133,11 @@ export class AnswerService {
         include: {
           files: true,
         },
-      }),
+      })
     );
+  }
+
+  async publishAnswerAdded(answer: AnswerDTO) {
+    await this.subService.publish(ANSWER_ADDED, answer);
   }
 }

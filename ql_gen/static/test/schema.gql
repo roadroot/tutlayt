@@ -15,3 +15,11 @@ type Query {
   book(id: ID!): Book!
   name(id: ID!): String
 }
+
+type Mutation {
+  addAuthor(name: String!): Author!
+}
+
+type Subscription {
+  authorAdded: Author
+}

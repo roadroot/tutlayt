@@ -3,6 +3,7 @@ class QlType {
   final bool isNullable;
   final bool isList;
   final QlType? innerType;
+
   static const Map<String, String> _typeMap = {
     'String': 'String',
     'Int': 'int',
@@ -29,11 +30,13 @@ class QlType {
 
   String _getInput({bool withNullable = false}) {
     StringBuffer output = StringBuffer();
-    output.write(isList
-        ? 'List<${innerType!._getInput(withNullable: withNullable)}>'
-        : isBasicType
-            ? name!
-            : '${name}Input');
+    output.write(
+      isList
+          ? 'List<${innerType!._getInput(withNullable: withNullable)}>'
+          : isBasicType
+              ? name!
+              : '${name}Input',
+    );
     if (withNullable && isNullable) {
       output.write('?');
     }
@@ -66,10 +69,14 @@ class QlType {
 
   @override
   String toString() {
+    StringBuffer output = StringBuffer();
     if (isList) {
-      return 'List<$innerType>${isNullable ? '?' : ''}';
+      output.write('List<$innerType>');
+      output.write(isNullable ? '?' : '');
     } else {
-      return '$name${isNullable ? '?' : ''}';
+      output.write(name);
+      output.write(isNullable ? '?' : '');
     }
+    return output.toString();
   }
 }

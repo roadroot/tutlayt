@@ -140,3 +140,8 @@ input CommentData {
   """
   answerId: String
 }
+
+type Subscription {
+  commentAdded(questionId: String!): Comment
+  answerAdded(questionId: String!): Answer
+}

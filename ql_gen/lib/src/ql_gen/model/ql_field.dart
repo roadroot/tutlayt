@@ -5,6 +5,7 @@ class QlField {
   final QlType type;
 
   static const Map<String, String> _specialCaractes = {
+    r'\\': r'\\\\',
     r'\n': r'\\n',
     r'\r': r'\\r',
     r'\t': r'\\t',
