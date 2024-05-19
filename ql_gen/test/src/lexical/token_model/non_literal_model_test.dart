@@ -1,6 +1,6 @@
-import 'package:ql_gen/src/lexical/token.dart';
 import 'package:ql_gen/src/ql_lang.dart';
 import 'package:test/test.dart';
+import 'package:tokenizer/tokenizer.dart';
 
 import '../matchers.dart';
 

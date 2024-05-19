@@ -37,9 +37,9 @@ class Author {
     StringBuffer output = StringBuffer();
     output.writeln('{');
     output.writeln(
-        'id: "${id.replaceAll('\n', r'\\n').replaceAll('\r', r'\\r').replaceAll('\t', r'\\t').replaceAll('"', r'\\\"')}"');
+        'id: "${id.replaceAll('\\', r'\\\\').replaceAll('\n', r'\\n').replaceAll('\r', r'\\r').replaceAll('\t', r'\\t').replaceAll('"', r'\\\"')}"');
     output.writeln(
-        'name: "${name.replaceAll('\n', r'\\n').replaceAll('\r', r'\\r').replaceAll('\t', r'\\t').replaceAll('"', r'\\\"')}"');
+        'name: "${name.replaceAll('\\', r'\\\\').replaceAll('\n', r'\\n').replaceAll('\r', r'\\r').replaceAll('\t', r'\\t').replaceAll('"', r'\\\"')}"');
     if (books != null) {
       output.writeln('books: [');
       output.writeln(books!.join(',\n'));
@@ -94,9 +94,9 @@ class Book {
     StringBuffer output = StringBuffer();
     output.writeln('{');
     output.writeln(
-        'id: "${id.replaceAll('\n', r'\\n').replaceAll('\r', r'\\r').replaceAll('\t', r'\\t').replaceAll('"', r'\\\"')}"');
+        'id: "${id.replaceAll('\\', r'\\\\').replaceAll('\n', r'\\n').replaceAll('\r', r'\\r').replaceAll('\t', r'\\t').replaceAll('"', r'\\\"')}"');
     output.writeln(
-        'title: "${title.replaceAll('\n', r'\\n').replaceAll('\r', r'\\r').replaceAll('\t', r'\\t').replaceAll('"', r'\\\"')}"');
+        'title: "${title.replaceAll('\\', r'\\\\').replaceAll('\n', r'\\n').replaceAll('\r', r'\\r').replaceAll('\t', r'\\t').replaceAll('"', r'\\\"')}"');
     if (author != null) {
       output.writeln('author: $author');
     }
@@ -195,7 +195,7 @@ class Query {
     output.writeln('query {');
     output.writeln('book(');
     output.writeln(
-        'id: "${id.replaceAll('\n', r'\\n').replaceAll('\r', r'\\r').replaceAll('\t', r'\\t').replaceAll('"', r'\\\"')}"');
+        'id: "${id.replaceAll('\\', r'\\\\').replaceAll('\n', r'\\n').replaceAll('\r', r'\\r').replaceAll('\t', r'\\t').replaceAll('"', r'\\\"')}"');
     output.writeln(')');
     output.writeln($selector);
     output.writeln('}');
@@ -223,7 +223,7 @@ class Query {
     output.writeln('query {');
     output.writeln('author(');
     output.writeln(
-        'id: "${id.replaceAll('\n', r'\\n').replaceAll('\r', r'\\r').replaceAll('\t', r'\\t').replaceAll('"', r'\\\"')}"');
+        'id: "${id.replaceAll('\\', r'\\\\').replaceAll('\n', r'\\n').replaceAll('\r', r'\\r').replaceAll('\t', r'\\t').replaceAll('"', r'\\\"')}"');
     output.writeln(')');
     output.writeln($selector);
     output.writeln('}');
@@ -268,9 +268,9 @@ class Mutation {
     output.writeln('mutation {');
     output.writeln('addBook(');
     output.writeln(
-        'title: "${title.replaceAll('\n', r'\\n').replaceAll('\r', r'\\r').replaceAll('\t', r'\\t').replaceAll('"', r'\\\"')}"');
+        'title: "${title.replaceAll('\\', r'\\\\').replaceAll('\n', r'\\n').replaceAll('\r', r'\\r').replaceAll('\t', r'\\t').replaceAll('"', r'\\\"')}"');
     output.writeln(
-        'authorId: "${authorId.replaceAll('\n', r'\\n').replaceAll('\r', r'\\r').replaceAll('\t', r'\\t').replaceAll('"', r'\\\"')}"');
+        'authorId: "${authorId.replaceAll('\\', r'\\\\').replaceAll('\n', r'\\n').replaceAll('\r', r'\\r').replaceAll('\t', r'\\t').replaceAll('"', r'\\\"')}"');
     output.writeln(')');
     output.writeln($selector);
     output.writeln('}');
@@ -298,7 +298,7 @@ class Mutation {
     output.writeln('mutation {');
     output.writeln('addAuthor(');
     output.writeln(
-        'name: "${name.replaceAll('\n', r'\\n').replaceAll('\r', r'\\r').replaceAll('\t', r'\\t').replaceAll('"', r'\\\"')}"');
+        'name: "${name.replaceAll('\\', r'\\\\').replaceAll('\n', r'\\n').replaceAll('\r', r'\\r').replaceAll('\t', r'\\t').replaceAll('"', r'\\\"')}"');
     output.writeln(')');
     output.writeln($selector);
     output.writeln('}');

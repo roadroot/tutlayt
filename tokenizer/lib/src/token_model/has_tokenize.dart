@@ -1,5 +1,5 @@
-import 'package:ql_gen/src/lexical/token.dart';
-import 'package:ql_gen/src/lexical/token_model/token_base.dart';
+import 'package:tokenizer/src/token.dart';
+import 'package:tokenizer/src/token_model/token_base.dart';
 
 abstract class HasTokenizeLiteral extends TokenBase {
   const HasTokenizeLiteral({required super.name});

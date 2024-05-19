@@ -1,6 +1,6 @@
 {
-    "name": "tutlayt",
-    "short_name": "tutlayt",
+    "name": "front",
+    "short_name": "front",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

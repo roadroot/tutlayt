@@ -13,9 +13,8 @@ class ApiService {
     Link httpLink = AuthLink(
       getToken: () async =>
           'Bearer ${await Get.find<SecuredStoreService>().jwtToken}',
-    ).concat(HttpLink(
-      dotenv.env['API_URL'] ?? '',
-    ));
+    ).concat(HttpLink(dotenv.env['API_URL'] ?? '',
+        defaultHeaders: {'Apollo-Require-Preflight': 'true'}));
 
     WebSocketLink websocketLink = WebSocketLink(
       dotenv.env['API_WS_URL'] ?? '',
@@ -36,25 +35,20 @@ class ApiService {
       ),
     );
 
-    Logger.root.level = Level.LEVELS.firstWhere(
-      (element) => element.name == dotenv.env['API_LOG_LEVEL']?.toUpperCase(),
-      orElse: () => Level.OFF,
-    );
-    Logger.root.onRecord.listen((record) {
-      // ignore: avoid_print
-      print(
-          '[${record.level.name}] ${record.time} ${record.loggerName}: ${record.message}');
-    });
     logger = Logger('ApiService');
     logger.info('ApiService initialized');
   }
 
-  Future<Map<String, dynamic>?> query(String query) async {
-    logger.info(query);
+  Future<Map<String, dynamic>?> query(
+      (String, Map<String, dynamic>) qlAndVariables) async {
+    logger.info('Variables: ${qlAndVariables.$2}');
+    logger.info('Query: ${qlAndVariables.$1}');
     try {
       return await client.value
           .query(QueryOptions(
-            document: gql(query),
+            document: gql(qlAndVariables.$1),
+            variables: qlAndVariables.$2,
+            cacheRereadPolicy: CacheRereadPolicy.ignoreAll,
           ))
           .then((value) => value.data);
     } catch (e) {
@@ -63,12 +57,16 @@ class ApiService {
     }
   }
 
-  Future<Map<String, dynamic>?> mutate(String query) async {
-    logger.info(query);
+  Future<Map<String, dynamic>?> mutate(
+      (String, Map<String, dynamic>) qlAndVariables) async {
+    logger.info('Variables: ${qlAndVariables.$2}');
+    logger.info('Mutation: ${qlAndVariables.$1}');
     try {
       return await client.value
           .mutate(MutationOptions(
-            document: gql(query),
+            document: gql(qlAndVariables.$1),
+            variables: qlAndVariables.$2,
+            cacheRereadPolicy: CacheRereadPolicy.ignoreAll,
           ))
           .then((value) => value.data);
     } catch (e) {
@@ -77,11 +75,17 @@ class ApiService {
     }
   }
 
-  Stream<Map<String, dynamic>?> subscribe(String query) {
-    logger.info(query);
+  Stream<Map<String, dynamic>?> subscribe(
+      (String, Map<String, dynamic>) qlAndVariables) {
+    logger.info('Variables: ${qlAndVariables.$2}');
+    logger.info('Subscription: ${qlAndVariables.$1}');
     try {
       var s = client.value
-          .subscribe(SubscriptionOptions(document: gql(query)))
+          .subscribe(SubscriptionOptions(
+            document: gql(qlAndVariables.$1),
+            variables: qlAndVariables.$2,
+            cacheRereadPolicy: CacheRereadPolicy.ignoreAll,
+          ))
           .map((event) => event.data);
       return s;
     } catch (e) {

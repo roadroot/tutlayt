@@ -10,6 +10,7 @@ For general information about developing packages, see the Dart guide for
 and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
+# QlGen
 
 **QlGen** is a library for generating dart code from GraphQL schema.
 

@@ -5,7 +5,6 @@ import 'package:tutlayt/configuration/config.dart';
 import 'package:tutlayt/l10n/abstract_language.dart';
 import 'package:tutlayt/ql.dart';
 import 'package:tutlayt/services/auth/auth.service.dart';
-import 'package:tutlayt/services/controller.dart';
 import 'package:tutlayt/services/util/message.dart';
 import 'package:tutlayt/services/util/util.dart';
 import 'package:tutlayt/pagination/route.util.dart';
@@ -114,9 +113,8 @@ class RegisterPage extends StatelessWidget {
                           signupError.tr,
                         );
                       } else {
-                        Get.find<Controller>().user = user;
                         Get.offNamed(
-                          RouteUtil.userRoute,
+                          Routes.user.toString(),
                         );
                       }
                     }
@@ -130,7 +128,7 @@ class RegisterPage extends StatelessWidget {
                   Text(alreadyHaveAccount.tr),
                   TextButton(
                       onPressed: () => Get.replace(
-                            RouteUtil.loginRoute,
+                            Routes.login.toString(),
                           ),
                       child: Text(login.tr))
                 ],

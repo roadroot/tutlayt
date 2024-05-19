@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ControlledCheckBox extends StatefulWidget {
-  const ControlledCheckBox({Key? key, required this.controller})
-      : super(key: key);
+  const ControlledCheckBox({super.key, required this.controller});
   final BoolController controller;
 
   @override

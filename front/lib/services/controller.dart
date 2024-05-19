@@ -6,13 +6,6 @@ class Controller extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    ever(userObs, (User? user) {
-      if (user != null) {
-        Get.snackbar('Connected', 'You are connected');
-      } else {
-        Get.snackbar('Disconnected', 'You are disconnected');
-      }
-    });
     Get.find<UserService>().user.then((User? user) {
       userObs(user);
     });

@@ -6,7 +6,7 @@ import 'package:tutlayt/pagination/route.util.dart';
 class LoginPageModel extends PageModel {
   LoginPageModel()
       : super(
-          route: RouteUtil.loginRoute,
+          route: Routes.login.segments,
           title: const Text('Login'),
           drawer: const DrawerTile(
             title: Text('Login'),
@@ -16,5 +16,5 @@ class LoginPageModel extends PageModel {
         );
 
   @override
-  Widget body(Map<String, String?> params) => LoginPage();
+  Widget body(Uri uri) => LoginPage();
 }

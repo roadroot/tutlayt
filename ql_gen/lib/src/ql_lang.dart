@@ -1,9 +1,5 @@
-import 'package:ql_gen/src/lexical/token_alternative.dart';
-import 'package:ql_gen/src/lexical/token_model/literal_model.dart';
-import 'package:ql_gen/src/lexical/token_model/non_literal_model.dart';
-import 'package:ql_gen/src/lexical/token_model/token_model.dart';
-import 'package:ql_gen/src/lexical/token_sequence.dart';
-import 'package:ql_gen/src/lexical/tokens.dart';
+import 'package:ql_gen/src/tokens.dart';
+import 'package:tokenizer/tokenizer.dart';
 
 class QlLang {
   static const LiteralModel colon = LiteralModel(

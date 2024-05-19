@@ -1,6 +1,8 @@
 {
     "recommendations": [
         "esbenp.prettier-vscode",
-        "dbaeumer.vscode-eslint"
+        "dbaeumer.vscode-eslint",
+        "prisma.prisma",
+        "stpn.vscode-graphql"
     ]
 }

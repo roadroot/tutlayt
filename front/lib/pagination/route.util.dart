@@ -9,35 +9,32 @@ import 'package:tutlayt/pages/questions/questions_page_model.dart';
 import 'package:tutlayt/pages/register/register_page_model.dart';
 import 'package:tutlayt/pages/user/user_page_model.dart';
 import 'package:tutlayt/services/controller.dart';
-import 'package:tutlayt/services/util/util.dart';
 import 'package:tutlayt/pagination/page.model.dart';
 
-abstract class RouteUtil {
-  static const String loginRoute = "/login";
-  static const String homeRoute = "/";
-  static const String registerRoute = "/register";
-  static const String userRoute = "/user";
-  static const String questionsRoute = "/question";
-  static const String askRoute = "/ask";
-  static final String userRoutePattern =
-      "^$userRoute(/(?<userId>${Regex.id.value}))?";
-  static final String questionRoutePattern =
-      "^${RouteUtil.questionsRoute}/(?<questionId>${Regex.id.value})";
+enum Routes {
+  login(['login']),
+  home([]),
+  register(['register']),
+  user(['user']),
+  question(['question']),
+  ask(['ask']);
 
-  static final List<PageModel> allPages = [
-    const HomePageModel(),
+  const Routes(this.segments);
+  final List<String> segments;
+
+  static List<PageModel> allPages = [
+    HomePageModel(),
     LoginPageModel(),
     RegisterPageModel(),
     UserPageModel(),
     QuestionPageModel(),
-    const QuestionsPageModel(),
-    const AskPageModel(),
+    QuestionsPageModel(),
+    AskPageModel(),
     DisconenctPageModel(),
   ];
 
-  static List<PageModel> get routedPages => allPages
-      .where((element) => element.route != null)
-      .toList(growable: false);
+  static List<PageModel> get routedPages =>
+      allPages.where((e) => e.route != null).toList(growable: false);
 
   static List<PageModel> get pages => Get.find<Controller>().connected
       ? allPages.where((element) => !element.onlyWhenDisonnected).toList()
@@ -45,22 +42,17 @@ abstract class RouteUtil {
 
   static Route? onGenerateRoute(RouteSettings settings) {
     String? name = settings.name;
-    if (name != null) {
-      for (PageModel page in routedPages) {
-        final match = RegExp(page.routePatern).firstMatch(name);
-        if (match != null) {
-          Map<String, String?> params = {};
-          for (String key in page.routeParams) {
-            params[key] = match.namedGroup(key);
-          }
-          return PageRouteBuilder<void>(
-            pageBuilder: (context, animation1, animation2) =>
-                page.builder(context, params),
-            settings: settings,
-          );
-        }
-      }
-    }
-    return null;
+    if (name == null) return null;
+    Uri uri = Uri.parse(name);
+    PageModel page = routedPages.where((e) => e.canHandle(uri)).firstOrNull!;
+    return PageRouteBuilder<void>(
+      pageBuilder: (ctx, a1, a2) => page.builder(ctx, uri),
+      settings: settings,
+    );
   }
+
+  @override
+  String toString() => assemble(segments);
+
+  static String assemble(List<String> route) => '/${route.join('/')}';
 }

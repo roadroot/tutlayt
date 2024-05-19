@@ -13,7 +13,7 @@ abstract class GenUtils {
   }
 
   static String generateQl(String name) {
-    return QlParser(getQlPath(name)).dartQlApi;
+    return ApiGenerator(getQlPath(name)).dartQlApi;
   }
 
   static String destruct(String dart) {

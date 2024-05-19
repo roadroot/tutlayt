@@ -1,11 +1,15 @@
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:tutlayt/ql.dart';
 
 class AnswerService {
-  Future<Answer?> answerQuestion(
-      {required String questionId, required String body}) async {
-    return await Get.find<Mutation>().createAnswer(
-        const AnswerSelector(), AnswerData(questionId: questionId, body: body));
+  Future<Answer?> answerQuestion({
+    required String questionId,
+    required String body,
+    List<http.MultipartFile>? files,
+  }) async {
+    return await Get.find<Mutation>().createAnswer(const AnswerSelector(),
+        AnswerData(questionId: questionId, body: body, files: files));
   }
 
   Future<Answer?> getAnswer(String answerId) async {
