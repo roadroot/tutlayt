@@ -6,7 +6,7 @@ import 'package:tutlayt/pagination/route.util.dart';
 class RegisterPageModel extends PageModel {
   RegisterPageModel()
       : super(
-          route: RouteUtil.registerRoute,
+          route: Routes.register.segments,
           title: const Text('Register'),
           drawer: const DrawerTile(
             title: Text('Register'),
@@ -16,5 +16,5 @@ class RegisterPageModel extends PageModel {
         );
 
   @override
-  Widget body(Map<String, String?> params) => RegisterPage();
+  Widget body(Uri uri) => RegisterPage();
 }

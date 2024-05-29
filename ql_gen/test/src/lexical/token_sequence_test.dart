@@ -1,8 +1,6 @@
-import 'package:ql_gen/src/lexical/token.dart';
-import 'package:ql_gen/src/lexical/token_alternative.dart';
-import 'package:ql_gen/src/lexical/token_sequence.dart';
 import 'package:ql_gen/src/ql_lang.dart';
 import 'package:test/test.dart';
+import 'package:tokenizer/tokenizer.dart';
 
 void main() {
   group('tokenizeStart', () {

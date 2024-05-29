@@ -19,7 +19,7 @@ void main(List<String> arguments) {
         abbr: 'h', negatable: false, help: 'Prints this help message');
   final results = parser.parse(arguments);
   if (!checks(parser, results)) return;
-  QlParser(results[source]).export(results[target]);
+  ApiGenerator(results[source]).export(results[target]);
 }
 
 bool checks(ArgParser parser, ArgResults results) {

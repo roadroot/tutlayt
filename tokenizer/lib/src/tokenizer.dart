@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:ql_gen/src/lexical/token.dart';
-import 'package:ql_gen/src/lexical/token_model/literal_model.dart';
-import 'package:ql_gen/src/lexical/token_model/non_literal_model.dart';
-import 'package:ql_gen/src/lexical/token_model/token_model.dart';
+import 'package:tokenizer/src/token.dart';
+import 'package:tokenizer/src/token_model/literal_model.dart';
+import 'package:tokenizer/src/token_model/non_literal_model.dart';
+import 'package:tokenizer/src/token_model/token_model.dart';
 
 abstract class Tokenizer {
   static (List<Token>, List<Input>) tokenize(

@@ -1,6 +1,6 @@
-import 'package:ql_gen/src/lexical/token.dart';
-import 'package:ql_gen/src/lexical/token_model/has_tokenize.dart';
-import 'package:ql_gen/src/lexical/token_model/token_model.dart';
+import 'package:tokenizer/src/token.dart';
+import 'package:tokenizer/src/token_model/has_tokenize.dart';
+import 'package:tokenizer/src/token_model/token_model.dart';
 
 class LiteralModel extends TokenModel implements HasTokenizeLiteral {
   final String pattern;

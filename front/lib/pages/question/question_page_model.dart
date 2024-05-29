@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tutlayt/pages/question/question_page.dart';
 import 'package:tutlayt/pagination/page.model.dart';
@@ -8,14 +9,22 @@ class QuestionPageModel extends PageModel {
 
   QuestionPageModel()
       : super(
-          route: RouteUtil.questionRoutePattern,
+          route: Routes.question.segments,
           title: const Text(_title),
         );
 
   @override
-  List<String> get routeParams => ['questionId'];
+  Widget body(Uri uri) =>
+      QuestionPage(questionId: uri.pathSegments[route!.length]);
 
   @override
-  Widget body(Map<String, String?> params) =>
-      QuestionPage(questionId: params['questionId']!);
+  bool canHandle(Uri uri) {
+    if (route == null) {
+      logger.warning('Route $runtimeType is null');
+      return false;
+    }
+
+    return route!.length + 1 == uri.pathSegments.length &&
+        listEquals(uri.pathSegments.sublist(0, route!.length), route!);
+  }
 }

@@ -2,8 +2,12 @@ services:
   adminer:
     container_name: tutlayt_adminer
     image: adminer
+    environment:
+      - ADMINER_SERVERS=${ADMINER_SERVERS}
     ports:
       - 8080:8080
+    volumes:
+      - ./adminer-plugin.php:/var/www/html/plugins-enabled/login-servers.php
 
   database:
     container_name: tutlayt_databse

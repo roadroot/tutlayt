@@ -1,46 +1,53 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:tutlayt/pagination/default_scaffold.dart';
 
 abstract class PageModel {
+  Logger get logger => Logger(runtimeType.toString());
+
   const PageModel({
     required this.title,
     this.route,
     this.onlyWhenConnected = false,
     this.onlyWhenDisonnected = false,
     this.drawer,
-    Function(BuildContext context, Map<String, Object?> params)? onTap,
-    Widget Function(BuildContext context, Map<String, String?> params)? builder,
-    String? routePatern,
+    Function(BuildContext, Uri)? onTap,
+    Widget Function(BuildContext, Uri)? builder,
   })  : _builder = builder,
-        _routePatern = routePatern,
         _onTap = onTap;
-  final String? route;
-  final String? _routePatern;
-  String get routePatern => _routePatern ?? '^$route\$';
+
+  final List<String>? route;
   final Widget title;
   final DrawerTile? drawer;
-  final Function(BuildContext context, Map<String, Object?> params)? _onTap;
-  Function(BuildContext context, Map<String, Object?> params) get onTap =>
+  final Function(BuildContext context, Uri uri)? _onTap;
+  Function(BuildContext context, Uri uri) get onTap =>
       _onTap ??
       (context, params) async {
-        await Navigator.pushNamed(context, route!, arguments: params);
+        await Navigator.pushNamed(context, '/${route!.join('/')}',
+            arguments: params);
       };
-  final Widget Function(BuildContext context, Map<String, String?> params)?
-      _builder;
+  final Widget Function(BuildContext, Uri)? _builder;
 
   final bool onlyWhenConnected;
   final bool onlyWhenDisonnected;
 
-  Widget Function(BuildContext, Map<String, String?>) get builder =>
-      _builder ?? defaultBuilder;
+  bool canHandle(Uri uri) {
+    if (route == null) {
+      logger.warning('Route $runtimeType is null');
+      return false;
+    }
 
-  List<String> get routeParams => const [];
-  Widget body(Map<String, String?> params);
-
-  Widget defaultBuilder(BuildContext context, Map<String, String?> params) {
-    return DefaultScaffold(route: route, params: params);
+    return listEquals(uri.pathSegments, route!);
   }
+
+  Widget Function(BuildContext, Uri) get builder => _builder ?? defaultBuilder;
+
+  Widget body(Uri uri);
+
+  Widget defaultBuilder(BuildContext context, Uri uri) =>
+      DefaultScaffold(uri: uri);
 }
 
 class DrawerTile {

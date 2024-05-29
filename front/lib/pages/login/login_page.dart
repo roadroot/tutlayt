@@ -4,7 +4,6 @@ import 'package:tutlayt/configuration/config.dart';
 import 'package:tutlayt/l10n/abstract_language.dart';
 import 'package:tutlayt/ql.dart';
 import 'package:tutlayt/services/auth/auth.service.dart';
-import 'package:tutlayt/services/controller.dart';
 import 'package:tutlayt/services/util/message.dart';
 import 'package:tutlayt/pagination/route.util.dart';
 import 'package:tutlayt/widget/password_field.dart';
@@ -62,10 +61,7 @@ class LoginPage extends StatelessWidget {
                           loginError.tr,
                         );
                       } else {
-                        Get.find<Controller>().user = user;
-                        Get.offNamed(
-                          RouteUtil.userRoute,
-                        );
+                        Get.offNamed(Routes.user.toString());
                       }
                     },
                     child: Text(login.tr),
@@ -78,7 +74,7 @@ class LoginPage extends StatelessWidget {
                     TextButton(
                         onPressed: () => Navigator.pushReplacementNamed(
                               context,
-                              RouteUtil.registerRoute,
+                              Routes.register.toString(),
                             ),
                         child: Text(signup.tr))
                   ],

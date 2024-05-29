@@ -1,71 +1,73 @@
+import 'native_type.dart';
+
 class QlType {
-  final String? name;
+  late String? name;
   final bool isNullable;
   final bool isList;
   final QlType? innerType;
-
-  static const Map<String, String> _typeMap = {
-    'String': 'String',
-    'Int': 'int',
-    'Float': 'double',
-    'Boolean': 'bool',
-    'ID': 'String',
-    'Upload': 'File',
-  };
-
-  bool get isString => name == 'String';
-  bool get isUploadType => name == 'File' || isList && innerType!.isUploadType;
-
-  String get selectorName => isList
-      ? innerType!.selectorName
-      : isBasicType
-          ? 'bool'
-          : '${name}Selector';
-
-  String get input => isList
-      ? 'List<${innerType!.input}>'
-      : isBasicType
-          ? name!
-          : '${name}Input';
-
-  String _getInput({bool withNullable = false}) {
-    StringBuffer output = StringBuffer();
-    output.write(
-      isList
-          ? 'List<${innerType!._getInput(withNullable: withNullable)}>'
-          : isBasicType
-              ? name!
-              : '${name}Input',
-    );
-    if (withNullable && isNullable) {
-      output.write('?');
-    }
-    return output.toString();
-  }
-
-  String get inputWithNullable => _getInput(withNullable: true);
-  String get inputWithoutNullable => _getInput(withNullable: false);
-
-  bool get isBasicType => _typeMap.containsValue(name);
-  bool get isBasicTypeOrBasicList =>
-      isBasicType || (isList && innerType!.isBasicTypeOrBasicList);
-  QlType get coreType => isList ? innerType!.coreType : this;
-
-  static String? _convertType(String? type) =>
-      type == null ? null : _typeMap[type] ?? type;
+  final NativeType? nativeType;
 
   QlType({
     String? name,
     required this.isNullable,
     required this.isList,
     this.innerType,
-  })  : name = _convertType(name),
+  })  : nativeType = NativeType.values
+            .where((element) => element.qlName == name)
+            .firstOrNull,
         assert(
           isList == (innerType != null) && (isList == (name == null)),
           isList
               ? 'When having a list, the name must be null and the innerType must be not null'
               : 'When not having a list, the name must be not null and the innerType must be null',
-        );
+        ) {
+    this.name = nativeType?.dartName ?? name;
+  }
+
+  /// returns whether the type should be handled as a variable.
+  ///
+  /// e.g. `List<List<String>>` should not be handled as a variable (`false`).
+  /// `List<Upload>` should be handled as a variable (`true`).
+  bool get isVariable => coreType.nativeType?.isVariable ?? false;
+
+  // TODO: is ID well handled? Should it be quoted? What if we use a number as an ID?
+  /// Checks if the type is `String`.
+  ///
+  /// ID, String are strings.
+  /// List<String>, DateTime are not strings.
+  bool get isString => name == NativeType.string.dartName;
+
+  /// Returns the dart type of the selector.
+  ///
+  /// For example, for `List<List<String>>`, the selector type is `bool`.
+  ///
+  /// For `List<List<CustomType>>`, the selector type is `CustomTypeSelector`.
+  String get selectorName => isList
+      ? innerType!.selectorName
+      : hasNativeType
+          ? 'bool'
+          : '${name}Selector';
+
+  ///Return `'?'` if the type is nullable, `''` otherwise.
+  String get nullable => isNullable ? '?' : '';
+
+  /// Returns whether the type is a (list of)* native type.
+  ///
+  /// For example, `List<List<String>>`, `Int`, `DateTime` are (`true`).
+  /// `List<List<CustomType>>`, `CustomType` are not (`false`).
+  bool get hasNativeType => NativeType.values.any((e) => e.dartName == name);
+
+  /// Returns whether the type is (list of)* native type.
+  ///
+  /// For example, `List<List<String>>`, `Int`, `DateTime` are (`true`).
+  /// `List<List<CustomType>>`, `CustomType` are not (`false`).
+  bool get hasNativeCore => coreType.hasNativeType;
+
+  /// Returns the core type of the type.
+  ///
+  /// For example, for `List<List<String>>`, the core type is `String`.
+  /// For `List<List<CustomType>>`, the core type is `CustomType`.
+  QlType get coreType => isList ? innerType!.coreType : this;
 
   @override
   String toString() {
@@ -74,7 +76,7 @@ class QlType {
       output.write('List<$innerType>');
       output.write(isNullable ? '?' : '');
     } else {
-      output.write(name);
+      output.write(nativeType?.dartName ?? name);
       output.write(isNullable ? '?' : '');
     }
     return output.toString();

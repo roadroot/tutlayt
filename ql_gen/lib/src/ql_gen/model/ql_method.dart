@@ -1,6 +1,7 @@
 import 'package:ql_gen/src/ql_gen/model/ql_field.dart';
-import 'package:ql_gen/src/ql_gen/model/ql_object.dart';
 import 'package:ql_gen/src/ql_gen/model/ql_type.dart';
+
+import 'ql_object/ql_object_type.dart';
 
 class QlMethod {
   final String name;
@@ -19,8 +20,8 @@ class QlMethod {
 
   String get qlMethod {
     StringBuffer output = StringBuffer();
-    output.writeln('String $qlMethodName(');
-    if (!returnType.isBasicTypeOrBasicList) {
+    output.writeln('(String, Map<String, dynamic>) $qlMethodName(');
+    if (!returnType.hasNativeCore) {
       output.writeln('${returnType.selectorName} \$selector,');
     }
     for (QlField e in parameters) {
@@ -28,28 +29,28 @@ class QlMethod {
     }
     output.writeln(') {');
     output.writeln('StringBuffer output = StringBuffer();');
-    if (objectType == QlObjectType.query) {
-      output.writeln('output.writeln(\'query {\');');
-    } else if (objectType == QlObjectType.mutation) {
-      output.writeln('output.writeln(\'mutation {\');');
-    } else if (objectType == QlObjectType.subscription) {
-      output.writeln('output.writeln(\'subscription {\');');
-    }
+    output.writeln('VariableContainer variables = VariableContainer();');
     output
         .writeln('output.writeln(\'$name${parameters.isEmpty ? '' : '('}\');');
     for (QlField e in parameters) {
-      output.writeln(e.input(true));
+      output.writeln(e.qlValueCode);
     }
     if (parameters.isNotEmpty) {
       output.writeln('output.writeln(\')\');');
     }
-    if (!returnType.isBasicTypeOrBasicList) {
+    if (!returnType.hasNativeCore) {
       output.writeln('output.writeln(\$selector);');
     }
 
-    output.writeln('output.writeln(\'}\');');
-    output.writeln('return output.toString();');
-    output.writeln('}');
+    output.writeln('''output.writeln('}');
+        String params = variables.variables.map((e) => '\\\$\${e.name}: \${e.type}').join(', ');
+        if (params.isNotEmpty) {
+          params = '(\$params)';
+        }
+        output.insertAt(0, '${objectType.name}\$params {');
+        return (output.toString(), variables.map);
+      }''');
+
     return output.toString();
   }
 
@@ -64,7 +65,7 @@ class QlMethod {
   String get _subscription {
     StringBuffer output = StringBuffer();
     output.writeln('Stream<$returnType> $name (');
-    if (!returnType.isBasicTypeOrBasicList) {
+    if (!returnType.hasNativeCore) {
       output.writeln('${returnType.selectorName} \$selector,');
     }
     for (QlField e in parameters) {
@@ -72,14 +73,14 @@ class QlMethod {
     }
     output.writeln(') {');
     output.writeln('return _executor($qlMethodName(');
-    if (!returnType.isBasicTypeOrBasicList) {
+    if (!returnType.hasNativeCore) {
       output.writeln('\$selector,');
     }
     for (QlField e in parameters) {
       output.writeln('${e.name},');
     }
     output.write(')).map((e) => construct(e?[\'$name\'],');
-    if (!returnType.isBasicTypeOrBasicList) {
+    if (!returnType.hasNativeCore) {
       output.write(' fromMap: ${returnType.coreType.name}.fromMap,');
     }
     output.writeln('));');
@@ -90,7 +91,7 @@ class QlMethod {
   String get _query {
     StringBuffer output = StringBuffer();
     output.writeln('Future<$returnType> $name (');
-    if (!returnType.isBasicTypeOrBasicList) {
+    if (!returnType.hasNativeCore) {
       output.writeln('${returnType.selectorName} \$selector,');
     }
     for (QlField e in parameters) {
@@ -98,14 +99,14 @@ class QlMethod {
     }
     output.writeln(') async {');
     output.writeln('return construct((await _executor($qlMethodName(');
-    if (!returnType.isBasicTypeOrBasicList) {
+    if (!returnType.hasNativeCore) {
       output.writeln('\$selector,');
     }
     for (QlField e in parameters) {
       output.writeln('${e.name},');
     }
     output.write(')))?[\'$name\'],');
-    if (!returnType.isBasicTypeOrBasicList) {
+    if (!returnType.hasNativeCore) {
       output.write(' fromMap: ${returnType.coreType.name}.fromMap,');
     }
     output.writeln(');');

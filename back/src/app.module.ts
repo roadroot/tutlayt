@@ -11,6 +11,7 @@ import { QuestionModule } from "./question/question.module";
 import { StorageModule } from "./storage/storage.module";
 import { UserModule } from "./user/user.module";
 import { ApolloServerPlugin } from "@apollo/server";
+import { env } from "process";
 
 const logger = new Logger("AppModule");
 
@@ -35,7 +36,7 @@ const myPlugin: ApolloServerPlugin = {
       subscriptions: {
         // TODO replace with graphql-ws
         "subscriptions-transport-ws": {
-          path: "/graphql",
+          path: env.API_PATH || "/graphql",
         },
       },
       context: ({ req }) => ({ req }),

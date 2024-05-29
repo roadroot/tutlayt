@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tutlayt/pagination/page.model.dart';
@@ -6,44 +7,34 @@ import 'package:tutlayt/ql.dart';
 import 'package:tutlayt/services/controller.dart';
 
 class DefaultScaffold extends StatelessWidget {
-  const DefaultScaffold(
-      {required this.params, this.route, this.pageModel, super.key, this.body})
-      : assert(
-            pageModel == null && route != null ||
-                pageModel != null && route == null,
-            "Must specify a pageModel or route but not both.");
+  const DefaultScaffold({required this.uri, super.key, this.body});
 
   final Widget? body;
-  final PageModel? pageModel;
-  final Map<String, String?> params;
+  final Uri uri;
 
-  final String? route;
-
-  PageModel getPage([String? route]) {
-    return pageModel ??
-        RouteUtil.routedPages.firstWhere((page) => page.route == route);
-  }
+  PageModel get page =>
+      Routes.routedPages.firstWhere((page) => page.canHandle(uri));
 
   // TODO: handle error in the future builders across the app
 
   @override
   Widget build(BuildContext context) {
-    PageModel page = getPage(route);
+    PageModel page = this.page;
     return Scaffold(
       appBar: AppBar(
         title: page.title,
       ),
-      body: body ?? page.body(params),
+      body: body ?? page.body(uri),
       drawer: Obx(() {
-        final widgets = RouteUtil.pages
-            .where((element) => element.drawer != null)
+        final widgets = Routes.pages
+            .where((e) => e.drawer != null)
             .map<Widget>(
-              (page) => ListTile(
-                title: page.drawer!.title,
-                leading: page.drawer!.leading,
-                trailing: page.drawer!.trailing,
-                selected: route == page.route,
-                onTap: () => page.onTap(context, params),
+              (e) => ListTile(
+                title: e.drawer!.title,
+                leading: e.drawer!.leading,
+                trailing: e.drawer!.trailing,
+                selected: listEquals(e.route, page.route),
+                onTap: () => e.onTap(context, uri),
               ),
             )
             .toList();
@@ -52,7 +43,7 @@ class DefaultScaffold extends StatelessWidget {
           widgets.insert(
             0,
             GestureDetector(
-              onTap: () => Get.offNamed(RouteUtil.userRoute),
+              onTap: () => Get.offNamed(Routes.user.toString()),
               child: DrawerHeader(
                 decoration: const BoxDecoration(),
                 child: Column(

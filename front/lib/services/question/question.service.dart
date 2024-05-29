@@ -5,7 +5,8 @@ class QuestionService {
   Future<List<Question>?> getQuestions() async {
     return (await Get.find<Query>().questions(
             const QuestionPageSelector(
-                nodes: QuestionSelector(user: UserSelector())),
+                // TODO nodes: QuestionSelector(user: UserSelector())
+                ),
             20,
             null))
         .nodes

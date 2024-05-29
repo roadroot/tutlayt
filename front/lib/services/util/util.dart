@@ -82,3 +82,17 @@ enum Regex {
 
   const Regex(this.value);
 }
+
+// file size to human readable string
+String fileSize(int size) {
+  if (size < 1024) {
+    return '$size B';
+  }
+  if (size < 1024 * 1024) {
+    return '${(size / 1024).toStringAsFixed(2)} KB';
+  }
+  if (size < 1024 * 1024 * 1024) {
+    return '${(size / (1024 * 1024)).toStringAsFixed(2)} MB';
+  }
+  return '${(size / (1024 * 1024 * 1024)).toStringAsFixed(2)} GB';
+}

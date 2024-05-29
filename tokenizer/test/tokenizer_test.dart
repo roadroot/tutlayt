@@ -1,7 +1,7 @@
-import 'package:ql_gen/src/lexical/token.dart';
-import 'package:ql_gen/src/ql_lang.dart';
-import 'package:ql_gen/src/tokenizer.dart';
 import 'package:test/test.dart';
+import 'package:tokenizer/tokenizer.dart';
+
+import '../example/ql_lang.dart';
 
 void main() {
   group('basic case', () {

@@ -1,15 +1,20 @@
-import 'package:ql_gen/src/lexical/token.dart';
 import 'package:ql_gen/src/ql_gen/model/ql_field.dart';
 import 'package:ql_gen/src/ql_gen/model/ql_method.dart';
-import 'package:ql_gen/src/ql_gen/model/ql_object.dart';
+import 'package:ql_gen/src/ql_gen/model/ql_object/ql_object.dart';
 import 'package:ql_gen/src/ql_gen/model/ql_type.dart';
+import 'package:ql_gen/src/ql_gen/utils/ql_object_handler.dart';
 import 'package:ql_gen/src/ql_lang.dart';
+import 'package:tokenizer/tokenizer.dart';
 
-class QlVisitor {
-  final List<QlObject> objects = [];
-  QlVisitor();
+import 'model/native_type.dart';
+import 'model/ql_object/ql_object_type.dart';
 
-  bool get hasUploadType => objects.any((o) => o.hasUploadType);
+class QlParser {
+  final List<QlObjectHandler> objects = [];
+  QlParser();
+
+  Set<NativeType> get nativeTypes =>
+      objects.expand((e) => e.nativeTypes).toSet();
 
   visitTokens(List<Token> tokens) {
     for (Token token in tokens) {
@@ -23,7 +28,7 @@ class QlVisitor {
     }
   }
 
-  QlObject visitObject(Token token) {
+  QlObjectHandler visitObject(Token token) {
     assert(token.model == QlLang.object,
         'Invalid object token: $token, it should be an object token');
     assert(token.children.length == 5 || token.children.length == 4,
@@ -43,12 +48,12 @@ class QlVisitor {
     if (token.children[3].model == QlLang.fieldList) {
       res = visitFields(token.children[3], type);
     }
-    return QlObject(
+    return QlObjectHandler(QlObject(
       name: token.children[1].value,
       fields: res?.$1 ?? [],
       methods: res?.$2 ?? [],
       type: type,
-    );
+    ));
   }
 
   (List<QlField>, List<QlMethod>) visitFields(
@@ -80,7 +85,7 @@ class QlVisitor {
         'Invalid token: $token, it should have a unique child, but it has ${token.children}');
     Token child = token.children.first;
     if (!objectType.isOperation && child.model == QlLang.simpleField) {
-      return (visitField(child), null);
+      return (visitField(child, QlFieldType.field), null);
     }
     return (null, visitMethod(child, objectType));
   }
@@ -111,7 +116,7 @@ class QlVisitor {
     );
   }
 
-  QlField visitField(Token token) {
+  QlField visitField(Token token, QlFieldType fieldType) {
     assert(token.model == QlLang.simpleField,
         'Invalid field token: $token, it should be a simple field');
     assert(token.children.length == 3,
@@ -119,18 +124,21 @@ class QlVisitor {
     return QlField(
       name: token.children.first.value,
       type: visitType(token.children.last),
+      fieldType: fieldType,
     );
   }
 
   List<QlField> visitParameters(Token token) {
     assert(token.model == QlLang.parameterList,
         'Invalid parameters token: $token, it should be a parameterList token');
-    if (token.children.isEmpty) return [];
-    if (token.children.length == 1) return [visitField(token.children.first)];
-    return [
-      visitField(token.children.first),
-      ...visitParameters(token.children[2])
-    ];
+    List<QlField> fields = [];
+    if (token.children.isNotEmpty) {
+      fields.add(visitField(token.children.first, QlFieldType.parameter));
+      if (token.children.length > 1) {
+        fields.addAll(visitParameters(token.children[2]));
+      }
+    }
+    return fields;
   }
 
   QlType visitType(Token token) {

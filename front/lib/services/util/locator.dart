@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tutlayt/ql.dart';
 import 'package:tutlayt/services/answer/answer_service.dart';
 import 'package:tutlayt/services/api_service.dart';
@@ -19,4 +20,5 @@ void registerServices() {
   Get.put(Mutation(Get.find<ApiService>().mutate));
   Get.put(Subscription(Get.find<ApiService>().subscribe));
   Get.put(Controller());
+  Get.put(ImagePicker());
 }

@@ -1,8 +1,6 @@
-import 'package:ql_gen/src/lexical/token.dart';
-import 'package:ql_gen/src/lexical/token_model/has_tokenize.dart';
-import 'package:ql_gen/src/lexical/token_model/non_literal_model.dart';
-import 'package:ql_gen/src/lexical/token_model/token_base.dart';
-import 'package:ql_gen/src/ql_lang.dart';
+import 'package:tokenizer/tokenizer.dart';
+
+import 'ql_lang.dart';
 
 class NonLiteralQlTokens implements NonLiteralModel {
   static const NonLiteralQlTokens type = NonLiteralQlTokens('type');

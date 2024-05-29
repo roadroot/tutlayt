@@ -4,14 +4,16 @@ import 'package:tutlayt/pagination/page.model.dart';
 import 'package:tutlayt/pagination/route.util.dart';
 
 class HomePageModel extends PageModel {
-  const HomePageModel()
+  HomePageModel()
       : super(
-          route: RouteUtil.homeRoute,
+          route: Routes.home.segments,
           title: const Text('Home'),
-          drawer:
-              const DrawerTile(title: Text('Home'), leading: Icon(Icons.home)),
+          drawer: const DrawerTile(
+            title: Text('Home'),
+            leading: Icon(Icons.home),
+          ),
         );
 
   @override
-  Widget body(Map<String, String?> params) => const HomePage();
+  Widget body(Uri uri) => HomePage();
 }

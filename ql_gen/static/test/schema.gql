@@ -1,25 +1,11 @@
-type Author {
-  id: ID!
-  name: String!
-  books: [Book]
-}
+# type Query {
+#   name(p: [String], id: Upload!): String
+# }
 
-type Book {
-  id: ID!
-  title: String!
-  author: Author!
+input D5555 {
+  id: [Upload]
 }
 
 type Query {
-  author(id: ID!): Author
-  book(id: ID!): Book!
-  name(id: ID!): String
-}
-
-type Mutation {
-  addAuthor(name: String!): Author!
-}
-
-type Subscription {
-  authorAdded: Author
+  name(p: D5555): String
 }

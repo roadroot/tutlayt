@@ -1,5 +1,5 @@
-import 'package:ql_gen/src/lexical/token_model/token_model.dart';
-import 'package:ql_gen/src/utils/iterables.dart';
+import 'package:tokenizer/src/token_model/token_model.dart';
+import 'package:tokenizer/src/utils/iterables.dart';
 
 class Input {
   final String input;

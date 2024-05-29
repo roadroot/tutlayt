@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# Use this to get the test case output
+
 $case = $args[0]
 
 Write-Output "generating $case"

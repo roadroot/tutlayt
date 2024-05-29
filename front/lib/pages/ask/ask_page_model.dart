@@ -4,9 +4,9 @@ import 'package:tutlayt/pagination/page.model.dart';
 import 'package:tutlayt/pagination/route.util.dart';
 
 class AskPageModel extends PageModel {
-  const AskPageModel()
+  AskPageModel()
       : super(
-          route: RouteUtil.askRoute,
+          route: Routes.ask.segments,
           title: const Text('Ask a question'),
           drawer: const DrawerTile(
             title: Text('Ask a question'),
@@ -16,5 +16,5 @@ class AskPageModel extends PageModel {
         );
 
   @override
-  Widget body(Map<String, String?> params) => AskPage();
+  Widget body(Uri uri) => AskPage();
 }
