@@ -1,6 +1,6 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { File } from '@prisma/client';
-import { StorageService } from 'src/storage/storage.service';
+import { Field, ObjectType } from "@nestjs/graphql";
+import { File } from "@prisma/client";
+import { getUrl } from "src/storage/storage.util";
 
 @ObjectType({ isAbstract: true })
 export class GraphqlModel {
@@ -21,7 +21,7 @@ export class HasFilesGraphqlModel extends GraphqlModel {
   }: T & { files: File[] }) {
     return {
       ...args,
-      files: files?.map((file) => StorageService.getUrl(file)),
+      files: files?.map((file) => getUrl(file)),
     };
   }
 }

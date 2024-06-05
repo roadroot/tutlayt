@@ -4,6 +4,7 @@ import { StorageService } from "src/storage/storage.service";
 import { PrismaService } from "./../prisma/prisma.service";
 import { QuestionDTO } from "./question.model";
 import { QuestionDataDTO } from "./question_data.model";
+import { markdown } from "src/storage/storage.util";
 
 @Injectable()
 export class QuestionService {
@@ -60,8 +61,9 @@ export class QuestionService {
         where: { id: question.id },
         data: {
           files: {
-            connect: fs.map((f) => ({ id: f.id })),
+            connect: fs.map((file) => ({ id: file.id })),
           },
+          body: markdown(question.body, fs),
         },
         include: {
           files: true,

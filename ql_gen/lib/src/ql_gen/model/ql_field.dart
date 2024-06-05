@@ -70,22 +70,21 @@ class QlField {
   /// [name] is the name of the field
   /// [type] is the type of the field
   /// [isNullHandled] is true if the nullability of the field has already been handled
-  String handleList(String name, QlType type, {bool isNullHandled = false}) {
+  String handleList(String name, QlType type,
+      {bool isNullHandled = false, bool isParentList = false}) {
     String output;
     if (type.isList) {
-      // TODO
       output = '''output.write('[');
           for(var element in $name$required) {
-            ${handleList('element', type.innerType!)}
+            ${handleList('element', type.innerType!, isParentList: true)}
             output.write(',');
           }
           output.write(']');''';
     } else {
       if (!type.isString) {
         if (type.nativeType == null) {
-          // TODO "required" here is generating warning because it is in a list so the field is declared as an iterator
           output = '''{
-            final result = $name$required.build();
+            final result = $name${isParentList ? '' : required}.build();
             variables.concat(result.\$2);
             output.write(result.\$1);
           }

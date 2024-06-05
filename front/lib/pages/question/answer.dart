@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:markdown_widget/markdown_widget.dart';
 import 'package:tutlayt/widget/card.dart';
 import 'package:tutlayt/widget/imported_image.dart';
 
@@ -34,9 +34,20 @@ class _AnswerFieldState extends State<AnswerField> {
               hintText: 'Answer',
             ),
           ),
-          MarkdownWidget(
-            data: widget.answerController.text,
-            shrinkWrap: true,
+          Builder(
+            builder: (context) {
+              String text = widget.answerController.text;
+              for (final image in widget.images) {
+                text = text.replaceAllMapped(
+                  RegExp(image.name),
+                  (match) => image.path
+                );
+              }
+              return Markdown(
+                data: text,
+                shrinkWrap: true,
+              );
+            }
           ),
           Row(
             children: [
