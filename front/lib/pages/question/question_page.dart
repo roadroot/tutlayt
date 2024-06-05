@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:markdown_widget/markdown_widget.dart';
 import 'package:tutlayt/configuration/config.dart';
 import 'package:tutlayt/pages/question/answer.dart';
 import 'package:tutlayt/pages/question/question/question_widget.dart';
@@ -90,7 +90,7 @@ class _QuestionPageState extends State<QuestionPage> {
                         }
                         return CustomCard(
                           child: ListTile(
-                            title: MarkdownWidget(
+                            title: Markdown(
                               data: widget.answers.elementAt(index - 1).body,
                               shrinkWrap: true,
                             ),

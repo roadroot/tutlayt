@@ -78,8 +78,10 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           cardColor: Colors.white,
           useMaterial3: true,
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.green)
-              .copyWith(background: Colors.grey.shade100),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.yellow.shade900,
+          )
+,
         ),
         onGenerateRoute: Routes.onGenerateRoute,
       ),

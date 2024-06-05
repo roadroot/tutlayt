@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:markdown_widget/markdown_widget.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:tutlayt/ql.dart';
 import 'package:tutlayt/widget/card.dart';
 
@@ -32,7 +32,7 @@ class QuestionWidget extends StatelessWidget {
             question.title,
             style: Theme.of(context).textTheme.headlineLarge,
           ),
-          MarkdownWidget(
+          Markdown(
             data: question.body,
             shrinkWrap: true,
           ),

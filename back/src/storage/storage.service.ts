@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { File } from '@prisma/client';
-import { createWriteStream, existsSync } from 'fs';
-import { mkdir } from 'fs/promises';
-import { FileUpload } from 'graphql-upload-ts';
-import { join } from 'path';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { Injectable } from "@nestjs/common";
+import { File } from "@prisma/client";
+import { createWriteStream, existsSync } from "fs";
+import { mkdir } from "fs/promises";
+import { FileUpload } from "graphql-upload-ts";
+import { join } from "path";
+import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
 export class StorageService {
@@ -12,7 +12,7 @@ export class StorageService {
 
   async createFile(
     filePath: string,
-    file?: Promise<FileUpload>,
+    file?: Promise<FileUpload>
   ): Promise<File> | undefined {
     await this.mkdir(filePath);
     if (!file) {
@@ -38,43 +38,39 @@ export class StorageService {
 
   async createFiles(
     path: string,
-    files?: Promise<FileUpload>[],
+    files?: Promise<FileUpload>[]
   ): Promise<File[]> | undefined {
     if (!files) {
       return [];
     }
     return Promise.all(
-      files.map(async (file) => await this.createFile(path, file)),
+      files.map(async (file) => await this.createFile(path, file))
     );
-  }
-
-  static getUrl(file: File): string {
-    return `${process.env.SERVER_URL}/storage/${file.id}`;
   }
 
   async saveFiles(
     template: string,
     id: string,
-    files?: Promise<FileUpload>[],
+    files?: Promise<FileUpload>[]
   ): Promise<File[]> {
     return await this.createFiles(
       template
-        .replace('$id', id)
-        .replace('$timestamp', new Date().getTime().toString()),
-      files,
+        .replace("$id", id)
+        .replace("$timestamp", new Date().getTime().toString()),
+      files
     );
   }
 
   async saveFile(
     template: string,
     id: string,
-    file?: Promise<FileUpload>,
+    file?: Promise<FileUpload>
   ): Promise<File> {
     return await this.createFile(
       template
-        .replace('$id', id)
-        .replace('$timestamp', new Date().getTime().toString()),
-      file,
+        .replace("$id", id)
+        .replace("$timestamp", new Date().getTime().toString()),
+      file
     );
   }
 

@@ -10,6 +10,7 @@ import { AnswerDTO } from "./answer.model";
 import { AnswerDataDTO } from "./answer_data.model";
 import { ANSWER_ADDED } from "src/subscription/pubsub.cost";
 import { SubService } from "src/subscription/sub.service";
+import { markdown } from "src/storage/storage.util";
 
 @Injectable()
 export class AnswerService {
@@ -48,36 +49,37 @@ export class AnswerService {
     answerData: AnswerDataDTO & { userId: string }
   ): Promise<AnswerDTO> {
     const { files, ...data } = answerData;
-    const answer = await this.prisma.answer.create({
+    let answer = await this.prisma.answer.create({
       data,
       include: {
         files: true,
       },
     });
-    const fileUrls = await this.storage.saveFiles(
+
+    const fs = await this.storage.saveFiles(
       process.env.ANSWER_STORAGE_PATH,
       answer.id,
       files
     );
 
-    const completeAnswer = AnswerDTO.from(
-      await this.prisma.answer.update({
+    if (!!files) {
+      answer = await this.prisma.answer.update({
+        where: { id: answer.id },
         data: {
           files: {
-            connect: fileUrls.map((file) => ({ id: file.id })),
+            connect: fs.map((file) => ({ id: file.id })),
           },
-        },
-        where: {
-          id: answer.id,
+          body: markdown(answer.body, fs),
         },
         include: {
           files: true,
         },
-      })
-    );
+      });
+    }
 
-    await this.publishAnswerAdded(completeAnswer);
-    return completeAnswer;
+    const answerDTO = AnswerDTO.from(answer);
+    await this.publishAnswerAdded(answerDTO);
+    return answerDTO;
   }
 
   async getAnswers({
